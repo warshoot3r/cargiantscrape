@@ -38,6 +38,8 @@ for i in range(CarSearch.data.shape[0]):
     )
     DB.import_data()
   
+
+  
 table_data = DB.exportToPDdataframe()
 
 # Print DB as pandas TF
