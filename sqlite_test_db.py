@@ -1,14 +1,15 @@
 import sqlite3
-
+import datetime
 
 class sqlite_database():
     conn = sqlite3.connect('used_cars.db')
     cursor = conn.cursor()
 
+    def __init__(self):
+        pass
 
 
-
-    def __init__(self, Manufacturer, Doors, Model, Year, Price, Body_Type, Transmission, Fuel, Color, Mileage, Reg, URL):
+    def setCarProperties(self, Manufacturer, Doors, Model, Year, Price, Body_Type, Transmission, Fuel, Color, Mileage, Reg, URL):
         # Define instance variables
         self.Manufacturer = str(Manufacturer)
         self.Model = str(Model)
@@ -19,9 +20,13 @@ class sqlite_database():
         self.Fuel = str(Fuel)
         self.Color = str(Color)
         self.Mileage = str(Mileage)
-        self.Doors = int(Doors)
+        try:
+            self.Doors = int(Doors)
+        except ValueError:
+            self.Doors = "N/A"
         self.Reg = str(Reg)
         self.URL = str(URL)
+        self.DateUpdated = datetime.datetime.now()
 
 
     # Create a table to store used car information if it doesn't exist
@@ -30,20 +35,22 @@ class sqlite_database():
         Creates the 'used_cars' table if it doesn't exist.
         The table has columns: id, make, model, and price.
         """
+        
         incoming_data = [ 
             {
-                "Manufacturer": self.Manufacturer,
-                "Model": self.Model,
-                "Year": self.Year,
-                "Price": self.Price,
-                "Body Type": self.Body_Type,
-                "Transmission": self.Transmission,
-                "Fuel": self.Fuel,
-                "Color": self.Color,
-                "Mileage": self.Mileage,
-                "Doors": self.Doors,
-                "Reg": self.Reg,
-                "URL": self.URL
+                "Manufacturer": "TEXT",
+                "Model": "TEXT",
+                "Year": "INTEGER",
+                "Price": "INTEGER",
+                "Body Type": 'TEXT',
+                "Transmission": "TEXT",
+                "Fuel": "TEXT",
+                "Color": "TEXT",
+                "Mileage": "INTEGER",
+                "Doors": "INTEGER",
+                "Reg": "TEXT",
+                "URL": "TEXT",
+                "DateUpdated": "TEXT"
             }
         ]
         sql_table = "used_cars"
@@ -53,6 +60,7 @@ class sqlite_database():
                         {sql_table_col}
                         )
         '''
+        
         self.cursor.execute(sql_string)
     def delete_data_from_table(self, REG, table=None):
         # Generate the column number
@@ -90,7 +98,8 @@ class sqlite_database():
                 "Mileage": self.Mileage,
                 "Doors": self.Doors,
                 "Reg": self.Reg,
-                "URL": self.URL
+                "URL": self.URL,
+                "DateUpdated": self.DateUpdated
             }
         ]
         self.cursor.execute("select * from used_cars")# Improvement to add table by date
@@ -143,47 +152,47 @@ class sqlite_database():
 
 
 # Main program execution
-batchofcarsimport = sqlite_database(
-    Body_Type="Hatch",
-    Color="Black",
-    Fuel="Diesel",
-    Doors=5,
-    Manufacturer="Ford",
-    Mileage=66000,
-    Model="Fiesta",
-    Price=12000,
-    Reg="2mk60g22",
-    Year=2017,
-    Transmission="Manual",
-    URL="www.google.com"
-)
-batchofcarsimporttest = sqlite_database(
-    Body_Type="Hatch",
-    Color="Black",
-    Fuel="Diesel",
-    Doors=5,
-    Manufacturer="Ford",
-    Mileage=66000,
-    Model="Focus",
-    Price=12000,
-    Reg="2mk60g22",
-    Year=2017,
-    Transmission="Manual",
-    URL="www.google.com"
-)
+# batchofcarsimport = sqlite_database(
+#     Body_Type="Hatch",
+#     Color="Black",
+#     Fuel="Diesel",
+#     Doors=5,
+#     Manufacturer="Ford",
+#     Mileage=66000,
+#     Model="Fiesta",
+#     Price=12000,
+#     Reg="2mk60g22",
+#     Year=2017,
+#     Transmission="Manual",
+#     URL="www.google.com"
+# )
+# batchofcarsimporttest = sqlite_database(
+#     Body_Type="Hatch",
+#     Color="Black",
+#     Fuel="Diesel",
+#     Doors=5,
+#     Manufacturer="Ford",
+#     Mileage=66000,
+#     Model="Focus",
+#     Price=12000,
+#     Reg="2mk60g22",
+#     Year=2017,
+#     Transmission="Manual",
+#     URL="www.google.com"
+# )
 
-batchofcarsimport.create_table()  # Create the 'used_cars' table if it doesn't exist
-#Import car data
-batchofcarsimport.import_data()
-batchofcarsimporttest.import_data()
-
-
+# batchofcarsimport.create_table()  # Create the 'used_cars' table if it doesn't exist
+# #Import car data
+# batchofcarsimport.import_data()
+# batchofcarsimporttest.import_data()
 
 
 
-batchofcarsimport.retrieve_db(column="price", input_data=100000)
-batchofcarsimport.retrieve_db(column="color", input_data='black')
-batchofcarsimport.retrieve_db(column="doors", input_data='5')
 
 
-batchofcarsimport.close_db()  # Close the database connection and cursor
+# batchofcarsimport.retrieve_db(column="price", input_data=100000)
+# batchofcarsimport.retrieve_db(column="color", input_data='black')
+# batchofcarsimport.retrieve_db(column="doors", input_data='5')
+
+
+# batchofcarsimport.close_db()  # Close the database connection and cursor
