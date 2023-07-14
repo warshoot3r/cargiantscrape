@@ -1,15 +1,15 @@
 import sqlite3
 import datetime
-
+import pandas as pd
 class sqlite_database():
-    conn = sqlite3.connect('used_cars.db')
-    cursor = conn.cursor()
+    
 
     def __init__(self):
-        pass
+        self.conn = sqlite3.connect('used_cars.db')
+        self.cursor = self.conn.cursor()
 
 
-    def setCarProperties(self, Manufacturer, Doors, Model, Year, Price, Body_Type, Transmission, Fuel, Color, Mileage, Reg, URL):
+    def setCarProperties(self, Manufacturer=None, Doors=None, Model=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None):
         # Define instance variables
         self.Manufacturer = str(Manufacturer)
         self.Model = str(Model)
@@ -27,8 +27,20 @@ class sqlite_database():
         self.Reg = str(Reg)
         self.URL = str(URL)
         self.DateUpdated = datetime.datetime.now()
-
-
+    def setCarProperty(self, REG, Key, Value):
+        sql_string_select = f'''
+            SELECT * from used_cars where Reg = '{REG}'
+            '''
+        self.cursor.execute(sql_string_select)
+        car_data = self.cursor.fetchall()
+        print(f"Old Data is {car_data}")
+        sql_string_update = f'''
+            UPDATE used_cars SET {Key} = ? WHERE Reg = '{REG}'
+            '''
+        self.cursor.execute(sql_string_update, (Value,))
+        self.cursor.execute(sql_string_select)
+        car_data = self.cursor.fetchall()
+        print(f"New Data is {car_data}")
     # Create a table to store used car information if it doesn't exist
     def create_table(self):
         """
@@ -71,7 +83,14 @@ class sqlite_database():
         sql_string = f"DELETE FROM {table} where Reg = '{REG}' "
         self.cursor.execute(sql_string)
         self.conn.commit()
-        
+
+
+    def exportToPDdataframe(self):
+        query = "SELECT * from used_cars"
+        return pd.read_sql(query, self.conn)
+    
+    def prettyprint(self):
+        print(self.exportToPDdataframe())
 
     # Print all information from the 'used_cars' table
     def print_all_table(self):
@@ -106,12 +125,40 @@ class sqlite_database():
         existing_data = self.cursor.fetchall()
         column_names = [description[0] for description in self.cursor.description]
         reg_col_index = column_names.index('Reg')
- 
+        price_col_index = column_names.index('Price')
+        
         for data in incoming_data:
             matching_car = next((car for car in existing_data if (car[reg_col_index]) == (data["Reg"])), None)
             if(matching_car):
-                print(f"Car with REG: {matching_car[reg_col_index]} is existing. Not adding.")
-            else: # Add a car into database
+                print(f"Car with REG: {matching_car[reg_col_index]} is existing.")
+              
+                self.cursor.execute(f"SELECT Price FROM used_cars where Reg = '{matching_car[reg_col_index]}'")
+                car_DB_PRICE = (self.cursor.fetchall())[0][0]
+                Car_Current_price = self.Price
+                print(car_DB_PRICE)
+                print(Car_Current_price)
+                if(Car_Current_price != car_DB_PRICE):
+                    print("Car Price Changed, updating DB.")
+                    self.DateUpdated = datetime.datetime.now()
+                    print("DBPrice",car_DB_PRICE)
+                    print("CurrentPrice", Car_Current_price)
+                    table = "used_cars"
+                    car_properties = incoming_data[0]
+                    car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])
+
+                    sql_values_count_string = ", ".join([f"?" for _  in car_properties])
+            
+                    db_string = f'''
+                    UPDATE {table} SET Price = ?, DateUpdated = ? WHERE Reg = '{matching_car[reg_col_index]}'
+                    '''
+                    print(self.DateUpdated)
+                    self.cursor.execute(db_string, (Car_Current_price, self.DateUpdated ) )
+                    self.conn.commit()
+                    print("Imported updated entry")
+
+
+            else: # Add a new car into database
+                print(f"Adding a new Car into the DB: '{data['Reg']}'")
                 table = "used_cars"
                 car_properties = incoming_data[0]
                 car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])

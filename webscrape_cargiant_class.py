@@ -8,9 +8,7 @@ import requests
 
 class webscrape_cargiant():
     url = "https://www.cargiant.co.uk/search/"
-    manufacturer = ""
     date_retrieved = datetime.time()
-    data = pd.DataFrame()
 
     def __init__(self, manufacturer_search=None ):
         if manufacturer_search is not None:
@@ -19,12 +17,16 @@ class webscrape_cargiant():
             print("Setting the search to", self.url)
             self.pullNewData()
 
-    def getCarMakes_selenium(self): # Avoid using as resource hogging
-        driver = webdriver.Safari()
-        driver.get("https://www.cargiant.co.uk/search/")
-        makes = driver.find_elements(By.ID, "Makes")
-        for item in makes:
-            print(item.text)
+    def searchForManufacturer(self, Manufacturer):
+        self.manufacturer_search = Manufacturer
+        self.url = "https://www.cargiant.co.uk/search/" + Manufacturer + "/all"
+        print("Setting the search to", self.url)
+        self.pullNewData()
+
+    def import_sqldb_data(self, DataFrame):
+        print("Importing past DATA")
+        self.data = DataFrame
+        
 
     def getCarMakes(self):
         driver = requests.get("https://www.cargiant.co.uk/search/")
@@ -90,7 +92,7 @@ class webscrape_cargiant():
             "URL": []
         }
 
-
+    
         tf = pd.DataFrame(tableTemplate)
 
         # Create a table containing the objects
@@ -158,17 +160,3 @@ class webscrape_cargiant():
         print("Data successfully pulled")
         # Set time that we retrieved
         self.date_retrieved = datetime.datetime.now()
-
-        def save_data_to_db(dataFrame):
-        #     create table if not exist
-        
-
-        #     if registration already existing
-        #             check if any properties change
-        #             import data and add a time stamp
-        #             print data updated
-        #     else
-        #         import all properties from entry
-        #         add time stamp
-        #         print new entry added
-            return

@@ -1,20 +1,22 @@
 from webscrape_cargiant_class import webscrape_cargiant
 from sqlite_test_db import sqlite_database
 
-
-#scrape BMW cars
-BMWCars = webscrape_cargiant(manufacturer_search="BMW")
-
-
 DB = sqlite_database()
+DB.create_table()
+#scrape BMW cars
+BMWCars = webscrape_cargiant()
+BMWCars.searchForManufacturer("BMW")
 
 # import to DB
-DB.create_table()
+
+# #testing to set property
+# DB.setCarProperty("RV65VDM", "Price", 6000)
+
+#Get new data and import it into DB
 print(f"Number of cars to imported -> {BMWCars.data.shape[0]}")
 print(BMWCars.data)
 for i in range(BMWCars.data.shape[0]):
     current_car = BMWCars.data.iloc[i]
-    print(f"Imported {current_car.Reg}")
     DB.setCarProperties(
             Body_Type=current_car["Body Type"],
             Color=current_car["Color"],
@@ -31,7 +33,10 @@ for i in range(BMWCars.data.shape[0]):
     )
     DB.import_data()
 
-DB.print_all_table()
+# Print DB as pandas TF
+
+DB.prettyprint()
 
 DB.close_db()
-    
+
+
