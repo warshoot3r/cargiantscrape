@@ -96,22 +96,27 @@ class webscrape_cargiant():
         # Create a table containing the objects
         for item in car_listing_items:
             # Process each car listing item
-            price = item.find_element(By.CSS_SELECTOR, "div.price-block__price").text
+            price_get = item.find_element(By.CSS_SELECTOR, "div.price-block__price").text
+            price = re.sub("[^0-9.]","", price_get)
             model = item.find_element(By.CSS_SELECTOR, "span.title__main.set-h3").text
             model_split = re.split(r'(^\s*[\w]+)\b', model)
             model_split = [item for item in model_split if item]
             car_manufacturer = model_split[0]
             model_name = model_split[1].strip()
-            details = item.find_element(
-                By.CSS_SELECTOR, "span.text-content").text.strip()
-            year = item.find_element(
+ 
+            year_get = item.find_element(
                 By.CSS_SELECTOR, "span.title__sub__plate").text.replace(",", "")
+            year = re.sub(r"(\d{4}).*", r"\1" , year_get)
             link = item.find_element(By.CSS_SELECTOR, "a.car-listing-item__details.split-half")
             carLink = link.get_attribute("HREF")
             carReg = (re.split(r"[/\\](?=[^/\\]*$)", carLink))[1]
             #  split string details into the correct specs
+            details = item.find_element(
+                By.CSS_SELECTOR, "span.text-content").text.strip()
             details_split = details.split(', ')
-            DoorsAndType, Transmission, Fuel, Color, mileage = details_split
+            DoorsAndType, Transmission, Fuel, Color, mileage_get = details_split
+            mileage = re.sub("[^0-9.]", "" , mileage_get)
+            
 
             # Also split the door and body type
             DoorsAndType_split = re.split(r"\d\s(?=\s)", DoorsAndType)
@@ -121,7 +126,8 @@ class webscrape_cargiant():
             bodyType = ""
             for item in DoorsAndType_split:
                 if (re.match(r'\d', item)):
-                    number_doors, bodyType= item.split(" ", 1)
+     
+                    number_doors, bodyType = re.split(r'(?<=\d)\s...', item)
                 else:
                     bodyType = item
             
@@ -153,4 +159,16 @@ class webscrape_cargiant():
         # Set time that we retrieved
         self.date_retrieved = datetime.datetime.now()
 
+        def save_data_to_db(dataFrame):
+        #     create table if not exist
+        
 
+        #     if registration already existing
+        #             check if any properties change
+        #             import data and add a time stamp
+        #             print data updated
+        #     else
+        #         import all properties from entry
+        #         add time stamp
+        #         print new entry added
+            return

@@ -8,11 +8,14 @@ bmw = webscrape_cargiant("bmw")
 mercedes = webscrape_cargiant("mercedes")
 lexus = webscrape_cargiant("lexus")
 voltswagen = webscrape_cargiant("Volkswagen")
+toyota = webscrape_cargiant("toyota")
+
+toyota.printData()
 bmw.printData()
 mercedes.printData()
 lexus.printData()
 voltswagen.printData()
 
 
-bmwsearch = bmw.searchDataForCar("Model", "118D")
-mercedessearch = mercedes.searchDataForCar("Body Type", "Hatch")
+# bmwsearch = bmw.searchDataForCar("Model", "118D")
+# mercedessearch = mercedes.searchDataForCar("Body Type", "Hatch")
