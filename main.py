@@ -37,7 +37,7 @@ for i in range(CarSearch.data.shape[0]):
             Mileage=current_car["Mileage"]
     )
     DB.import_data()
-
+  
 table_data = DB.exportToPDdataframe()
 
 # Print DB as pandas TF
