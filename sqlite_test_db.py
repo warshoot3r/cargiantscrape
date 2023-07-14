@@ -20,6 +20,7 @@ class sqlite_database():
         self.Fuel = str(Fuel)
         self.Color = str(Color)
         self.Mileage = str(Mileage)
+        self.OldPrice = 0
         try:
             self.Doors = int(Doors)
         except ValueError:
@@ -62,7 +63,9 @@ class sqlite_database():
                 "Doors": "INTEGER",
                 "Reg": "TEXT",
                 "URL": "TEXT",
-                "DateUpdated": "TEXT"
+                "DateUpdated": "TEXT",
+                "OldPrice": "INTEGER",
+                "OldDate": "TEXT"
             }
         ]
         sql_table = "used_cars"
@@ -90,7 +93,9 @@ class sqlite_database():
         return pd.read_sql(query, self.conn)
     
     def prettyprint(self):
-        print(self.exportToPDdataframe())
+        table = self.exportToPDdataframe()
+        sorted_table = table.sort_values(by="Price")
+        print(sorted_table)
 
     # Print all information from the 'used_cars' table
     def print_all_table(self):
@@ -118,6 +123,7 @@ class sqlite_database():
                 "Doors": self.Doors,
                 "Reg": self.Reg,
                 "URL": self.URL,
+                "OldPrice": self.OldPrice,
                 "DateUpdated": self.DateUpdated
             }
         ]
@@ -125,7 +131,6 @@ class sqlite_database():
         existing_data = self.cursor.fetchall()
         column_names = [description[0] for description in self.cursor.description]
         reg_col_index = column_names.index('Reg')
-        price_col_index = column_names.index('Price')
         
         for data in incoming_data:
             matching_car = next((car for car in existing_data if (car[reg_col_index]) == (data["Reg"])), None)
@@ -149,10 +154,10 @@ class sqlite_database():
                     sql_values_count_string = ", ".join([f"?" for _  in car_properties])
             
                     db_string = f'''
-                    UPDATE {table} SET Price = ?, DateUpdated = ? WHERE Reg = '{matching_car[reg_col_index]}'
+                    UPDATE {table} SET OldPrice = ?,Price = ?,OldDate = DateUpdated, DateUpdated = ? WHERE Reg = '{matching_car[reg_col_index]}'
                     '''
                     print(self.DateUpdated)
-                    self.cursor.execute(db_string, (Car_Current_price, self.DateUpdated ) )
+                    self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated ) )
                     self.conn.commit()
                     print("Imported updated entry")
 

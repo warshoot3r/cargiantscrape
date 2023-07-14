@@ -11,6 +11,7 @@ class webscrape_cargiant():
     date_retrieved = datetime.time()
 
     def __init__(self, manufacturer_search=None ):
+        self.data = pd.DataFrame()
         if manufacturer_search is not None:
             self.manufacturer_search = manufacturer_search
             self.url = "https://www.cargiant.co.uk/search/" + manufacturer_search + "/all"
@@ -155,7 +156,10 @@ class webscrape_cargiant():
 
             i = len(tf) + 1
             tf.loc[i] = NewRow
-        self.data = tf
+        if(not(self.data.empty)):
+            self.data = pd.concat([tf, self.data])
+        else:
+            self.data = tf
         driver.quit()
         print("Data successfully pulled")
         # Set time that we retrieved

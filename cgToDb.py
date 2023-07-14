@@ -6,11 +6,11 @@ DB.create_table()
 #scrape BMW cars
 BMWCars = webscrape_cargiant()
 BMWCars.searchForManufacturer("BMW")
-
+BMWCars.searchForManufacturer("Mercedes")
 # import to DB
 
 # #testing to set property
-# DB.setCarProperty("RV65VDM", "Price", 6000)
+DB.setCarProperty("RV65VDM", "Price", 8800)
 
 #Get new data and import it into DB
 print(f"Number of cars to imported -> {BMWCars.data.shape[0]}")
