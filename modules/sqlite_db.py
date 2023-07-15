@@ -8,6 +8,7 @@ class sqlite_database():
     def __init__(self):
         self.conn = sqlite3.connect('used_cars.db')
         self.cursor = self.conn.cursor()
+        self.create_table()
 
 
     def setCarProperties(self, Manufacturer=None, Doors=None, Model=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None):

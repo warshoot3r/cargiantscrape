@@ -1,9 +1,6 @@
 from modules.sqlite_db import sqlite_database
 from modules.webscrape_cargiant_class import webscrape_cargiant
 
-DB = sqlite_database()
-DB.create_table()
-
 
 #scrape cars
 def scrape_cars():
@@ -32,14 +29,6 @@ def scrape_cars():
         )
         DB.import_data()
     
-    # DB.delete_manufacturer_from_table(manufacturer="Vauxhall")
-    # DB.delete_manufacturer_from_table(manufacturer="Peugeot")
-    # DB.delete_manufacturer_from_table(manufacturer="Nissan")
-    # DB.delete_manufacturer_from_table(manufacturer="Fiat")
-    # DB.delete_manufacturer_from_table(manufacturer="Suzuki")
-    # DB.delete_manufacturer_from_table(manufacturer="Citreon")
-    
-    
 def print_data():
 # Print DB as pandas TF
     table_data = DB.exportToPDdataframe()
@@ -50,6 +39,6 @@ def print_data():
     DB.prettyprint(array_col_show=["Manufacturer","Model","Year","Price","Mileage","URL"],panda_df=adjusted_table)
     DB.close_db()
 
-
+DB = sqlite_database()
 scrape_cars()
 print_data()
