@@ -1,5 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
@@ -7,16 +9,27 @@ import datetime
 import requests
 
 class webscrape_cargiant():
-    url = "https://www.cargiant.co.uk/search/"
     date_retrieved = datetime.time()
+    driver = None
 
-    def __init__(self, manufacturer_search=None ):
-        self.data = pd.DataFrame()
+
+
+
+    def __init__(self, driver, keepalive, manufacturer_search=None ):
+        self.driver = str(driver)
+        self.keepalive = bool(keepalive)
         if manufacturer_search is not None:
             self.manufacturer_search = manufacturer_search
             self.url = "https://www.cargiant.co.uk/search/" + manufacturer_search + "/all"
             print("Setting the search to", self.url)
-            self.pullNewData()
+        else: 
+            self.url = "https://www.cargiant.co.uk/search/all/all"
+    def initialize_driver(self):
+        if(self.driver == "safari"):
+            webscrape_cargiant.driver = webdriver.Safari()
+        elif(self.driver == "chrome"):
+            webscrape_cargiant.driver = webdriver.Chrome()
+            self.data = pd.DataFrame()
 
     def searchForManufacturer(self, Manufacturer):
         self.manufacturer_search = Manufacturer
@@ -62,21 +75,20 @@ class webscrape_cargiant():
     def pullNewData(self):
         print("Pull new data")
         # Main code to pull data
-        
-        # Set up the Selenium WebDriver
-        driver = webdriver.Safari()
-
+        print(self.url)
+        self.initialize_driver()
+        # Set up the Selenium Webwebscrape_cargiant.driver
         # Send a GET request to the website
         # Replace with the URL of the website you want to scrape
-        url = self.url
+        wait = WebDriverWait(webscrape_cargiant.driver, 10) 
+        webscrape_cargiant.driver.get(self.url)
+        # Adjust the timeout value as needed
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
 
-        webpage = driver.get(url)
+        soup = BeautifulSoup(webscrape_cargiant.driver.page_source, 'html.parser')
 
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-
-        car_listing_items = driver.find_elements(
+        car_listing_items = webscrape_cargiant.driver.find_elements(
             By.CSS_SELECTOR, "div.car-listing-item")
-
         # Create Pandas table
         tableTemplate = {
             "Manufacturer": [],
@@ -95,7 +107,7 @@ class webscrape_cargiant():
 
     
         tf = pd.DataFrame(tableTemplate)
-
+        
         # Create a table containing the objects
         for item in car_listing_items:
             # Process each car listing item
@@ -156,11 +168,14 @@ class webscrape_cargiant():
 
             i = len(tf) + 1
             tf.loc[i] = NewRow
+        print(f"\n\nData got for this scrape {tf}\n\n")
         if(not(self.data.empty)):
             self.data = pd.concat([tf, self.data])
         else:
             self.data = tf
-        driver.quit()
+
+        if(self.keepalive == False):
+            webscrape_cargiant.driver.quit()
         print("Data successfully pulled")
         # Set time that we retrieved
         self.date_retrieved = datetime.datetime.now()
