@@ -1,17 +1,17 @@
 from modules.sqlite_db import SQLiteDatabase
-from modules.webscrape_cargiant_class import webscrape_cargiant
+from modules.webscrape_cargiant_class import WebScraperCargiant
 
 
 #scrape cars
 def scrape_cars():
-    CarSearch = webscrape_cargiant(driver="chrome", keepalive=True)
-    CarSearch.searchForManufacturer("BMW")
-    CarSearch.searchForManufacturer("Mercedes")
+    CarSearch = WebScraperCargiant(driver="chrome", keepalive=True)
+    CarSearch.search_for_manufacturer("BMW")
+    CarSearch.search_for_manufacturer("Mercedes")
     #Get new data and import it into DB
-    CarSearch.printNumberOfCars()
+    CarSearch.print_number_of_cars()
     for i in range(CarSearch.length):
         current_car = CarSearch.data.iloc[i]
-        DB.ImportCarProperties(
+        DB.import_car_properties(
                 Body_Type=current_car["Body Type"],
                 Color=current_car["Color"],
                 Doors=current_car["Doors"],
@@ -37,5 +37,5 @@ def print_data():
     DB.close_db()
 
 DB = SQLiteDatabase()
-#scrape_cars()
+scrape_cars()
 print_data()

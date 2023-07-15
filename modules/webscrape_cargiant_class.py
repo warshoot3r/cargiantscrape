@@ -11,10 +11,23 @@ import re
 import datetime
 import requests
 
-class webscrape_cargiant():
+class WebScraperCargiant:
+    """
+    A web scraper for collecting used car information from the Cargiant website.
+    """
+
     date_retrieved = datetime.time()
     driver = None
-    def __init__(self, driver, keepalive, manufacturer_search=None ):
+
+    def __init__(self, driver, keepalive, manufacturer_search=None):
+        """
+        Initializes the WebScraperCargiant object.
+
+        Args:
+            driver (str): The driver type to use for Selenium (safari, chrome, or firefox).
+            keepalive (bool): Determines whether to keep the driver alive after data retrieval.
+            manufacturer_search (str, optional): The manufacturer to search for. Defaults to None.
+        """
         self.driver = str(driver)
         self.keepalive = bool(keepalive)
         self.data = pd.DataFrame()
@@ -25,15 +38,17 @@ class webscrape_cargiant():
             print("Setting the search to", self.url)
         else: 
             self.url = "https://www.cargiant.co.uk/search/all/all"
+
     def initialize_driver(self):
-        if(self.driver == "safari"):
-           
+        """
+        Initializes the Selenium driver based on the specified driver type.
+        """
+        if self.driver == "safari":
             safari_options = SafariOptions()
             safari_options.headless = True  # Safari doesn't support the "--headless" argument, so we use the headless property
+            WebScraperCargiant.driver = webdriver.Safari(safari_options)
 
-            webscrape_cargiant.driver = webdriver.Safari(safari_options)
-
-        elif(self.driver == "chrome"):
+        elif self.driver == "chrome":
             chrome_options = ChromeOptions()
             chrome_options.add_argument("--headless")
             chrome_options.add_argument("--disable-gpu")
@@ -43,33 +58,48 @@ class webscrape_cargiant():
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--start-minimized")
-
-            webscrape_cargiant.driver = webdriver.Chrome(options=chrome_options)
+            WebScraperCargiant.driver = webdriver.Chrome(options=chrome_options)
     
-        elif(self.driver == "firefox"):
+        elif self.driver == "firefox":
             firefox_options = FirefoxOptions()
             firefox_options.headless = True
             firefox_options.add_argument("--window-size=1920,1200")
             firefox_options.add_argument("--ignore-certificate-errors")
             firefox_options.add_argument("--start-minimized")
-            webscrape_cargiant.driver  = webdriver.Firefox(options=firefox_options)
+            WebScraperCargiant.driver = webdriver.Firefox(options=firefox_options)
 
-    def printNumberOfCars(self):
-        print(f"\n\nNumber of cars to imported -> {self.length}\n\n")
+    def print_number_of_cars(self):
+        """
+        Prints the number of cars to be imported.
+        """
+        print(f"\n\nNumber of cars to be imported -> {self.length}\n\n")
 
+    def search_for_manufacturer(self, manufacturer):
+        """
+        Sets the search to a specific manufacturer.
 
-    def searchForManufacturer(self, Manufacturer):
-        self.manufacturer_search = Manufacturer
-        self.url = "https://www.cargiant.co.uk/search/" + Manufacturer + "/all"
+        Args:
+            manufacturer (str): The manufacturer to search for.
+        """
+        self.manufacturer_search = manufacturer
+        self.url = "https://www.cargiant.co.uk/search/" + manufacturer + "/all"
         print("Setting the search to", self.url)
-        self.pullNewData()
+        self.pull_new_data()
 
-    def import_sqldb_data(self, DataFrame):
-        print("Importing past DATA")
-        self.data = DataFrame
-        
+    def import_sqldb_data(self, data_frame):
+        """
+        Imports past data from a DataFrame.
 
-    def getCarMakes(self):
+        Args:
+            data_frame (pd.DataFrame): The DataFrame containing past data to be imported.
+        """
+        print("Importing past data")
+        self.data = data_frame
+
+    def get_car_makes(self):
+        """
+        Prints the list of car makes available on the Cargiant website.
+        """
         driver = requests.get("https://www.cargiant.co.uk/search/")
         content = driver.content
         soup = BeautifulSoup(content, 'html.parser')
@@ -77,18 +107,31 @@ class webscrape_cargiant():
         print("Listing Car makes")
         for item in makes:
             print(item.text)
-        
-    def printData(self):
+
+    def print_data(self):
+        """
+        Prints the current data and the date it was retrieved.
+        """
         print("Printing data")
         print(self.data)
         print(self.date_retrieved)
 
+    def search_data_for_car(self, search_col, term):
+        """
+        Searches the data for a specific car based on the specified column and term.
 
-    def searchDataForCar(self, search_col, term):
+        Args:
+            search_col (str): The column name to search for.
+            term (str): The term to be searched in the specified column.
+
+        Returns:
+            WebScraperCargiant: A new WebScraperCargiant object containing the search results.
+        """
         if search_col not in self.data.columns.values:
             print(f"{search_col} must be one of:")
             print(self.data.columns.values)
             return
+
         pattern = re.escape(term)
         mask = self.data[search_col].apply(lambda x: bool(re.search(pattern, x)))
         model_retrieved = self.data[mask]
@@ -99,25 +142,24 @@ class webscrape_cargiant():
         self.data = model_retrieved
         return self
 
-    def pullNewData(self):
-        print("Pull new data")
-        # Main code to pull data
+    def pull_new_data(self):
+        """
+        Retrieves new car data from the Cargiant website and updates the DataFrame.
+        """
+        print("Pulling new data")
         print(self.url)
         self.initialize_driver()
-        # Set up the Selenium Webwebscrape_cargiant.driver
-        # Send a GET request to the website
-        # Replace with the URL of the website you want to scrape
-        wait = WebDriverWait(webscrape_cargiant.driver, 10) 
-        webscrape_cargiant.driver.get(self.url)
-        # Adjust the timeout value as needed
+
+        wait = WebDriverWait(WebScraperCargiant.driver, 10)
+        WebScraperCargiant.driver.get(self.url)
+
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
 
-        soup = BeautifulSoup(webscrape_cargiant.driver.page_source, 'html.parser')
+        soup = BeautifulSoup(WebScraperCargiant.driver.page_source, 'html.parser')
 
-        car_listing_items = webscrape_cargiant.driver.find_elements(
-            By.CSS_SELECTOR, "div.car-listing-item")
-        # Create Pandas table
-        tableTemplate = {
+        car_listing_items = WebScraperCargiant.driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
+
+        table_template = {
             "Manufacturer": [],
             "Model": [],
             "Year": [],
@@ -132,75 +174,66 @@ class webscrape_cargiant():
             "URL": []
         }
 
-    
-        tf = pd.DataFrame(tableTemplate)
-        
-        # Create a table containing the objects
+        tf = pd.DataFrame(table_template)
+
         for item in car_listing_items:
-            # Process each car listing item
             price_get = item.find_element(By.CSS_SELECTOR, "div.price-block__price").text
-            price = re.sub("[^0-9.]","", price_get)
+            price = re.sub("[^0-9.]", "", price_get)
             model = item.find_element(By.CSS_SELECTOR, "span.title__main.set-h3").text
             model_split = re.split(r'(^\s*[\w]+)\b', model)
             model_split = [item for item in model_split if item]
             car_manufacturer = model_split[0]
             model_name = model_split[1].strip()
- 
-            year_get = item.find_element(
-                By.CSS_SELECTOR, "span.title__sub__plate").text.replace(",", "")
+
+            year_get = item.find_element(By.CSS_SELECTOR, "span.title__sub__plate").text.replace(",", "")
             year = re.sub(r"(\d{4}).*", r"\1" , year_get)
             link = item.find_element(By.CSS_SELECTOR, "a.car-listing-item__details.split-half")
-            carLink = link.get_attribute("HREF")
-            carReg = (re.split(r"[/\\](?=[^/\\]*$)", carLink))[1]
-            #  split string details into the correct specs
-            details = item.find_element(
-                By.CSS_SELECTOR, "span.text-content").text.strip()
+            car_link = link.get_attribute("HREF")
+            car_reg = (re.split(r"[/\\](?=[^/\\]*$)", car_link))[1]
+
+            details = item.find_element(By.CSS_SELECTOR, "span.text-content").text.strip()
             details_split = details.split(', ')
             DoorsAndType, Transmission, Fuel, Color, mileage_get = details_split
             mileage = re.sub("[^0-9.]", "" , mileage_get)
-            
 
-            # Also split the door and body type
             DoorsAndType_split = re.split(r"\d\s(?=\s)", DoorsAndType)
             
-            #Empty strings to initalize
             number_doors = ""
-            bodyType = ""
+            body_type = ""
             for item in DoorsAndType_split:
-                if (re.match(r'\d', item)):
-     
-                    number_doors, bodyType = re.split(r'(?<=\d)\s...', item)
+                if re.match(r'\d', item):
+                    number_doors, body_type = re.split(r'(?<=\d)\s...', item)
                 else:
-                    bodyType = item
+                    body_type = item
             
-            # If no doors variable, change it empty
-            if(not(number_doors)):
+            if not number_doors:
                 number_doors = "N/A"
 
-            NewRow = {
+            new_row = {
                 "Manufacturer": car_manufacturer,
                 "Model": model_name,
                 "Year": year,
                 "Details": details,
                 "Price": price,
-                "Body Type": bodyType,
+                "Body Type": body_type,
                 "Doors": number_doors,
                 "Transmission": Transmission,
                 "Fuel": Fuel,
                 "Color": Color,
                 "Mileage": mileage,
-                "URL": carLink,
-                "Reg": carReg
+                "URL": car_link,
+                "Reg": car_reg
             }
 
             i = len(tf) + 1
-            tf.loc[i] = NewRow
+            tf.loc[i] = new_row
+
         if self.data.empty:
             self.data = tf
         else:
-            self.data = pd.concat([self.data.reset_index(drop=True), tf.reset_index(drop=True)] )
-            print(tf)
+            self.data = pd.concat([self.data.reset_index(drop=True), tf.reset_index(drop=True)])
 
-        if(self.keepalive == False):
-            webscrape_cargiant.driver.quit()
+        if not self.keepalive:
+            WebScraperCargiant.driver.quit()
+
         print("Data successfully pulled")
