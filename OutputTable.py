@@ -1,4 +1,8 @@
-from modules.sqlite_test_db import sqlite_database
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem
+import pandas as pd
+
+from modules.sqlite_db import sqlite_database
 from modules.webscrape_cargiant_class import webscrape_cargiant
 
 DB = sqlite_database()
@@ -59,8 +63,39 @@ def print_data():
     # print desired
     print("\n\n Table printed for desired cars")
     DB.prettyprint(array_col_show=["Manufacturer","Model","Year","Price","Mileage","URL"],panda_df=adjusted_table)
-    DB.close_db()
+    return(adjusted_table)
+    
+
+class MainWindow(QMainWindow):
+    def __init__(self, data):
+        super().__init__()
+        self.data = data
+        self.setWindowTitle("Car Giant Cars")
+        self.setGeometry(100, 100, 600, 400)
+        self.setup_table()
+
+    def setup_table(self):
+        table = QTableWidget(self)
+        table.setColumnCount(len(self.data.columns))
+        table.setRowCount(len(self.data.index))
+        table.setHorizontalHeaderLabels(self.data.columns)
+
+        for row in range(len(self.data.index)):
+            for col in range(len(self.data.columns)):
+                item = QTableWidgetItem(str(self.data.iat[row, col]))
+                table.setItem(row, col, item)
+
+        self.setCentralWidget(table)
+
+if __name__ == '__main__':
+    # Assuming you have a Pandas DataFrame named df
+    #scrape_cars()
+    df = print_data()
+    
+    app = QApplication(sys.argv)
+    mainWindow = MainWindow(df)
+    mainWindow.show()
+    sys.exit(app.exec_())
 
 
-scrape_cars()
-print_data()
+DB.close_db()
