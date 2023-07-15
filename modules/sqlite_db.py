@@ -11,7 +11,7 @@ class sqlite_database():
         self.create_table()
 
 
-    def setCarProperties(self, Manufacturer=None, Doors=None, Model=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None):
+    def ImportCarProperties(self, Manufacturer=None, Doors=None, Model=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None):
         # Define instance variables
         self.Manufacturer = str(Manufacturer)
         self.Model = str(Model)
@@ -30,7 +30,9 @@ class sqlite_database():
         self.Reg = str(Reg)
         self.URL = str(URL)
         self.DateUpdated = datetime.datetime.now()
-    def setCarProperty(self, REG, Key, Value):
+        self.import_data()
+
+    def setCarDBProperty(self, REG, Key, Value):
         sql_string_select = f'''
             SELECT * from used_cars where Reg = '{REG}'
             '''
@@ -79,6 +81,7 @@ class sqlite_database():
         '''
         
         self.cursor.execute(sql_string)
+        
     def delete_data_from_table(self, REG, table=None):
         # Generate the column number
         table = "used_cars"

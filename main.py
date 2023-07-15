@@ -5,15 +5,13 @@ from modules.webscrape_cargiant_class import webscrape_cargiant
 #scrape cars
 def scrape_cars():
     CarSearch = webscrape_cargiant(driver="chrome", keepalive=True)
-    CarSearch.getCarMakes()
     CarSearch.searchForManufacturer("BMW")
     CarSearch.searchForManufacturer("Mercedes")
     #Get new data and import it into DB
-    print(f"\n\nNumber of cars to imported -> {CarSearch.length}\n\n")
-
+    CarSearch.printNumberOfCars()
     for i in range(CarSearch.length):
         current_car = CarSearch.data.iloc[i]
-        DB.setCarProperties(
+        DB.ImportCarProperties(
                 Body_Type=current_car["Body Type"],
                 Color=current_car["Color"],
                 Doors=current_car["Doors"],
@@ -27,7 +25,6 @@ def scrape_cars():
                 Model=current_car["Model"],
                 Mileage=current_car["Mileage"]
         )
-        DB.import_data()
     
 def print_data():
 # Print DB as pandas TF

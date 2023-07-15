@@ -14,10 +14,6 @@ import requests
 class webscrape_cargiant():
     date_retrieved = datetime.time()
     driver = None
-    
-
-
-
     def __init__(self, driver, keepalive, manufacturer_search=None ):
         self.driver = str(driver)
         self.keepalive = bool(keepalive)
@@ -57,6 +53,10 @@ class webscrape_cargiant():
             firefox_options.add_argument("--ignore-certificate-errors")
             firefox_options.add_argument("--start-minimized")
             webscrape_cargiant.driver  = webdriver.Firefox(options=firefox_options)
+
+    def printNumberOfCars(self):
+        print(f"\n\nNumber of cars to imported -> {self.length}\n\n")
+
 
     def searchForManufacturer(self, Manufacturer):
         self.manufacturer_search = Manufacturer
@@ -196,10 +196,8 @@ class webscrape_cargiant():
             i = len(tf) + 1
             tf.loc[i] = NewRow
         if self.data.empty:
-            print("Table is empty or has columns")
             self.data = tf
         else:
-            print("table already has data")
             self.data = pd.concat([self.data.reset_index(drop=True), tf.reset_index(drop=True)] )
             print(tf)
 
