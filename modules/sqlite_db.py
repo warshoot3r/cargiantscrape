@@ -2,17 +2,37 @@ import sqlite3
 import datetime
 import pandas as pd
 
-class sqlite_database():
-    
+class SQLiteDatabase:
+    """
+    A class for managing a SQLite database for used car information.
+    """
 
     def __init__(self):
+        """
+        Initializes the SQLiteDatabase object by establishing a connection to the database and creating the 'used_cars' table if it doesn't exist.
+        """
         self.conn = sqlite3.connect('used_cars.db')
         self.cursor = self.conn.cursor()
         self.create_table()
 
-
-    def ImportCarProperties(self, Manufacturer=None, Doors=None, Model=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None):
-        # Define instance variables
+    def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None):
+        """
+        Imports car properties and adds them to the database.
+        
+        Args:
+            Manufacturer (str): The manufacturer of the car.
+            Doors (int): The number of doors of the car.
+            Model (str): The model of the car.
+            Year (int): The year of the car.
+            Price (int): The price of the car.
+            Body_Type (str): The body type of the car.
+            Transmission (str): The transmission type of the car.
+            Fuel (str): The fuel type of the car.
+            Color (str): The color of the car.
+            Mileage (int): The mileage of the car.
+            Reg (str): The registration number of the car.
+            URL (str): The URL of the car's listing.
+        """
         self.Manufacturer = str(Manufacturer)
         self.Model = str(Model)
         self.Year = int(Year)
@@ -32,7 +52,15 @@ class sqlite_database():
         self.DateUpdated = datetime.datetime.now()
         self.import_data()
 
-    def setCarDBProperty(self, REG, Key, Value):
+    def set_car_db_property(self, REG, Key, Value):
+        """
+        Sets a specific property of a car in the database.
+        
+        Args:
+            REG (str): The registration number of the car.
+            Key (str): The property key to be updated.
+            Value (str): The new value of the property.
+        """
         sql_string_select = f'''
             SELECT * from used_cars where Reg = '{REG}'
             '''
@@ -46,14 +74,13 @@ class sqlite_database():
         self.cursor.execute(sql_string_select)
         car_data = self.cursor.fetchall()
         print(f"New Data is {car_data}")
-    # Create a table to store used car information if it doesn't exist
+
     def create_table(self):
         """
         Creates the 'used_cars' table if it doesn't exist.
         The table has columns: id, make, model, and price.
         """
-        
-        incoming_data = [ 
+        incoming_data = [
             {
                 "Manufacturer": "TEXT",
                 "Model": "TEXT",
@@ -73,17 +100,22 @@ class sqlite_database():
             }
         ]
         sql_table = "used_cars"
-        sql_table_col =  ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])
+        sql_table_col = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])
         sql_string = f'''CREATE TABLE IF NOT EXISTS {sql_table}
                         (id INTEGER PRIMARY KEY,
                         {sql_table_col}
                         )
         '''
-        
         self.cursor.execute(sql_string)
-        
+
     def delete_data_from_table(self, REG, table=None):
-        # Generate the column number
+        """
+        Deletes a specific car's data from the database.
+        
+        Args:
+            REG (str): The registration number of the car to be deleted.
+            table (str, optional): The table name. Defaults to None.
+        """
         table = "used_cars"
 
         print(f"deleting {REG} from {table}")
@@ -91,8 +123,15 @@ class sqlite_database():
         sql_string = f"DELETE FROM {table} where Reg = '{REG}' "
         self.cursor.execute(sql_string)
         self.conn.commit()
+
     def delete_manufacturer_from_table(self, manufacturer, table=None):
-        # Generate the column number
+        """
+        Deletes all cars of a specific manufacturer from the database.
+        
+        Args:
+            manufacturer (str): The manufacturer to be deleted.
+            table (str, optional): The table name. Defaults to None.
+        """
         table = "used_cars"
 
         print(f"deleting {manufacturer} from {table}")
@@ -101,20 +140,32 @@ class sqlite_database():
         self.cursor.execute(sql_string)
         self.conn.commit()
 
-    def exportToPDdataframe(self):
+    def export_to_pd_dataframe(self):
+        """
+        Exports the data from the 'used_cars' table to a pandas DataFrame.
+        
+        Returns:
+            pd.DataFrame: A DataFrame containing the data from the table.
+        """
         query = "SELECT * from used_cars"
         return pd.read_sql(query, self.conn)
-    
-    def prettyprint(self,panda_df, array_col_show=None ):
-        table = panda_df #¢self.exportToPDdataframe()
+
+    def pretty_print(self, panda_df, col_show=None):
+        """
+        Prints a formatted representation of the DataFrame.
+        
+        Args:
+            panda_df (pd.DataFrame): The DataFrame to be printed.
+            col_show (list, optional): The list of column names to be displayed. Defaults to None.
+        """
+        table = panda_df
         sorted_table = table.sort_values(by="Price")
         pd.set_option('display.max_rows', None)
-        if(array_col_show):
-            print(sorted_table[[*array_col_show]])
+        if col_show:
+            print(sorted_table[[*col_show]])
         else:
             print(sorted_table)
 
-    # Print all information from the 'used_cars' table
     def print_all_table(self):
         """
         Prints all the data in the 'used_cars' table.
@@ -124,9 +175,11 @@ class sqlite_database():
         for item in self.cursor.fetchall():
             print(item)
 
-    def import_data(self): #Inport from instance variables
-
-        incoming_data = [ 
+    def import_data(self):
+        """
+        Imports the car properties from the instance variables and adds them to the database.
+        """
+        incoming_data = [
             {
                 "Manufacturer": self.Manufacturer,
                 "Model": self.Model,
@@ -144,19 +197,19 @@ class sqlite_database():
                 "DateUpdated": self.DateUpdated
             }
         ]
-        self.cursor.execute("select * from used_cars")# Improvement to add table by date
+        self.cursor.execute("select * from used_cars")
         existing_data = self.cursor.fetchall()
         column_names = [description[0] for description in self.cursor.description]
         reg_col_index = column_names.index('Reg')
-        
+
         for data in incoming_data:
-            matching_car = next((car for car in existing_data if (car[reg_col_index]) == (data["Reg"])), None)
-            if(matching_car):
+            matching_car = next((car for car in existing_data if car[reg_col_index] == data["Reg"]), None)
+            if matching_car:
                 self.cursor.execute(f"SELECT Price FROM used_cars where Reg = '{matching_car[reg_col_index]}'")
                 car_DB_PRICE = (self.cursor.fetchall())[0][0]
                 Car_Current_price = self.Price
-                print(f"Car with Reg: {matching_car[reg_col_index]} is existing with same price")
-                if(Car_Current_price != car_DB_PRICE):
+                print(f"Car with Reg: {matching_car[reg_col_index]} is existing with the same price")
+                if Car_Current_price != car_DB_PRICE:
                     print("Car Price Changed, updating DB.")
                     self.DateUpdated = datetime.datetime.now()
                     print(f"DatabasePrice={car_DB_PRICE} CurrentPrice={Car_Current_price}")
@@ -164,100 +217,58 @@ class sqlite_database():
                     car_properties = incoming_data[0]
                     car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])
 
-                    sql_values_count_string = ", ".join([f"?" for _  in car_properties])
-            
+                    sql_values_count_string = ", ".join([f"?" for _ in car_properties])
+
                     db_string = f'''
-                    UPDATE {table} SET OldPrice = ?,Price = ?,OldDate = DateUpdated, DateUpdated = ? WHERE Reg = '{matching_car[reg_col_index]}'
+                    UPDATE {table} SET OldPrice = ?, Price = ?, OldDate = DateUpdated, DateUpdated = ? WHERE Reg = '{matching_car[reg_col_index]}'
                     '''
                     print(self.DateUpdated)
-                    self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated ) )
+                    self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated))
                     self.conn.commit()
                     print("Imported updated entry")
 
-
-            else: # Add a new car into database
+            else:  # Add a new car into the database
                 print(f"Adding a new Car into the DB: '{data['Reg']}'")
                 table = "used_cars"
                 car_properties = incoming_data[0]
                 car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])
 
-                sql_values_count_string = ", ".join([f"?" for _  in car_properties])
-        
+                sql_values_count_string = ", ".join([f"?" for _ in car_properties])
+
                 db_string = f"INSERT INTO {table} ({car_properties_keys}) VALUES({sql_values_count_string})"
 
-                self.cursor.execute(db_string, (*car_properties.values(),) )
+                self.cursor.execute(db_string, (*car_properties.values(),))
                 self.conn.commit()
 
     def retrieve_db(self, column, input_data):
-        if(column == "price"): # For integer col
+        """
+        Retrieves car data from the database based on the specified column and input data.
+        
+        Args:
+            column (str): The column name to search for data.
+            input_data (str/int): The input data to be searched.
+        """
+        if column == "price":  # For integer col
             command = f"SELECT * from used_cars where {column} <= {input_data} "
-        elif(column == "mileage"): # For integer col
+        elif column == "mileage":  # For integer col
             command = f"SELECT * from used_cars where {column} <= {input_data} "
-        elif(column == "year"): # For integer col
+        elif column == "year":  # For integer col
             command = f"SELECT * from used_cars where {column} <= {input_data} "
-        elif(column == "doors"): # For integer col
+        elif column == "doors":  # For integer col
             command = f"SELECT * from used_cars where {column} = {input_data} "
-        else: #For strings
+        else:  # For strings
             command = f"SELECT * from used_cars where {column} LIKE '{input_data}' "
         print(command)
         self.cursor.execute(command)
         data = self.cursor.fetchall()
-     
+
         print(f"\nPrinting data from query: {column} -> {input_data}")
-        for item in data: print(item)
+        for item in data:
+            print(item)
 
-
-    # Close the database connection and cursor
     def close_db(self):
         """
         Closes the database connection and cursor.
         """
         self.cursor.close()
         self.conn.close()
-
-
-# Main program execution
-# batchofcarsimport = sqlite_database(
-#     Body_Type="Hatch",
-#     Color="Black",
-#     Fuel="Diesel",
-#     Doors=5,
-#     Manufacturer="Ford",
-#     Mileage=66000,
-#     Model="Fiesta",
-#     Price=12000,
-#     Reg="2mk60g22",
-#     Year=2017,
-#     Transmission="Manual",
-#     URL="www.google.com"
-# )
-# batchofcarsimporttest = sqlite_database(
-#     Body_Type="Hatch",
-#     Color="Black",
-#     Fuel="Diesel",
-#     Doors=5,
-#     Manufacturer="Ford",
-#     Mileage=66000,
-#     Model="Focus",
-#     Price=12000,
-#     Reg="2mk60g22",
-#     Year=2017,
-#     Transmission="Manual",
-#     URL="www.google.com"
-# )
-
-# batchofcarsimport.create_table()  # Create the 'used_cars' table if it doesn't exist
-# #Import car data
-# batchofcarsimport.import_data()
-# batchofcarsimporttest.import_data()
-
-
-
-
-
-# batchofcarsimport.retrieve_db(column="price", input_data=100000)
-# batchofcarsimport.retrieve_db(column="color", input_data='black')
-# batchofcarsimport.retrieve_db(column="doors", input_data='5')
-
-
-# batchofcarsimport.close_db()  # Close the database connection and cursor

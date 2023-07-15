@@ -1,4 +1,4 @@
-from modules.sqlite_db import sqlite_database
+from modules.sqlite_db import SQLiteDatabase
 from modules.webscrape_cargiant_class import webscrape_cargiant
 
 
@@ -28,14 +28,14 @@ def scrape_cars():
     
 def print_data():
 # Print DB as pandas TF
-    table_data = DB.exportToPDdataframe()
-    DB.prettyprint(panda_df=table_data)
+    table_data = DB.export_to_pd_dataframe()
+    DB.pretty_print(panda_df=table_data)
     adjusted_table = table_data.loc[(table_data['Year'] >= 2012) & (table_data['Doors'] == 5) & (table_data['Mileage'] <= 60000) & ((table_data['Price'] <= 16000) & (table_data['Price'] >= 8000))]
     # print desired
     print("\n\n Table printed for desired cars")
-    DB.prettyprint(array_col_show=["Manufacturer","Model","Year","Price","Mileage","URL"],panda_df=adjusted_table)
+    DB.pretty_print(col_show=["Manufacturer","Model","Year","Price","Mileage","URL"],panda_df=adjusted_table)
     DB.close_db()
 
-DB = sqlite_database()
-scrape_cars()
+DB = SQLiteDatabase()
+#scrape_cars()
 print_data()
