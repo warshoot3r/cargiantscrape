@@ -2,6 +2,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.safari.options import Options as SafariOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
@@ -27,10 +30,32 @@ class webscrape_cargiant():
             self.url = "https://www.cargiant.co.uk/search/all/all"
     def initialize_driver(self):
         if(self.driver == "safari"):
-            webscrape_cargiant.driver = webdriver.Safari()
-        elif(self.driver == "chrome"):
-            webscrape_cargiant.driver = webdriver.Chrome()
            
+            safari_options = SafariOptions()
+            safari_options.headless = True  # Safari doesn't support the "--headless" argument, so we use the headless property
+
+            webscrape_cargiant.driver = webdriver.Safari(safari_options)
+
+        elif(self.driver == "chrome"):
+            chrome_options = ChromeOptions()
+            chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--disable-gpu")
+            chrome_options.add_argument("--window-size=1920,1200")
+            chrome_options.add_argument("--ignore-certificate-errors")
+            chrome_options.add_argument("--disable-extensions")
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_options.add_argument("--start-minimized")
+
+            webscrape_cargiant.driver = webdriver.Chrome(options=chrome_options)
+    
+        elif(self.driver == "firefox"):
+            firefox_options = FirefoxOptions()
+            firefox_options.headless = True
+            firefox_options.add_argument("--window-size=1920,1200")
+            firefox_options.add_argument("--ignore-certificate-errors")
+            firefox_options.add_argument("--start-minimized")
+            webscrape_cargiant.driver  = webdriver.Firefox(options=firefox_options)
 
     def searchForManufacturer(self, Manufacturer):
         self.manufacturer_search = Manufacturer
