@@ -86,7 +86,15 @@ class sqlite_database():
         sql_string = f"DELETE FROM {table} where Reg = '{REG}' "
         self.cursor.execute(sql_string)
         self.conn.commit()
+    def delete_manufacturer_from_table(self, manufacturer, table=None):
+        # Generate the column number
+        table = "used_cars"
 
+        print(f"deleting {manufacturer} from {table}")
+
+        sql_string = f"DELETE FROM {table} where Manufacturer = '{manufacturer}' "
+        self.cursor.execute(sql_string)
+        self.conn.commit()
 
     def exportToPDdataframe(self):
         query = "SELECT * from used_cars"
@@ -149,8 +157,7 @@ class sqlite_database():
                 if(Car_Current_price != car_DB_PRICE):
                     print("Car Price Changed, updating DB.")
                     self.DateUpdated = datetime.datetime.now()
-                    print("DBPrice",car_DB_PRICE)
-                    print("CurrentPrice", Car_Current_price)
+                    print(f"DatabasePrice={car_DB_PRICE} CurrentPrice={Car_Current_price}")
                     table = "used_cars"
                     car_properties = incoming_data[0]
                     car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])

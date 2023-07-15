@@ -5,13 +5,13 @@ DB = sqlite_database()
 DB.create_table()
 
 #scrape cars
-CarSearch = webscrape_cargiant(driver="chrome", keepalive=False)
+CarSearch = webscrape_cargiant(driver="chrome", keepalive=True)
 CarSearch.getCarMakes()
 CarSearch.searchForManufacturer("BMW")
 CarSearch.searchForManufacturer("Mercedes")
 CarSearch.searchForManufacturer("Lexus")
 CarSearch.searchForManufacturer("Honda")
-CarSearch.searchForManufacturer("Voltswagen")
+CarSearch.searchForManufacturer("Volkswagen")
 
 
 
@@ -43,7 +43,14 @@ for i in range(CarSearch.data.shape[0]):
     )
     DB.import_data()
   
-
+# DB.delete_manufacturer_from_table(manufacturer="Vauxhall")
+# DB.delete_manufacturer_from_table(manufacturer="Peugeot")
+# DB.delete_manufacturer_from_table(manufacturer="Nissan")
+# DB.delete_manufacturer_from_table(manufacturer="Fiat")
+# DB.delete_manufacturer_from_table(manufacturer="Suzuki")
+# DB.delete_manufacturer_from_table(manufacturer="Citreon")
+   
+  
   
 table_data = DB.exportToPDdataframe()
 

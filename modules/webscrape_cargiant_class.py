@@ -18,6 +18,7 @@ class webscrape_cargiant():
     def __init__(self, driver, keepalive, manufacturer_search=None ):
         self.driver = str(driver)
         self.keepalive = bool(keepalive)
+        self.data = pd.DataFrame()
         if manufacturer_search is not None:
             self.manufacturer_search = manufacturer_search
             self.url = "https://www.cargiant.co.uk/search/" + manufacturer_search + "/all"
@@ -29,7 +30,7 @@ class webscrape_cargiant():
             webscrape_cargiant.driver = webdriver.Safari()
         elif(self.driver == "chrome"):
             webscrape_cargiant.driver = webdriver.Chrome()
-            self.data = pd.DataFrame()
+           
 
     def searchForManufacturer(self, Manufacturer):
         self.manufacturer_search = Manufacturer
@@ -168,14 +169,14 @@ class webscrape_cargiant():
 
             i = len(tf) + 1
             tf.loc[i] = NewRow
-        print(f"\n\nData got for this scrape {tf}\n\n")
-        if(not(self.data.empty)):
-            self.data = pd.concat([tf, self.data])
-        else:
+        if self.data.empty:
+            print("Table is empty or has columns")
             self.data = tf
+        else:
+            print("table already has data")
+            self.data = pd.concat([self.data.reset_index(drop=True), tf.reset_index(drop=True)] )
+            print(tf)
 
         if(self.keepalive == False):
             webscrape_cargiant.driver.quit()
         print("Data successfully pulled")
-        # Set time that we retrieved
-        self.date_retrieved = datetime.datetime.now()
