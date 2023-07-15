@@ -12,8 +12,8 @@ CarSearch.searchForManufacturer("Mercedes")
 CarSearch.searchForManufacturer("Lexus")
 CarSearch.searchForManufacturer("Honda")
 CarSearch.searchForManufacturer("Volkswagen")
-
-
+CarSearch.searchForManufacturer("Toyota")
+CarSearch.searchForManufacturer("Ford")
 
 
 

@@ -147,13 +147,10 @@ class sqlite_database():
         for data in incoming_data:
             matching_car = next((car for car in existing_data if (car[reg_col_index]) == (data["Reg"])), None)
             if(matching_car):
-                print(f"Car with REG: {matching_car[reg_col_index]} is existing.")
-              
                 self.cursor.execute(f"SELECT Price FROM used_cars where Reg = '{matching_car[reg_col_index]}'")
                 car_DB_PRICE = (self.cursor.fetchall())[0][0]
                 Car_Current_price = self.Price
-                print(car_DB_PRICE)
-                print(Car_Current_price)
+                print(f"Car with Reg: {matching_car[reg_col_index]} is existing with same price")
                 if(Car_Current_price != car_DB_PRICE):
                     print("Car Price Changed, updating DB.")
                     self.DateUpdated = datetime.datetime.now()
