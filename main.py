@@ -58,9 +58,9 @@ table_data = DB.exportToPDdataframe()
 DB.prettyprint(panda_df=table_data)
 
 #
-adjusted_table = table_data.loc[(table_data['Year'] >= 2012) & (table_data['Doors'] == 5) & (table_data['Mileage'] <= 60000)]
+adjusted_table = table_data.loc[(table_data['Year'] >= 2012) & (table_data['Doors'] == 5) & (table_data['Mileage'] <= 60000) & (table_data['Price'] <= 16000)]
 
 # print desired
 print("\n\n Table printed for desired cars")
-DB.prettyprint(array_col_show=["Manufacturer","Model","Year","Price"],panda_df=adjusted_table)
+DB.prettyprint(array_col_show=["Manufacturer","Model","Year","Price","Mileage"],panda_df=adjusted_table)
 DB.close_db()
