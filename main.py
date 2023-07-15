@@ -1,4 +1,4 @@
-from modules.sqlite_test_db import sqlite_database
+from modules.sqlite_db import sqlite_database
 from modules.webscrape_cargiant_class import webscrape_cargiant
 
 DB = sqlite_database()
@@ -11,21 +11,10 @@ def scrape_cars():
     CarSearch.getCarMakes()
     CarSearch.searchForManufacturer("BMW")
     CarSearch.searchForManufacturer("Mercedes")
-    # CarSearch.searchForManufacturer("Lexus")
-    # CarSearch.searchForManufacturer("Honda")
-    # CarSearch.searchForManufacturer("Volkswagen")
-    # CarSearch.searchForManufacturer("Toyota")
-    # CarSearch.searchForManufacturer("Ford")
-
-    # import to DB
-
-    # #testing to set property
-    # DB.setCarProperty("RV65VDM", "Price", 8800)
-
     #Get new data and import it into DB
-    print(f"\n\nNumber of cars to imported -> {CarSearch.data.shape[0]}\n\n")
+    print(f"\n\nNumber of cars to imported -> {CarSearch.length}\n\n")
 
-    for i in range(CarSearch.data.shape[0]):
+    for i in range(CarSearch.length):
         current_car = CarSearch.data.iloc[i]
         DB.setCarProperties(
                 Body_Type=current_car["Body Type"],

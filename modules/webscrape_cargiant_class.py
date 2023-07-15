@@ -14,7 +14,7 @@ import requests
 class webscrape_cargiant():
     date_retrieved = datetime.time()
     driver = None
-
+    
 
 
 
@@ -22,6 +22,7 @@ class webscrape_cargiant():
         self.driver = str(driver)
         self.keepalive = bool(keepalive)
         self.data = pd.DataFrame()
+        self.length = self.data.shape[0]
         if manufacturer_search is not None:
             self.manufacturer_search = manufacturer_search
             self.url = "https://www.cargiant.co.uk/search/" + manufacturer_search + "/all"
