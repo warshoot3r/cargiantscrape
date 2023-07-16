@@ -7,8 +7,11 @@ def scrape_cars():
     CarSearch = WebScraperCargiant(driver="chrome", keepalive=True)
     CarSearch.search_for_manufacturer("BMW")
     CarSearch.search_for_manufacturer("Mercedes")
-    #Get new data and import it into DB
     CarSearch.print_number_of_cars()
+    return CarSearch
+
+def import_cars(CarSearch):
+    #Get new data and import it into DB
     for i in range(CarSearch.length):
         current_car = CarSearch.data.iloc[i]
         DB.import_car_properties(
@@ -27,15 +30,25 @@ def scrape_cars():
         )
     
 def print_data():
-# Print DB as pandas TF
     table_data = DB.export_to_pd_dataframe()
     DB.pretty_print(panda_df=table_data)
-    adjusted_table = table_data.loc[(table_data['Year'] >= 2012) & (table_data['Doors'] == 5) & (table_data['Mileage'] <= 60000) & ((table_data['Price'] <= 16000) & (table_data['Price'] >= 8000))]
-    # print desired
+
+    # Filter the DataFrame to get desired cars
+    adjusted_table = table_data.loc[
+        (table_data['Year'] >= 2012) &
+        (table_data['Doors'] == 5) &
+        (table_data['Mileage'] <= 60000) &
+        ((table_data['Price'] <= 16000) & (table_data['Price'] >= 8000))
+    ]
+
+    # Print desired table
     print("\n\n Table printed for desired cars")
-    DB.pretty_print(col_show=["Manufacturer","Model","Year","Price","Mileage","URL"],panda_df=adjusted_table)
+    DB.pretty_print(col_show=["Manufacturer", "Model", "Year", "Price", "Mileage", "URL"], panda_df=adjusted_table)
+
     DB.close_db()
 
+
 DB = SQLiteDatabase()
-scrape_cars()
+scraped_cars = scrape_cars()
+import_cars(scraped_cars)
 print_data()
