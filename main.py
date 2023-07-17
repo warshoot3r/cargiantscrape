@@ -1,12 +1,12 @@
 from modules.sqlite_db import SQLiteDatabase
 from modules.webscrape_cargiant_class import WebScraperCargiant
-
+import re
 
 #scrape cars
 def scrape_cars():
     CarSearch = WebScraperCargiant(driver="chrome", keepalive=True)
     CarSearch.search_for_manufacturer("BMW")
-    # CarSearch.search_for_manufacturer("Mercedes")
+    CarSearch.search_for_manufacturer("Mercedes")
     CarSearch.print_number_of_cars()
     print(CarSearch.data.shape[0])
     return CarSearch
@@ -36,22 +36,26 @@ def import_cars(CarSearch):
 
 
 DB = SQLiteDatabase()
-scraped_cars = scrape_cars()
 
 
-import_cars(scraped_cars)
+# scraped_cars = scrape_cars()
+# import_cars(scraped_cars)
 
 
 filters = {
-   'Price': lambda x, y: x >= 8000 & y <=17000,
-    'Doors': lambda x: x == 5,
+   'Price': lambda x: x >= 8000 & x <=18000,
     'Mileage': lambda x: x <=70000,
-    'Year': lambda x: x >= 2012 
+    'Year': lambda x: x >= 2012,
+     # No Mercedes A Classes 
+     # No BMW 1 Series
+     # No BMW i3's
+    'Model': lambda model: (not re.match(r"[A|1]\d+", model)) & (not model.startswith('i3')) #
 }
 
 database = DB.return_as_panda_dataframe()
+database = DB.filter_table(filters, database)
 
-DB.print_as_panda_dataframe(database, col_show=["Manufacturer", "Model", "Year", "Price", "Mileage", "URL"])
+DB.print_as_panda_dataframe(database, col_show=["Manufacturer", "Model", "Year", "Price", "Mileage","Reg", "URL"])
 
 
 

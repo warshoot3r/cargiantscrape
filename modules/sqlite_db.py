@@ -153,15 +153,15 @@ class SQLiteDatabase:
         data = pd.read_sql(sql_query, self.conn)
         return data
     
-    def filter_table(self, filters):
+    def filter_table(self, filters, db):
 
         combined_filters = []
         for column, condition in filters.items():
-            combined_filters.append(self.data[column].apply(condition))
-            print(combined_filters)
-        self.data =self.data[reduce(lambda x, y: x & y, combined_filters)]
+            combined_filters.append(db[column].apply(condition))
 
-        return self.data
+        database = db[reduce(lambda x, y: x & y, combined_filters)]
+
+        return database
 
     def print_as_panda_dataframe(self, table, col_show=None, ):
         """
