@@ -227,13 +227,12 @@ class WebScraperCargiant:
 
             i = len(tf) + 1
             tf.loc[i] = new_row
-
         if self.data.empty:
             self.data = tf
         else:
             self.data = pd.concat([self.data.reset_index(drop=True), tf.reset_index(drop=True)])
-
+        self.length = self.data.shape[0]
         if not self.keepalive:
             WebScraperCargiant.driver.quit()
 
-        print("Data successfully pulled")
+        print(f"Data successfully pulled {(tf.count())[0]} cars")

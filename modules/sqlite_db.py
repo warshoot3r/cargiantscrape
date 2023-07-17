@@ -1,5 +1,6 @@
 import sqlite3
 import datetime
+from functools import reduce
 import pandas as pd
 
 class SQLiteDatabase:
@@ -51,6 +52,7 @@ class SQLiteDatabase:
         self.URL = str(URL)
         self.DateUpdated = datetime.datetime.now()
         self.import_data()
+
 
     def set_car_db_property(self, REG, Key, Value):
         """
@@ -108,7 +110,7 @@ class SQLiteDatabase:
         '''
         self.cursor.execute(sql_string)
 
-    def delete_data_from_table(self, REG, table=None):
+    def delete_car_from_table(self, REG, table=None):
         """
         Deletes a specific car's data from the database.
         
@@ -139,26 +141,36 @@ class SQLiteDatabase:
         sql_string = f"DELETE FROM {table} where Manufacturer = '{manufacturer}' "
         self.cursor.execute(sql_string)
         self.conn.commit()
+    
+    def return_as_panda_dataframe(self):
+        sql_query = "SELECT * from used_cars"
+        data = pd.read_sql(sql_query, self.conn)
+        return data
+    def filter_table(self, filters):
 
-    def export_to_pd_dataframe(self):
-        """
-        Exports the data from the 'used_cars' table to a pandas DataFrame.
+        combined_filters = []
+        for column, condition in filters.items():
+            combined_filters.append(self.data[column].apply(condition))
+            print(combined_filters)
+        self.data =self.data[reduce(lambda x, y: x & y, combined_filters)]
+
+        return self.data
+
+
         
-        Returns:
-            pd.DataFrame: A DataFrame containing the data from the table.
-        """
-        query = "SELECT * from used_cars"
-        return pd.read_sql(query, self.conn)
+        
 
-    def pretty_print(self, panda_df, col_show=None):
+               
+
+
+    def print_as_panda_dataframe(self, table, col_show=None, ):
         """
-        Prints a formatted representation of the DataFrame.
+        Returns a formatted representation of the DataFrame.
         
         Args:
-            panda_df (pd.DataFrame): The DataFrame to be printed.
             col_show (list, optional): The list of column names to be displayed. Defaults to None.
         """
-        table = panda_df
+
         sorted_table = table.sort_values(by="Price")
         pd.set_option('display.max_rows', None)
         if col_show:
@@ -166,12 +178,13 @@ class SQLiteDatabase:
         else:
             print(sorted_table)
 
-    def print_all_table(self):
+    def print_raw_data_from_sqlite_db(self):
         """
         Prints all the data in the 'used_cars' table.
         """
         print("Printing table information:")
         self.cursor.execute("SELECT * from used_cars")
+        self.conn.commit()
         for item in self.cursor.fetchall():
             print(item)
 
@@ -179,6 +192,7 @@ class SQLiteDatabase:
         """
         Imports the car properties from the instance variables and adds them to the database.
         """
+        print("Importing data to SQLite.db")
         incoming_data = [
             {
                 "Manufacturer": self.Manufacturer,
@@ -197,7 +211,7 @@ class SQLiteDatabase:
                 "DateUpdated": self.DateUpdated
             }
         ]
-        self.cursor.execute("select * from used_cars")
+        self.cursor.execute("SELECT * from used_cars")
         existing_data = self.cursor.fetchall()
         column_names = [description[0] for description in self.cursor.description]
         reg_col_index = column_names.index('Reg')
