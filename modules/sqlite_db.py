@@ -225,7 +225,6 @@ class SQLiteDatabase:
             """
             Imports the car properties from the instance variables and adds them to the database.
             """
-            print("Importing data to SQLite.db")
             incoming_data = [
                 {
                     "Manufacturer": self.Manufacturer,

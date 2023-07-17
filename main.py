@@ -1,5 +1,7 @@
 from modules.sqlite_db import SQLiteDatabase
 from modules.webscrape_cargiant_class import WebScraperCargiant
+from modules.telegram_bot import TelegramBot
+import credentials
 import re
 
 #scrape cars
@@ -32,16 +34,20 @@ def import_cars(CarSearch):
                 Model=current_car["Model"],
                 Mileage=current_car["Mileage"]
         )
+api_token = credentials.api_token
+chat_id = credentials.chat_id
 
-
+bot = TelegramBot(api_token)
+bot.get_updates() #Output chat id's
 
 DB = SQLiteDatabase()
 
+# Scrape Cars:
+scraped_cars = scrape_cars()
+import_cars(scraped_cars)
 
-# scraped_cars = scrape_cars()
-# import_cars(scraped_cars)
 
-
+# Output a table of data :
 filters = {
    'Price': lambda x: x >= 8000 & x <=18000,
     'Mileage': lambda x: x <=70000,
@@ -51,13 +57,12 @@ filters = {
      # No BMW i3's
     'Model': lambda model: (not re.match(r"[A|1]\d+", model)) & (not model.startswith('i3')) #
 }
-
 database = DB.return_as_panda_dataframe()
-database = DB.filter_table(filters, database)
+database_filtered = DB.filter_table(filters, database)
+database_filtered_reducedcol  = database_filtered[["Price", "Model", "Mileage", "URL"]]
+# bot.send_dataframe(chat_id, database_filtered_reducedcol)
+# bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=database)
 
-DB.print_as_panda_dataframe(database, col_show=["Manufacturer", "Model", "Year", "Price", "Mileage","Reg", "URL"])
-
-
-
+DB.print_as_panda_dataframe(database_filtered, col_show=["Manufacturer", "Model", "Year", "Price", "Mileage","Reg", "URL"])
 DB.close_db()
     
