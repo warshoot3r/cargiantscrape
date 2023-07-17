@@ -177,6 +177,7 @@ class WebScraperCargiant:
         tf = pd.DataFrame(table_template)
 
         for item in car_listing_items:
+            # Extracting car details
             price_get = item.find_element(By.CSS_SELECTOR, "div.price-block__price").text
             price = re.sub("[^0-9.]", "", price_get)
             model = item.find_element(By.CSS_SELECTOR, "span.title__main.set-h3").text
@@ -227,6 +228,7 @@ class WebScraperCargiant:
 
             i = len(tf) + 1
             tf.loc[i] = new_row
+
         if self.data.empty:
             self.data = tf
         else:
