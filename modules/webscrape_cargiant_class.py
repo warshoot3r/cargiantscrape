@@ -147,7 +147,6 @@ class WebScraperCargiant:
         Retrieves new car data from the Cargiant website and updates the DataFrame.
         """
         print("Pulling new data")
-        print(self.url)
         self.initialize_driver()
 
         wait = WebDriverWait(WebScraperCargiant.driver, 10)

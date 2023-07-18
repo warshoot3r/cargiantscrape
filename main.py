@@ -19,7 +19,6 @@ def import_cars(CarSearch):
     #Get new data and import it into DB
     for i in range(CarSearch.length):
         current_car = CarSearch.data.iloc[i]
-        print(current_car["Reg"])
         DB.import_car_properties(
                 Body_Type=current_car["Body Type"],
                 Color=current_car["Color"],
