@@ -18,7 +18,7 @@ class WebScraperCargiant:
 
     date_retrieved = datetime.time()
     driver = None
-
+    
     def __init__(self, driver, keepalive, manufacturer_search=None):
         """
         Initializes the WebScraperCargiant object.
@@ -31,6 +31,7 @@ class WebScraperCargiant:
         self.driver = str(driver)
         self.keepalive = bool(keepalive)
         self.data = pd.DataFrame()
+        pd.set_option("display.max_colwidth", 100)
         self.length = self.data.shape[0]
         if manufacturer_search is not None:
             self.manufacturer_search = manufacturer_search
@@ -174,7 +175,7 @@ class WebScraperCargiant:
         }
 
         tf = pd.DataFrame(table_template)
-
+        
         for item in car_listing_items:
             # Extracting car details
             price_get = item.find_element(By.CSS_SELECTOR, "div.price-block__price").text
