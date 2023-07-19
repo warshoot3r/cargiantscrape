@@ -37,10 +37,9 @@ class SQLiteDatabase:
         Returns True if DB was last written in 10 minutes.
         """
         last_db_write_time = self.get_db_last_write_time()
-
         if last_db_write_time is not None:
-            time_difference = last_db_write_time - datetime.datetime.now()
-            return time_difference <= datetime.timedelta(max_time_difference)
+            time_difference =  datetime.datetime.now() - last_db_write_time 
+            return time_difference.seconds <= max_time_difference
         else:
             return False
 
