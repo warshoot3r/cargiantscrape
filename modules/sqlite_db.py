@@ -2,19 +2,48 @@ import sqlite3
 import datetime
 from functools import reduce
 import pandas as pd
+import os
 
 class SQLiteDatabase:
     """
     A class for managing a SQLite database for used car information.
     """
 
-    def __init__(self):
+    def __init__(self, db_path=None):
         """
         Initializes the SQLiteDatabase object by establishing a connection to the database and creating the 'used_cars' table if it doesn't exist.
         """
-        self.conn = sqlite3.connect('used_cars.db')
+        if db_path == None:
+            self.db_path = "used_cars.db"
+        else:
+            self.db_path = db_path
+        self.conn = sqlite3.connect(self.db_path)
         self.cursor = self.conn.cursor()
         self.create_table()
+
+
+    def get_db_last_write_time(self):
+        """
+        Gets the database file last write time as a date.
+        """
+        try:
+            last_write_time = os.path.getmtime(self.db_path)
+            return datetime.datetime.fromtimestamp(last_write_time)
+        except FileNotFoundError:
+            return None
+        
+    def is_db_recently_written(self, max_time_difference=600):
+        """
+        Returns True if DB was last written in 10 minutes.
+        """
+        last_db_write_time = self.get_db_last_write_time()
+
+        if last_db_write_time is not None:
+            time_difference = last_db_write_time - datetime.datetime.now()
+            return time_difference <= datetime.timedelta(max_time_difference)
+        else:
+            return False
+
 
     def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None):
         """
@@ -274,7 +303,7 @@ class SQLiteDatabase:
                         print("Imported updated entry")
 
                 else:  # Add a new car into the database
-                    print(f"Adding a new Car into the DB: '{data['Reg']}'")
+                    print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
                     table = "used_cars"
                     car_properties = incoming_data[0]
                     car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])
