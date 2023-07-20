@@ -1,6 +1,6 @@
 wheel
 setuptools
-numpy==1.20.3
+numpy
 selenium
 bs4
 pandas
