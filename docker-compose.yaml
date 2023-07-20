@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  cargiantscrape:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: unless_stopped
+    volumes:
+      - ./credentials.py:/app/credentials.py 
