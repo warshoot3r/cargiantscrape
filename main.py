@@ -3,11 +3,13 @@ from modules.webscrape_cargiant_class import WebScraperCargiant
 from modules.telegram_bot import TelegramBot
 import credentials
 import re
+import time
 
 #scrape cars
 def scrape_cars():
     if(DB.is_db_recently_written()):
         print("Not scraping as DB written in last 10 minutes")
+        time.sleep(2)
         return(False)
     else: 
 
