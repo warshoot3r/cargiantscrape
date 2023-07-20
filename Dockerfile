@@ -5,8 +5,7 @@ WORKDIR /app
 
 # Set up requirements for scraping
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
+RUN pip install --no-cache-dir -v -r requirements.txt 
 
 
 # Set up chrome selenium
