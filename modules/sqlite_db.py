@@ -31,17 +31,38 @@ class SQLiteDatabase:
             return datetime.datetime.fromtimestamp(last_write_time)
         except FileNotFoundError:
             return None
-        
+    
+    def write_empty_data(self):
+        """
+        Write empty string to timestamp table. This is to increment the modified time for is_db_recently_written
+        """
+        self.cursor.execute('''
+        CREATE TABLE IF NOT EXISTS timestamp (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+            data TEXT
+            )
+            ''')
+        self.cursor.execute('INSERT INTO timestamp (data) VALUES (?)', [''])
+        self.conn.commit()
+        self.conn.close()
+
     def is_db_recently_written(self, max_time_difference=600):
         """
         Returns True if DB was last written in 10 minutes.
         """
         last_db_write_time = self.get_db_last_write_time()
         if last_db_write_time is not None:
-            time_difference =  datetime.datetime.now() - last_db_write_time 
-            return time_difference.seconds <= max_time_difference
+            current_time = datetime.datetime.now()
+            time_difference = current_time - last_db_write_time
+            if time_difference.total_seconds() <= max_time_difference:
+                return True
+            else:
+                self.write_empty_data()
+                return False
         else:
+            # If last_db_write_time is None, the database has never been written before.
             return False
+
 
 
     def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None):
