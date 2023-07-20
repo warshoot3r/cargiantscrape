@@ -1,3 +1,5 @@
+wheel
+setuptools
 numpy==1.20.3
 selenium
 bs4
