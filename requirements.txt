@@ -1,3 +1,6 @@
+cython
+setuptools
+wheel
 bs4
 requests
 pandas
