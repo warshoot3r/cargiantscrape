@@ -1,12 +1,30 @@
 from modules.sqlite_db import SQLiteDatabase
 from modules.webscrape_cargiant_class import WebScraperCargiant
+from modules.telegram_bot import TelegramBot
+import credentials
 import re
 import time
 
-#scrape cars
-DB = SQLiteDatabase()
+# Init
+force_scrape = True
 
-force_scrape = False
+api_token = credentials.api_token
+chat_id = credentials.chat_id
+
+bot = TelegramBot(api_token)
+DB = SQLiteDatabase()
+# Filters
+filters = {
+   'Price': lambda x: x >= 8000 & x <=18000,
+    'Mileage': lambda x: x <=80000,
+    'Year': lambda x: x >= 2012,
+     # No Mercedes A Classes 
+     # No BMW 1 Series
+     # No BMW i3's
+    'Model': lambda model: (not re.match(r"[A|1]\d+", model)) & (not model.startswith('i3')) &(not model.startswith('2 Series')) &(not model.startswith("B")) #
+}
+
+#scrape cars
 def scrape_cars():
     if(DB.is_db_recently_written() and not force_scrape):
         print("Not scraping as DB written in last 10 minutes")
@@ -19,10 +37,9 @@ def scrape_cars():
     print(CarSearch.data.shape[0])
     return CarSearch
 
-
+#Get new data and import it into DB
 
 def import_cars(CarSearch):
-    #Get new data and import it into DB
     if(CarSearch):
         for i in range(CarSearch.length):
             current_car = CarSearch.data.iloc[i]
@@ -42,27 +59,25 @@ def import_cars(CarSearch):
             )
 
 
-# Scrape Cars:
+# Output a table of data and send it
+
 scraped_cars = scrape_cars()
 import_cars(scraped_cars)
 
 
-# Output a table of data :
-filters = {
-   'Price': lambda x: x >= 8000 & x <=18000,
-    'Mileage': lambda x: x <=80000,
-    'Year': lambda x: x >= 2012,
-     # No Mercedes A Classes 
-     # No BMW 1 Series
-     # No BMW i3's
-    'Model': lambda model: (not re.match(r"[A|1]\d+", model)) & (not model.startswith('i3')) &(not model.startswith('2 Series')) &(not model.startswith("B")) #
-}
-database = DB.return_as_panda_dataframe()
-database_filtered = DB.filter_table(filters, database)
-database_filtered_reducedcol  = database_filtered[["Price", "Model", "Mileage", "URL"]]
-# bot.send_dataframe(chat_id, database_filtered_reducedcol)
-# bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=database)
-
-DB.print_as_panda_dataframe(database_filtered, col_show=["Manufacturer", "Model", "Year", "Price", "Mileage","Reg", "URL"])
-DB.close_db()
-    
+# Forever loop to poll every 60 minutes
+while(True):
+    if(DB.car_price_changed()):
+        DB.open.db()
+        database = DB.return_as_panda_dataframe()
+        database_filtered = DB.filter_table(filters, database)
+        # Sending telegram data
+        bot.send_message_servername(chat_id)
+        bot.send_dataframe(chat_id, database_filtered[["Price", "Model", "Mileage", "URL", "Color"]])
+        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=database)
+        # 
+        DB.close_db()
+    else:
+        bot.send_message_servername(chat_id)
+        bot.send_message(chat_id, "No Price changed in defined filter")
+    time.sleep(60*60)

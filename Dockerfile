@@ -17,11 +17,11 @@ RUN apt-get update && apt-get install -y \
 
 # Copy class files and main.py
 COPY modules .
-COPY main.py .
+COPY chatbot_autorun.py .
 # set ENV
 ENV PATH="/usr/lib/chromium-browser/:${PATH}"
 ENV CHROME_DRIVER=/usr/lib/chromium-browser/chromedriver
 ENV CHROME_OPTIONS="--headless"
 
 RUN pip3 install pandas -v
-CMD [ "python", "main.py" ]
+CMD [ "python", "chatbot_autorun.py" ]

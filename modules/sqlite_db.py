@@ -17,10 +17,14 @@ class SQLiteDatabase:
             self.db_path = "used_cars.db"
         else:
             self.db_path = db_path
+        self.open_db()
+        self.create_table()
+    def open_db(self):
+        """
+        Connects to the local DB file
+        """
         self.conn = sqlite3.connect(self.db_path)
         self.cursor = self.conn.cursor()
-        self.create_table()
-
 
     def get_db_last_write_time(self):
         """
@@ -269,10 +273,20 @@ class SQLiteDatabase:
         """
         self.cursor.close()
         self.conn.close()
+
+    def car_price_changed(self):
+        if(self.number_of_car_prices_changed == 0):
+            return False
+        else:
+            print("Number of Cars changed")
+            return self.number_of_car_prices_changed
     def import_data(self):
             """
             Imports the car properties from the instance variables and adds them to the database.
             """
+            #Variable to hold the price changes for reports
+            self.number_of_car_prices_changed = 0
+
             incoming_data = [
                 {
                     "Manufacturer": self.Manufacturer,
@@ -304,9 +318,10 @@ class SQLiteDatabase:
                     Car_Current_price = self.Price
                     print(f"Car with Reg: {matching_car[reg_col_index]} is existing with the same price")
                     if Car_Current_price != car_DB_PRICE:
-                        print("Car Price Changed, updating DB.")
                         self.DateUpdated = datetime.datetime.now()
-                        print(f"DatabasePrice={car_DB_PRICE} CurrentPrice={Car_Current_price}")
+                        string_updated = f"Car Price Changed, updating DB. DatabasePrice={ car_DB_PRICE} CurrentPrice= {Car_Current_price}"
+                        self.number_of_car_prices_changed += 1
+                        print(string_updated)
                         table = "used_cars"
                         car_properties = incoming_data[0]
                         car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])

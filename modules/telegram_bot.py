@@ -1,9 +1,10 @@
 import requests
-
+import socket
 class TelegramBot:
     def __init__(self, api_token):
         self.api_token = api_token
         self.base_url = f"https://api.telegram.org/bot{api_token}/"
+
 
     def send_dataframe(self, chat_id, dataframe, caption=""):
         message = caption + "\n" + dataframe.to_string(index=False, justify='left', col_space=15)
@@ -31,7 +32,6 @@ class TelegramBot:
             "chat_id": chat_id,
             "text": message,
         }
-
         try:
             response = requests.post(send_message_url, data=data)
             response_json = response.json()
@@ -41,6 +41,14 @@ class TelegramBot:
                 print("Failed to send message. Error:", response_json["description"])
         except requests.exceptions.RequestException as e:
             print("Error sending message:", e)
+
+    def send_message_servername(self, chat_id):
+        try: 
+            computer_name = socket.gethostname()
+        except socket.error as e:
+            return None
+        message = f"From server: {computer_name}"
+        self.send_message(chat_id=chat_id, message=message)
     def send_dataframe_as_file(self, chat_id, dataframe, file_format="csv", caption=""):
         if file_format not in ["csv", "xlsx"]:
             raise ValueError("Invalid file_format. Supported formats are 'csv' and 'xlsx'.")
