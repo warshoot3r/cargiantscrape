@@ -1,25 +1,29 @@
 # cargiantscrape
-Scraping car giant for models and prices
+pythonised scraping car giant for models and prices. Sends a report via telegram.
 
-# set up 
-python -m pip install -r requirements.txt
-and if needed
-python -m pip install -r requirements.txt --upgrade
-create a credentials.py containing chatid and bot key
+# Compatibility 
+Should run on anything. Run in a docker isolated env
+tested on:
+ubuntu amd64
+pi4 aarch64
 
 
-# Running
+# install
+install docker and docker-compose on linux distro
+clone the git repo
+cd folder
+./run_container.sh
+
+
+# Manually Running
 Run main.py for terminal output of car scrape and telegram sending the report
 
-
-# Running in container on raspi4
-clone the repo
-docker compose build 
-docker compose up -d
 
 # Todo:
 scheduled telegram webhook which requires https ssl and code so that bot runs forever
 
-if car price changes, add the old price to a column and then add a column to say price changed in last 5 days
+Grabbing the MOT history of cars
+telegram chat commands for on-demand scrape
+tidy up the dockerfile and speed up the build. pandas take a long time to build
 
 
