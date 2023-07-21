@@ -5,6 +5,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
+    restart: unless-stopped
     volumes:
       - ./credentials.py:/app/credentials.py 
       - ./modules:/app/modules
