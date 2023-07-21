@@ -78,6 +78,5 @@ while(True):
         # 
         DB.close_db()
     else:
-        bot.send_message_servername(chat_id)
-        bot.send_message(chat_id, "No Price changed in defined filter")
+        bot.send_message_servername(chat_id, "No Price changed in defined filter")
     time.sleep(60*60)

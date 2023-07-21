@@ -42,12 +42,12 @@ class TelegramBot:
         except requests.exceptions.RequestException as e:
             print("Error sending message:", e)
 
-    def send_message_servername(self, chat_id):
+    def send_message_servername(self, chat_id, message):
         try: 
             computer_name = socket.gethostname()
         except socket.error as e:
             return None
-        message = f"From server: {computer_name}"
+        message = f"From server: {computer_name} {message}"
         self.send_message(chat_id=chat_id, message=message)
     def send_dataframe_as_file(self, chat_id, dataframe, file_format="csv", caption=""):
         if file_format not in ["csv", "xlsx"]:
