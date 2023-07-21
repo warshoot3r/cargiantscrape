@@ -10,9 +10,13 @@ pi4 aarch64
 
 # install
 install docker and docker-compose on linux distro
+
 clone the git repo
+
 cd folder
+
 ./run_container.sh
+
 
 
 # Manually Running
@@ -23,7 +27,9 @@ Run main.py for terminal output of car scrape and telegram sending the report
 scheduled telegram webhook which requires https ssl and code so that bot runs forever
 
 Grabbing the MOT history of cars
-telegram chat commands for on-demand scrape
+
+telegram chat commands for on-demand scrape. eg. on demand spec search for a specific reg
+
 tidy up the dockerfile and speed up the build. pandas take a long time to build
 
 
