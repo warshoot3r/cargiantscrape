@@ -3,6 +3,7 @@ FROM python:3.9-slim-bullseye
 # Update the package lists and install required system packages
 WORKDIR /app
 COPY requirements.txt .
+RUN apt-get update && apt install -y python3 python3-dev virtualenv python3-venv
 ENV _PYTHON_HOST_PLATFORM linux_armv7l
 RUN pip3 install -U pip
 # RUN pip3 install numpy --no-use-pep517
