@@ -71,7 +71,7 @@ while(True):
         database = DB.return_as_panda_dataframe()
         database_filtered = DB.filter_table(filters, database)
         # Sending telegram data
-        bot.send_message_servername(chat_id)
+        bot.send_message_servername(chat_id, "Prices Changed")
         bot.send_dataframe(chat_id, database_filtered[["Price", "Model", "Mileage", "URL", "Color"]])
         bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=database)
         # 
