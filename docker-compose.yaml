@@ -7,3 +7,4 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./credentials.py:/app/credentials.py 
+      - ./modules:/app/modules
