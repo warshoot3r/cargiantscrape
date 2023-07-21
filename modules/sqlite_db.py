@@ -44,7 +44,6 @@ class SQLiteDatabase:
             ''')
         self.cursor.execute('INSERT INTO timestamp (data) VALUES (?)', [''])
         self.conn.commit()
-        self.conn.close()
 
     def is_db_recently_written(self, max_time_difference=600):
         """

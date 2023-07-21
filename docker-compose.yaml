@@ -7,4 +7,4 @@ services:
       dockerfile: Dockerfile
     restart: unless_stopped
     volumes:
-      - ./credentials.py:/app/credentials.py 
+      - ./credentials.py:/credentials.py 

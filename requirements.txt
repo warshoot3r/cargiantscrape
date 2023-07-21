@@ -1,7 +1,7 @@
-wheel
+cython
 setuptools
-numpy
-selenium
+wheel
 bs4
+requests
 pandas
-urllib3
+selenium

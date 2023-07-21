@@ -6,19 +6,18 @@ import re
 import time
 
 #scrape cars
+force_scrape = True
 def scrape_cars():
-    if(DB.is_db_recently_written()):
+    if(DB.is_db_recently_written() and not force_scrape):
         print("Not scraping as DB written in last 10 minutes")
         time.sleep(2)
         return(False)
-    else: 
-
-        CarSearch = WebScraperCargiant(driver="chrome", keepalive=True)
-        CarSearch.search_for_manufacturer("BMW")
-        CarSearch.search_for_manufacturer("Mercedes")
-        CarSearch.print_number_of_cars()
-        print(CarSearch.data.shape[0])
-        return CarSearch
+    CarSearch = WebScraperCargiant(driver="chrome", keepalive=True)
+    CarSearch.search_for_manufacturer("BMW")
+    CarSearch.search_for_manufacturer("Mercedes")
+    CarSearch.print_number_of_cars()
+    print(CarSearch.data.shape[0])
+    return CarSearch
 
 
 
