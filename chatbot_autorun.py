@@ -66,9 +66,8 @@ def import_cars(CarSearch):
 while(True):
     scraped_cars = scrape_cars()
     import_cars(scraped_cars)
-    print(DB.car_price_changed())
     if(DB.car_price_changed()):
-        DB.open.db()
+        DB.open_db()
         database = DB.return_as_panda_dataframe()
         database_filtered = DB.filter_table(filters, database)
         # Sending telegram data

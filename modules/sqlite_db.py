@@ -281,8 +281,9 @@ class SQLiteDatabase:
             return False
         else:
             print("Number of Cars changed")
+            value = self.number_of_car_prices_changed
             self.number_of_car_prices_changed = 0
-            return self.number_of_car_prices_changed
+            return value
     def import_data(self):
             """
             Imports the car properties from the instance variables and adds them to the database.
