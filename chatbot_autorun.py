@@ -61,13 +61,12 @@ def import_cars(CarSearch):
 
 # Output a table of data and send it
 
-scraped_cars = scrape_cars()
-import_cars(scraped_cars)
-
 
 # Forever loop to poll every 60 minutes
 while(True):
     if(DB.car_price_changed()):
+        scraped_cars = scrape_cars()
+        import_cars(scraped_cars)
         DB.open.db()
         database = DB.return_as_panda_dataframe()
         database_filtered = DB.filter_table(filters, database)
