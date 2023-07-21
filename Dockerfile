@@ -5,6 +5,7 @@ WORKDIR /app
 COPY requirements.txt .
 ENV _PYTHON_HOST_PLATFORM linux_armv7l
 RUN pip3 install -U pip
+RUN pip3 install setuptools wheel cython
 # RUN pip3 install numpy --no-use-pep517
 RUN pip3 install -v -r requirements.txt 
 
