@@ -19,6 +19,8 @@ class SQLiteDatabase:
             self.db_path = db_path
         self.open_db()
         self.create_table()
+        self.number_of_car_prices_changed = 0
+
     def open_db(self):
         """
         Connects to the local DB file
@@ -279,14 +281,14 @@ class SQLiteDatabase:
             return False
         else:
             print("Number of Cars changed")
+            self.number_of_car_prices_changed = 0
             return self.number_of_car_prices_changed
     def import_data(self):
             """
             Imports the car properties from the instance variables and adds them to the database.
             """
             #Variable to hold the price changes for reports
-            self.number_of_car_prices_changed = 0
-
+  
             incoming_data = [
                 {
                     "Manufacturer": self.Manufacturer,
