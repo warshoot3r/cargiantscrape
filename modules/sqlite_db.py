@@ -339,6 +339,7 @@ class SQLiteDatabase:
                 else:  # Add a new car into the database
                     print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
                     table = "used_cars"
+                    self.number_of_car_prices_changed += 1
                     car_properties = incoming_data[0]
                     car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])
 
