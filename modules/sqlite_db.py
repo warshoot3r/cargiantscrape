@@ -20,6 +20,9 @@ class SQLiteDatabase:
         self.open_db()
         self.create_table()
         self.number_of_car_prices_changed = 0
+        self.number_of_car_new_changed = 0
+        self.number_of_car_prices_changed_list = [] # Stores the REG of price changed vehicles
+        self.number_of_car_new_changed_list = [] # Stores the REG of new vehicles
 
     def open_db(self):
         """
@@ -207,15 +210,24 @@ class SQLiteDatabase:
         data = pd.read_sql(sql_query, self.conn)
         return data
     
-    def filter_table(self, filters, db):
-
+    def filter_table(self, filters, db, ListOfCarRegistrations=None):
+        """
+        Function to filter a datafram by lambda expressions and via a list of REG
+        """
         combined_filters = []
         for column, condition in filters.items():
             combined_filters.append(db[column].apply(condition))
 
         database = db[reduce(lambda x, y: x & y, combined_filters)]
 
-        return database
+        if ListOfCarRegistrations != None:
+            combined_filters_reg = [] 
+            for current_reg in ListOfCarRegistrations:
+                combined_filters_reg.append(db["Reg"].apply(lambda db_reg : current_reg == db_reg))
+                filtered_and_reg_database = db[reduce(lambda x, y: x & y , combined_filters_reg)]
+                return filtered_and_reg_database
+        else:
+            return database
 
     def print_as_panda_dataframe(self, table, col_show=None, ):
         """
@@ -277,13 +289,43 @@ class SQLiteDatabase:
         self.conn.close()
 
     def car_price_changed(self):
+        """
+         Return the number of cars
+        """
         if(self.number_of_car_prices_changed == 0):
             return False
         else:
-            print("Number of Cars changed")
+            print("Car Prices Changed")
             value = self.number_of_car_prices_changed
-            self.number_of_car_prices_changed = 0
+            self.number_of_car_prices_changed = []
             return value
+    def car_new_changed(self):
+        """
+        Return the number of cars
+        """
+        if(self.number_of_car_new_changed == 0):
+            return False
+        else: 
+            print("New cars were added") 
+            value = self.number_of_car_new_changed
+            self.number_of_car_new_changed = []
+        
+            return value
+        
+    def get_car_price_changed(self):
+        """
+        Return list of price changed cars.
+        """
+        data = self.number_of_car_prices_changed_list
+        self.number_of_car_new_changed_list = []
+        return data
+    def get_car_new_changed(self):
+        """
+        Return list of new cars added.
+        """
+        data = self.number_of_car_new_changed_list
+        self.number_of_car_new_changed_list = []
+        return data
     def import_data(self):
             """
             Imports the car properties from the instance variables and adds them to the database.
@@ -324,6 +366,7 @@ class SQLiteDatabase:
                         self.DateUpdated = datetime.datetime.now()
                         string_updated = f"Car Price Changed, updating DB. DatabasePrice={ car_DB_PRICE} CurrentPrice= {Car_Current_price}"
                         self.number_of_car_prices_changed += 1
+                        self.number_of_car_prices_changed_list.append(matching_car[reg_col_index]) # Store the REG of price changed car in a list
                         print(string_updated)
                         table = "used_cars"
                         car_properties = incoming_data[0]
@@ -342,7 +385,8 @@ class SQLiteDatabase:
                 else:  # Add a new car into the database
                     print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
                     table = "used_cars"
-                    self.number_of_car_prices_changed += 1
+                    self.number_of_car_new_changed += 1
+                    self.number_of_car_new_changed_list.append(data['Reg']) # Store the REG of new car in a list
                     car_properties = incoming_data[0]
                     car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])
 
