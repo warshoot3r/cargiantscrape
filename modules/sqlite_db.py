@@ -155,7 +155,8 @@ class SQLiteDatabase:
                 "URL": "TEXT",
                 "DateUpdated": "TEXT",
                 "OldPrice": "INTEGER",
-                "OldDate": "TEXT"
+                "OldDate": "TEXT",
+                "NumberOfPriceReductions": "INTEGER"
             }
         ]
         sql_table = "used_cars"
@@ -297,7 +298,7 @@ class SQLiteDatabase:
         else:
             print("Car Prices Changed")
             value = self.number_of_car_prices_changed
-            self.number_of_car_prices_changed = []
+            self.number_of_car_prices_changed = 0
             return value
     def car_new_changed(self):
         """
@@ -308,7 +309,7 @@ class SQLiteDatabase:
         else: 
             print("New cars were added") 
             value = self.number_of_car_new_changed
-            self.number_of_car_new_changed = []
+            self.number_of_car_new_changed = 0
         
             return value
         
