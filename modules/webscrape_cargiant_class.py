@@ -47,7 +47,7 @@ class WebScraperCargiant:
         if self.driver == "safari":
             safari_options = SafariOptions()
             safari_options.headless = True  # Safari doesn't support the "--headless" argument, so we use the headless property
-            WebScraperCargiant.driver = webdriver.Safari(safari_options)
+            self.driver = webdriver.Safari(safari_options)
 
         elif self.driver == "chrome":
             chrome_options = ChromeOptions()
@@ -59,7 +59,7 @@ class WebScraperCargiant:
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--start-minimized")
-            WebScraperCargiant.driver = webdriver.Chrome(options=chrome_options)
+            self.driver = webdriver.Chrome(options=chrome_options)
     
         elif self.driver == "firefox":
             firefox_options = FirefoxOptions()
@@ -67,7 +67,7 @@ class WebScraperCargiant:
             firefox_options.add_argument("--window-size=1920,1200")
             firefox_options.add_argument("--ignore-certificate-errors")
             firefox_options.add_argument("--start-minimized")
-            WebScraperCargiant.driver = webdriver.Firefox(options=firefox_options)
+            self.driver = webdriver.Firefox(options=firefox_options)
 
     def print_number_of_cars(self):
         """
@@ -147,18 +147,31 @@ class WebScraperCargiant:
         """
         Retrieves new car data from the Cargiant website and updates the DataFrame.
         """
+
         print("Pulling new data")
         self.initialize_driver()
 
-        wait = WebDriverWait(WebScraperCargiant.driver, 10)
-        WebScraperCargiant.driver.get(self.url)
+        wait = WebDriverWait(self.driver, 20)
+        self.driver.get(self.url)
 
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
 
-        soup = BeautifulSoup(WebScraperCargiant.driver.page_source, 'html.parser')
+        car_listing_items_page_1 = self.driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
+        self.extract_web_data(car_listing_items_page_1)
+        pages = self.driver.find_elements(By.CSS_SELECTOR , '[data-paging-pages-template="page"]')
+        self.driver.execute_script("arguments[0].click()", pages[1])
+    
+        
+        # Manual java script (document.querySelectorAll('[data-paging-pages-template="page"]'))[1].click();'
+       
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
+        car_listing_items_page_2 =  self.driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
+        self.extract_web_data(car_listing_items_page_2)
 
-        car_listing_items = WebScraperCargiant.driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
-
+   
+    def extract_web_data(self, scraped_data):
+        
+        
         table_template = {
             "Manufacturer": [],
             "Model": [],
@@ -176,7 +189,7 @@ class WebScraperCargiant:
 
         tf = pd.DataFrame(table_template)
         
-        for item in car_listing_items:
+        for item in scraped_data:
             # Extracting car details
             price_get = item.find_element(By.CSS_SELECTOR, "div.price-block__price").text
             price = re.sub("[^0-9.]", "", price_get)
@@ -234,7 +247,13 @@ class WebScraperCargiant:
         else:
             self.data = pd.concat([self.data.reset_index(drop=True), tf.reset_index(drop=True)])
         self.length = self.data.shape[0]
-        if not self.keepalive:
-            WebScraperCargiant.driver.quit()
+        # if not self.keepalive:
+        #     self.driver.quit()
 
         print(f"Data successfully pulled {(tf.count())[0]} cars")
+        self.print_data()
+    def stopwebdriver(self):
+        """
+        Kills the web driver.
+        """
+        self.driver.quit()

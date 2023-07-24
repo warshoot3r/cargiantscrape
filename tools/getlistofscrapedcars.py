@@ -9,8 +9,7 @@ sys.path.append(parent_dir)
 
 from modules.webscrape_cargiant_class import WebScraperCargiant
 
-scrape = WebScraperCargiant(driver="chrome", keepalive=False)
+scrape = WebScraperCargiant(driver="safari", keepalive=False)
 
 scrape.search_for_manufacturer(manufacturer="BMW")
 scrape.search_for_manufacturer("Mercedes")
-scrape.print_data()
