@@ -348,7 +348,8 @@ class SQLiteDatabase:
                     "Reg": self.Reg,
                     "URL": self.URL,
                     "OldPrice": self.OldPrice,
-                    "DateUpdated": self.DateUpdated
+                    "DateUpdated": self.DateUpdated,
+                    "NumberOfPriceReductions": 0
                 }
             ]
             self.cursor.execute("SELECT * from used_cars")
@@ -359,15 +360,16 @@ class SQLiteDatabase:
             for data in incoming_data:
                 matching_car = next((car for car in existing_data if car[reg_col_index] == data["Reg"]), None)
                 if matching_car:
-                    self.cursor.execute(f"SELECT Price FROM used_cars where Reg = '{matching_car[reg_col_index]}'")
+                    currentcarreg = matching_car[reg_col_index] 
+                    self.cursor.execute(f"SELECT Price FROM used_cars where Reg = '{currentcarreg}'")
                     car_DB_PRICE = (self.cursor.fetchall())[0][0]
                     Car_Current_price = self.Price
-                    print(f"Car with Reg: {matching_car[reg_col_index]} is existing with the same price")
+                    print(f"Car with Reg: {currentcarreg} is existing with the same price")
                     if Car_Current_price != car_DB_PRICE:
                         self.DateUpdated = datetime.datetime.now()
                         string_updated = f"Car Price Changed, updating DB. DatabasePrice={ car_DB_PRICE} CurrentPrice= {Car_Current_price}"
                         self.number_of_car_prices_changed += 1
-                        self.number_of_car_prices_changed_list.append(matching_car[reg_col_index]) # Store the REG of price changed car in a list
+                        self.number_of_car_prices_changed_list.append(currentcarreg) # Store the REG of price changed car in a list
                         print(string_updated)
                         table = "used_cars"
                         car_properties = incoming_data[0]
@@ -376,10 +378,10 @@ class SQLiteDatabase:
                         sql_values_count_string = ", ".join([f"?" for _ in car_properties])
 
                         db_string = f'''
-                        UPDATE {table} SET OldPrice = ?, Price = ?, OldDate = DateUpdated, DateUpdated = ? WHERE Reg = '{matching_car[reg_col_index]}'
+                        UPDATE {table} SET OldPrice = ?, Price = ?, OldDate = DateUpdated, DateUpdated = ?, NumberOfPriceReductions += 1 WHERE Reg = ?
                         '''
                         print(self.DateUpdated)
-                        self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated))
+                        self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated, currentcarreg))
                         self.conn.commit()
                         print("Imported updated entry")
 
