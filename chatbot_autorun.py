@@ -35,6 +35,7 @@ def scrape_cars():
     CarSearch.search_for_manufacturer("Mercedes")
     CarSearch.print_number_of_cars()
     print(CarSearch.data.shape[0])
+    CarSearch.stopwebdriver()
     return CarSearch
 
 #Get new data and import it into DB
