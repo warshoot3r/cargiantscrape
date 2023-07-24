@@ -66,16 +66,17 @@ def import_cars(CarSearch):
 while(True):
     scraped_cars = scrape_cars()
     import_cars(scraped_cars)
-    if DB.car_price_changed() or DB.car_new_changed():
+    price_changed = DB.car_price_changed()
+    new_cars = DB.car_new_changed()
+    if price_changed or new_cars:
         DB.open_db()
         database = DB.return_as_panda_dataframe()
-
-        if DB.car_price_changed(): #If car prices changed, only send a list of these cars
+        if price_changed: #If car prices changed, only send a list of these cars
             database_filtered = DB.filter_table(filters, database, DB.get_car_price_changed())
             bot.send_message_servername(chat_id, "New car prices were updated")
             bot.send_dataframe(chat_id, database_filtered[["Price", "Model", "Mileage", "URL", "OldPrice"]])
 
-        if DB.car_new_changed():
+        if new_cars:
             bot.send_message_servername(chat_id, "New cars were added")
             database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
             bot.send_dataframe(chat_id, database_filtered_new_cars[["Price", "Model", "Mileage", "URL", "Color","Fuel", "Doors", "Transmission"]])
