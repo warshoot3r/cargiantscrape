@@ -7,6 +7,6 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     volumes:
-      - ./:/app/used_cars.db
+      - ./used_cars.db:/app/used_cars.db
       - ./modules:/app/modules/
       - ./credentials.py:/app/credentials.py
