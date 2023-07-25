@@ -15,7 +15,8 @@ bot = TelegramBot(api_token)
 DB = SQLiteDatabase()
 # Filters
 filters = {
-   'Price': lambda x: x >= 10000 & x <=20000,
+   'Price': lambda x: x >= 10000,
+    'Price': lambda x: x <=20000,
     'Mileage': lambda x: x <=80000,
     'Year': lambda x: x >= 2016,
      # No Mercedes A Classes 
