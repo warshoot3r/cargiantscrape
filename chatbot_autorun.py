@@ -15,9 +15,9 @@ bot = TelegramBot(api_token)
 DB = SQLiteDatabase()
 # Filters
 filters = {
-   'Price': lambda x: x >= 8000 & x <=18000,
+   'Price': lambda x: x >= 10000 & x <=20000,
     'Mileage': lambda x: x <=80000,
-    'Year': lambda x: x >= 2012,
+    'Year': lambda x: x >= 2016,
      # No Mercedes A Classes 
      # No BMW 1 Series
      # No BMW i3's
@@ -33,8 +33,8 @@ def scrape_cars():
     CarSearch = WebScraperCargiant(driver="chrome", keepalive=True)
     CarSearch.search_for_manufacturer("BMW")
     CarSearch.search_for_manufacturer("Mercedes")
+    CarSearch.search_for_manufacturer("Lexus")
     CarSearch.print_number_of_cars()
-    print(CarSearch.data.shape[0])
     CarSearch.stopwebdriver()
     return CarSearch
 
@@ -80,11 +80,10 @@ while(True):
         if new_cars:
             bot.send_message_servername(chat_id, "New cars were added")
             database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
-            print(database)
-            print(database_filtered_new_cars)
             bot.send_dataframe(chat_id, database_filtered_new_cars[["Price", "Model", "Mileage", "URL", "Color","Fuel", "Doors", "Transmission"]])
+
         DB.close_db()
-        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=database)
+        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=DB.filter_table(filters, database))
     else:
         bot.send_message_servername(chat_id, "Nothing to report")
     time.sleep(60*60)
