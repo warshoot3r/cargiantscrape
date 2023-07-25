@@ -310,7 +310,6 @@ class SQLiteDatabase:
             print("New cars were added") 
             value = self.number_of_car_new_changed
             self.number_of_car_new_changed = 0
-        
             return value
         
     def get_car_price_changed(self):
@@ -318,7 +317,7 @@ class SQLiteDatabase:
         Return list of price changed cars.
         """
         data = self.number_of_car_prices_changed_list
-        self.number_of_car_new_changed_list = []
+        self.number_of_car_prices_changed_list = []
         return data
     def get_car_new_changed(self):
         """
@@ -378,7 +377,7 @@ class SQLiteDatabase:
                         sql_values_count_string = ", ".join([f"?" for _ in car_properties])
 
                         db_string = f'''
-                        UPDATE {table} SET OldPrice = ?, Price = ?, OldDate = DateUpdated, DateUpdated = ?, NumberOfPriceReductions += 1 WHERE Reg = ?
+                        UPDATE {table} SET OldPrice = ?, Price = ?, OldDate = DateUpdated, DateUpdated = ?, NumberOfPriceReductions = NumberOfPriceReductions + 1 WHERE Reg = ?
                         '''
                         print(self.DateUpdated)
                         self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated, currentcarreg))
