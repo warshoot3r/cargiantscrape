@@ -170,6 +170,48 @@ class SQLiteDatabase:
         '''
         self.cursor.execute(sql_string)
 
+    def update_table(self):
+        """
+        Update tables if the schema is changed
+        """
+        schema =      {
+                "Manufacturer": "TEXT",
+                "Model": "TEXT",
+                "Year": "INTEGER",
+                "Price": "INTEGER",
+                "Body Type": 'TEXT',
+                "Transmission": "TEXT",
+                "Fuel": "TEXT",
+                "Color": "TEXT",
+                "Mileage": "INTEGER",
+                "Doors": "INTEGER",
+                "Reg": "TEXT",
+                "URL": "TEXT",
+                "DateUpdated": "TEXT",
+                "OldPrice": "INTEGER",
+                "OldDate": "TEXT",
+                "NumberOfPriceReductions": "INTEGER",
+                "CarStatus": "TEXT"
+            }
+        # Get current tables column
+        table_name = "used_cars"
+        self.cursor.execute("PRAGMA table_info({});".format(table_name) )
+        columns = self.cursor.fetchall()
+
+        for missingcolumn in schema:
+            column_to_update = any(column[1] == missingcolumn for column in columns  )
+            if not column_to_update:
+                print(f"Missing {missingcolumn} in DB. Database is being updated with table")
+                db_string = '''
+                ALTER TABLE {}
+                ADD {}
+                '''
+                self.cursor.execute(db_string.format(table_name, missingcolumn))
+                print("DB updated")
+            else:
+                print("No changes needed")
+        
+
     def delete_car_from_table(self, REG, table=None):
         """
         Deletes a specific car's data from the database.
@@ -350,7 +392,7 @@ class SQLiteDatabase:
                     "URL": self.URL,
                     "OldPrice": self.OldPrice,
                     "DateUpdated": self.DateUpdated,
-                    "Car Status": self.CarStatus,
+                    "CarStatus": self.CarStatus,
                     "NumberOfPriceReductions": 0
                 },
             ]
@@ -366,6 +408,9 @@ class SQLiteDatabase:
                     self.cursor.execute(f"SELECT Price FROM used_cars where Reg = '{currentcarreg}'")
                     car_DB_PRICE = (self.cursor.fetchall())[0][0]
                     Car_Current_price = self.Price
+                    Car_Current_Status = self.CarStatus
+                    self.cursor.execute(f"SELECT CarStatus FROM used_cars where Reg = '{currentcarreg}'")
+                    Car_DB_Status = (self.cursor.fetchall()[0][0])
                     print(f"Car with Reg: {currentcarreg} is existing with the same price")
                     if Car_Current_price != car_DB_PRICE:
                         self.DateUpdated = datetime.datetime.now()
@@ -386,6 +431,15 @@ class SQLiteDatabase:
                         self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated, currentcarreg))
                         self.conn.commit()
                         print("Imported updated entry")
+                    if Car_Current_Status != Car_DB_Status:
+                        table = "used_cars"
+                        string_updated = f"Car status changed for {currentcarreg}. Old status:{Car_DB_Status}. New Status: {self.CarStatus}"
+                        print(string_updated)
+                        db_string = f'''
+                        UPDATE {table} SET CarStatus = ? WHERE REG = ?
+                        '''
+                        self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
+                        self.conn.commit()
 
                 else:  # Add a new car into the database
                     print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")

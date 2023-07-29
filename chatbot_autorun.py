@@ -13,6 +13,8 @@ chat_id = credentials.chat_id
 
 bot = TelegramBot(api_token)
 DB = SQLiteDatabase()
+
+DB.update_table()
 # Filters
 filters = {
    'Price': lambda x: x >= 10000,   
