@@ -79,16 +79,16 @@ while(True):
         database = DB.return_as_panda_dataframe()
         if price_changed: #If car prices changed, only send a list of these cars
             database_filtered = DB.filter_table(filters, database, DB.get_car_price_changed())
-            bot.send_message_servername(chat_id, "New car prices were updated")
+            bot.send_message_servername(chat_id, "New car prices were updated:")
             bot.send_dataframe(chat_id, database_filtered[["Price", "Model", "Mileage", "URL", "OldPrice", "NumberOfPriceReductions"]])
 
         if new_cars:
-            bot.send_message_servername(chat_id, "New cars were added")
+            bot.send_message_servername(chat_id, "New cars were added:")
             database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
             bot.send_dataframe(chat_id, database_filtered_new_cars[["Price", "Model", "Mileage", "URL", "Color","Fuel", "Doors", "Transmission"]])
         if status_changed:
             database_filtered = DB.filter_table(filters, database, DB.get_car_status_changed())
-            bot.send_message_servername(chat_id, "New car prices were updated")
+            bot.send_message_servername(chat_id, "Some car status changed:")
             bot.send_dataframe(chat_id, database_filtered[["Price", "Model", "Mileage", "URL", "CarStatus"]])
 
         DB.close_db()
