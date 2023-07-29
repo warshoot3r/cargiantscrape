@@ -450,7 +450,7 @@ class SQLiteDatabase:
                         self.conn.commit()
                         print("Imported updated entry")
                     if Car_Current_Status != Car_DB_Status:
-                        self.car_current_status_list.append(currentcarreg)
+                        self.car_status_changed_list.append(currentcarreg)
                         self.number_of_car_new_changed += 1
                         table = "used_cars"
                         string_updated = f"Car status changed for {currentcarreg}. Old status:{Car_DB_Status}. New Status: {self.CarStatus}"
