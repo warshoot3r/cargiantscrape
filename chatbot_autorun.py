@@ -73,6 +73,7 @@ while(True):
     import_cars(scraped_cars)
     price_changed = DB.car_price_changed()
     new_cars = DB.car_new_changed()
+    status_changed = DB.car_status_changed()
     if price_changed or new_cars:
         DB.open_db()
         database = DB.return_as_panda_dataframe()
@@ -85,6 +86,10 @@ while(True):
             bot.send_message_servername(chat_id, "New cars were added")
             database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
             bot.send_dataframe(chat_id, database_filtered_new_cars[["Price", "Model", "Mileage", "URL", "Color","Fuel", "Doors", "Transmission"]])
+        if status_changed:
+            database_filtered = DB.filter_table(filters, database, DB.get_car_status_changed())
+            bot.send_message_servername(chat_id, "New car prices were updated")
+            bot.send_dataframe(chat_id, database_filtered[["Price", "Model", "Mileage", "URL", "CarStatus"]])
 
         DB.close_db()
         bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=DB.filter_table(filters, database))

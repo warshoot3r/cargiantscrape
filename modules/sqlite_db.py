@@ -21,9 +21,10 @@ class SQLiteDatabase:
         self.create_table()
         self.number_of_car_prices_changed = 0
         self.number_of_car_new_changed = 0
+        self.number_of_car_status_changed = 0
         self.number_of_car_prices_changed_list = [] # Stores the REG of price changed vehicles
         self.number_of_car_new_changed_list = [] # Stores the REG of new vehicles
-
+        self.number_of_car_status_changed_list = []
     def open_db(self):
         """
         Connects to the local DB file
@@ -332,7 +333,24 @@ class SQLiteDatabase:
         """
         self.cursor.close()
         self.conn.close()
-
+    def car_status_changed(self):
+        """
+        Return number of cars status changed
+        """
+        if(self.number_of_car_status_changed == 0):
+            return False
+        else: 
+            print("Car Status Changed")
+            value = self.number_of_car_status_changed
+            self.number_of_car_status_changed = 0
+            return value
+    def get_car_status_changed_list(self):
+        """
+        Return status of cars changed
+        """
+        data = self.car_status_changed_list
+        self.car_status_changed_list = []
+        return data
     def car_price_changed(self):
         """
          Return the number of cars
@@ -432,6 +450,8 @@ class SQLiteDatabase:
                         self.conn.commit()
                         print("Imported updated entry")
                     if Car_Current_Status != Car_DB_Status:
+                        self.car_current_status_list.append(currentcarreg)
+                        self.number_of_car_new_changed += 1
                         table = "used_cars"
                         string_updated = f"Car status changed for {currentcarreg}. Old status:{Car_DB_Status}. New Status: {self.CarStatus}"
                         print(string_updated)
