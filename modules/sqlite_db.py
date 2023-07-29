@@ -344,7 +344,7 @@ class SQLiteDatabase:
             value = self.number_of_car_status_changed
             self.number_of_car_status_changed = 0
             return value
-    def get_car_status_changed_list(self):
+    def get_car_status_changed(self):
         """
         Return status of cars changed
         """
