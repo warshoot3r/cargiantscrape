@@ -57,7 +57,8 @@ def import_cars(CarSearch):
                     Reg=current_car["Reg"],
                     URL=current_car["URL"],
                     Model=current_car["Model"],
-                    Mileage=current_car["Mileage"]
+                    Mileage=current_car["Mileage"],
+                    CarStatus=current_car["Car Status"]
             )
 
 

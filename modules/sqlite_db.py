@@ -73,7 +73,7 @@ class SQLiteDatabase:
 
 
 
-    def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None):
+    def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None, CarStatus=None):
         """
         Imports car properties and adds them to the database.
         
@@ -108,6 +108,7 @@ class SQLiteDatabase:
         self.Reg = str(Reg)
         self.URL = str(URL)
         self.DateUpdated = datetime.datetime.now()
+        self.CarStatus = str(CarStatus)
         self.import_data()
 
 
@@ -156,7 +157,8 @@ class SQLiteDatabase:
                 "DateUpdated": "TEXT",
                 "OldPrice": "INTEGER",
                 "OldDate": "TEXT",
-                "NumberOfPriceReductions": "INTEGER"
+                "NumberOfPriceReductions": "INTEGER",
+                "CarStatus": "TEXT"
             }
         ]
         sql_table = "used_cars"
@@ -348,8 +350,9 @@ class SQLiteDatabase:
                     "URL": self.URL,
                     "OldPrice": self.OldPrice,
                     "DateUpdated": self.DateUpdated,
+                    "Car Status": self.CarStatus,
                     "NumberOfPriceReductions": 0
-                }
+                },
             ]
             self.cursor.execute("SELECT * from used_cars")
             existing_data = self.cursor.fetchall()

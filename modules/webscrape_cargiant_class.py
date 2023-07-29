@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.safari.options import Options as SafariOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
@@ -174,6 +175,7 @@ class WebScraperCargiant:
         
         table_template = {
             "Manufacturer": [],
+            "Car Status": [],
             "Model": [],
             "Year": [],
             "Price": [],
@@ -209,9 +211,20 @@ class WebScraperCargiant:
             details_split = details.split(', ')
             DoorsAndType, Transmission, Fuel, Color, mileage_get = details_split
             mileage = re.sub("[^0-9.]", "" , mileage_get)
+            try:
+                car_status_get =  item.find_element(By.CSS_SELECTOR, "span.caption-block").text
+                if(car_status_get == "SOLD TODAY"):
+                    car_status = "Sold"
+                elif(car_status_get == "RESERVED"):
+                    car_status = "Reserved"
+                else:
+                    car_status = car_status_get
+            except NoSuchElementException:
+                car_status = ""
+            
 
             DoorsAndType_split = re.split(r"\d\s(?=\s)", DoorsAndType)
-            
+
             number_doors = ""
             body_type = ""
             for item in DoorsAndType_split:
@@ -222,6 +235,8 @@ class WebScraperCargiant:
             
             if not number_doors:
                 number_doors = "N/A"
+
+
 
             new_row = {
                 "Manufacturer": car_manufacturer,
@@ -236,7 +251,8 @@ class WebScraperCargiant:
                 "Color": Color,
                 "Mileage": mileage,
                 "URL": car_link,
-                "Reg": car_reg
+                "Reg": car_reg,
+                "Car Status": car_status
             }
 
             i = len(tf) + 1
