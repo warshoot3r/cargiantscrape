@@ -74,7 +74,7 @@ while(True):
     price_changed = DB.car_price_changed()
     new_cars = DB.car_new_changed()
     status_changed = DB.car_status_changed()
-    if price_changed or new_cars:
+    if price_changed or new_cars or status_changed:
         DB.open_db()
         database = DB.return_as_panda_dataframe()
         if price_changed: #If car prices changed, only send a list of these cars
