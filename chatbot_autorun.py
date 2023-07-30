@@ -95,4 +95,5 @@ while(True):
         bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=DB.filter_table(filters, database))
     else:
         bot.send_message_servername(chat_id, "Nothing to report")
+    scraped_cars.stopwebdriver()
     time.sleep(60*60)
