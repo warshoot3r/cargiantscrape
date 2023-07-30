@@ -11,8 +11,7 @@ import pandas as pd
 import re
 import datetime
 import requests
-import os
-import signal
+
 
 class WebScraperCargiant:
     """
@@ -276,4 +275,3 @@ class WebScraperCargiant:
         """
         self.driver.quit()
         #Force killing the processes
-        os.killpg(os.getpgid(self.driver.service.process.pid), signal.SIGKILL)
