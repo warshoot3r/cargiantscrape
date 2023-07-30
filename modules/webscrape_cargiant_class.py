@@ -273,6 +273,7 @@ class WebScraperCargiant:
         """
         Closes the browser and Kills the web driver.
         """
+        time.sleep(10)
         self.driver.close()
         self.driver.quit()
         #Force killing the processes
