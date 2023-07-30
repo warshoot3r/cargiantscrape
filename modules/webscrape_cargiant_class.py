@@ -58,7 +58,6 @@ class WebScraperCargiant:
             chrome_options.add_argument("--window-size=1920,1200")
             chrome_options.add_argument("--ignore-certificate-errors")
             chrome_options.add_argument("--disable-extensions")
-            chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--start-minimized")
             self.driver = webdriver.Chrome(options=chrome_options)
@@ -152,10 +151,9 @@ class WebScraperCargiant:
 
         print("Pulling new data")
         self.initialize_driver()
-
         wait = WebDriverWait(self.driver, 20)
         self.driver.get(self.url)
-
+        
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
 
         car_listing_items_page_1 = self.driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
@@ -273,7 +271,6 @@ class WebScraperCargiant:
         """
         Closes the browser and Kills the web driver.
         """
-        time.sleep(10)
         self.driver.close()
         self.driver.quit()
         #Force killing the processes
