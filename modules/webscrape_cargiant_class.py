@@ -11,8 +11,7 @@ import pandas as pd
 import re
 import datetime
 import requests
-import sys
-import signal
+import time
 
 class WebScraperCargiant:
     """
@@ -42,13 +41,6 @@ class WebScraperCargiant:
             print("Setting the search to", self.url)
         else: 
             self.url = "https://www.cargiant.co.uk/search/all/all"
-        #inplement signal handler
-        signal.signal(signal.SIGTERM, self.signal_handler)
-
-    def signal_handler(self, sig, frame):
-        print('Received termination signal. Stopping WebDriver...')
-        self.driver.quit()
-        sys.exit(0)
 
     def initialize_driver(self):
         """
