@@ -11,7 +11,7 @@ import pandas as pd
 import re
 import datetime
 import requests
-
+import time
 
 class WebScraperCargiant:
     """
@@ -274,4 +274,5 @@ class WebScraperCargiant:
         Closes the browser and Kills the web driver.
         """
         self.driver.quit()
+        time.sleep(5)
         #Force killing the processes
