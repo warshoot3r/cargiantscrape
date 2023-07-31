@@ -176,7 +176,7 @@ class WebScraperCargiant:
                 print("Page successfully scraped")
             except IndexError:
                 print("No more pages to scrape")
-
+                return
    
     def extract_web_data(self, scraped_data):
         

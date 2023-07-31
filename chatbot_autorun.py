@@ -80,7 +80,7 @@ while(True):
         if price_changed: #If car prices changed, only send a list of these cars
             database_filtered = DB.filter_table(filters, database, DB.get_car_price_changed())
             bot.send_message_servername(chat_id, "New car prices were updated:")
-            database_filtered["PriceChange"] = database_filtered["OldPrice"] - database_filtered["Price"] # should be added to class . temporary here for now
+            database_filtered.loc[:,"PriceChange"] = database_filtered["OldPrice"] - database_filtered["Price"] # should be added to class . temporary here for now
             bot.send_dataframe(chat_id, database_filtered[["PriceChange", "Model", "Mileage", "URL"]])
 
         if new_cars:
