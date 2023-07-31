@@ -77,13 +77,17 @@ class WebScraperCargiant:
         """
         print(f"\n\nNumber of cars to be imported -> {self.length}\n\n")
 
-    def search_for_manufacturer(self, manufacturer):
+    def search_for_manufacturer(self, manufacturer, numberofpages=3):
         """
         Sets the search to a specific manufacturer.
-
         Args:
-            manufacturer (str): The manufacturer to search for.
+                manufacturer (str): The manufacturer to search for.
+                NumberOfPages(int): Defines how many pages to scrape
+        Return:
+                pull_new_data returns a panda table`
+
         """
+        self.numberofpages = numberofpages
         self.manufacturer_search = manufacturer
         self.url = "https://www.cargiant.co.uk/search/" + manufacturer + "/all"
         print("Setting the search to", self.url)
@@ -148,6 +152,7 @@ class WebScraperCargiant:
     def pull_new_data(self):
         """
         Retrieves new car data from the Cargiant website and updates the DataFrame.
+
         """
 
         print("Pulling new data")
@@ -156,18 +161,21 @@ class WebScraperCargiant:
         self.driver.get(self.url)
         
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
-
         car_listing_items_page_1 = self.driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
         self.extract_web_data(car_listing_items_page_1)
-        pages = self.driver.find_elements(By.CSS_SELECTOR , '[data-paging-pages-template="page"]')
-        self.driver.execute_script("arguments[0].click()", pages[1])
-    
+
         
-        # Manual java script (document.querySelectorAll('[data-paging-pages-template="page"]'))[1].click();'
-       
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
-        car_listing_items_page_2 =  self.driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
-        self.extract_web_data(car_listing_items_page_2)
+        for page in range(1,self.numberofpages+1):
+            pages = self.driver.find_elements(By.CSS_SELECTOR , '[data-paging-pages-template="page"]')
+            print(f"Currently web scraping {self.manufacturer_search} cars on page {page+1}.")
+            try:
+                self.driver.execute_script("arguments[0].click()", pages[page]) # click page
+                wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
+                current_page = self.driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
+                self.extract_web_data(current_page)
+                print("Page successfully scraped")
+            except IndexError:
+                print("No more pages to scrape")
 
    
     def extract_web_data(self, scraped_data):
