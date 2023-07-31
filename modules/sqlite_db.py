@@ -269,12 +269,7 @@ class SQLiteDatabase:
         if ListOfCarRegistrations != None:
             combined_filters_reg = [] 
             for current_reg in ListOfCarRegistrations:
-                print(f"{current_reg}")
-                combined_filters_reg.append(db["Reg"].map(lambda x : x == current_reg) ) 
-
-
-            print(combined_filters_reg)
-            print(reduce(lambda x, y: x & y , combined_filters_reg))
+                combined_filters_reg.append(db["Reg"].map(lambda x : x == current_reg)) 
             filtered_and_reg_database = db[reduce(lambda x, y: x | y , combined_filters_reg)]
         
             return filtered_and_reg_database
