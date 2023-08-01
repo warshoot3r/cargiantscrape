@@ -226,7 +226,7 @@ class WebScraperCargiant:
                 elif(car_status_get == "RESERVED"):
                     car_status = "Reserved"
                 else:
-                    car_status = car_status_get
+                    car_status = "Now AVAILABLE"
             except NoSuchElementException:
                 car_status = ""
             
