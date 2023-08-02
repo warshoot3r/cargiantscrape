@@ -476,3 +476,13 @@ class SQLiteDatabase:
 
                     self.cursor.execute(db_string, (*car_properties.values(),))
                     self.conn.commit()
+    def move_sold_cars_to_db():
+        """
+        Moves the "Sold" cars to a different table and deletes it from database
+
+        Args:
+            Optional Db_File. defaults to used_cars_sold.db
+
+        """
+
+        pass
