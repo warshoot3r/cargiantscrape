@@ -24,7 +24,7 @@ filters = {
      # No Mercedes A Classes 
      # No BMW 1 Series
      # No BMW i3's
-     'Body Type': lambda bodytype: bodytype not in ("Estate", "Saloon"), 
+     'Body Type': lambda bodytype: bodytype not in ("Estate", "Saloon", "Coupe"), 
     'Model': lambda model: (not re.match(r"[A|1]\d+", model)) & (not model.startswith('i3')) &(not model.startswith('2 Series')) &(not model.startswith("B")) #
 }
 
