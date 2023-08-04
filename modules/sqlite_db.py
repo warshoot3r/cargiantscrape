@@ -265,16 +265,17 @@ class SQLiteDatabase:
             combined_filters.append(db[column].apply(condition))
 
         database = db[reduce(lambda x, y: x & y, combined_filters)]
-
+   
         if ListOfCarRegistrations != None:
             combined_filters_reg = [] 
             for current_reg in ListOfCarRegistrations:
                 combined_filters_reg.append(db["Reg"].map(lambda x : x == current_reg)) 
             filtered_and_reg_database = db[reduce(lambda x, y: x | y , combined_filters_reg)]
         
-            return filtered_and_reg_database
+            return filtered_and_reg_database.sort_values(by="Price")
+
         else:
-            return database
+            return database.sort_values(by="Price")
 
     def print_as_panda_dataframe(self, table, col_show=None, ):
         """
@@ -334,6 +335,15 @@ class SQLiteDatabase:
         """
         self.cursor.close()
         self.conn.close()
+
+    def get_car_sold_as_pd(self):
+        sqlstring = """
+        SELECT * FROM used_cars where CarStatus LIKE 'Sold';    
+        """
+        data = pd.read_sql_query(sqlstring, self.conn)
+        return data.sort_values(by="Price")
+
+
     def car_status_changed(self):
         """
         Return number of cars status changed
