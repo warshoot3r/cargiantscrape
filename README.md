@@ -15,6 +15,11 @@ clone the git repo
 
 cd folder
 
+
+Create a credentials.py
+
+create a used_cars.db file
+
 ./run_container.sh
 
 
