@@ -26,4 +26,4 @@ jobs:
 
       - name: Push Docker images
         run: |
-          docker-compose push
+          docker push jammyboi/cgwebscrape:latest
