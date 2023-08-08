@@ -12,6 +12,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /github/workspace
+          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
+          restore-keys: |
+            ${{ runner.os }}-docker-
 
       - name: Build and test Docker images
         run: |
