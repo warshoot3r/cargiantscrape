@@ -24,4 +24,5 @@ ENV CHROME_DRIVER=/usr/lib/chromium-browser/chromedriver
 ENV CHROME_OPTIONS="--headless"
 
 RUN pip3 install pandas -v
+COPY test.py .
 CMD [ "python", "chatbot_autorun.py" ]

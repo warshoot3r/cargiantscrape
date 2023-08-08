@@ -1,8 +1,10 @@
 from modules.sqlite_db import SQLiteDatabase
+from modules.webscrape_cargiant_class import WebScraperCargiant
 DB = SQLiteDatabase()
 
 
 data = DB.return_as_panda_dataframe()
+cars = WebScraperCargiant(driver="chrome", keepalive=True)
 
 
 filter = {
