@@ -159,7 +159,8 @@ class SQLiteDatabase:
                 "OldPrice": "INTEGER",
                 "OldDate": "TEXT",
                 "NumberOfPriceReductions": "INTEGER",
-                "CarStatus": "TEXT"
+                "CarStatus": "TEXT",
+                "NumberReserved": "INTEGER"
             }
         ]
         sql_table = "used_cars"
@@ -192,7 +193,8 @@ class SQLiteDatabase:
                 "OldPrice": "INTEGER",
                 "OldDate": "TEXT",
                 "NumberOfPriceReductions": "INTEGER",
-                "CarStatus": "TEXT"
+                "CarStatus": "TEXT",
+                "NumberReserved": "INTEGER"
             }
         # Get current tables column
         table_name = "used_cars"
@@ -209,8 +211,8 @@ class SQLiteDatabase:
                 '''
                 self.cursor.execute(db_string.format(table_name, missingcolumn))
                 print("DB updated")
-            else:
-                print("No changes needed")
+        else:
+            print("No changes needed")
         
 
     def delete_car_from_table(self, REG, table=None):
@@ -422,7 +424,8 @@ class SQLiteDatabase:
                     "OldPrice": self.OldPrice,
                     "DateUpdated": self.DateUpdated,
                     "CarStatus": self.CarStatus,
-                    "NumberOfPriceReductions": 0
+                    "NumberOfPriceReductions": 0,
+                    "NumberReserved": 0
                 },
             ]
             self.cursor.execute("SELECT * from used_cars")
@@ -469,8 +472,13 @@ class SQLiteDatabase:
                         db_string = f'''
                         UPDATE {table} SET CarStatus = ? WHERE REG = ?
                         '''
+                        if Car_Current_price == "Reserved":
+                            db_string = f'''
+                             UPDATE {table} SET CarStatus = ?, NumberReserved = NumberReserved + 1 WHERE REG = ?
+                               '''
+                            print("Car was reserved so incrementing the count NumberReserved")
                         self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
-                        self.conn.commit()
+                        self.conn.commit()    
 
                 else:  # Add a new car into the database
                     print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
