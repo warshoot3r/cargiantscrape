@@ -30,7 +30,7 @@ jobs:
       - name: Build and test Docker images
         run: |
           docker buildx create --use
-          docker buildx build --platform linux/arm64 -t jammyboi/cgwebscrape:arm64 .
+          docker buildx build --platform linux/arm64 -t jammyboi/cgwebscrape:arm64 --push .
 
 
       - name: Login to Docker Hub (or your container registry)
