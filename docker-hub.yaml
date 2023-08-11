@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  cargiantscrape:
+    restart: unless-stopped
+    init: true
+    image: jammyboi/cgwebscrape:arm64
+    platform: linux/arm64/v8
+    volumes:
+      - ./used_cars.db:/app/used_cars.db
+      - ./modules:/app/modules/
+      - ./credentials.py:/app/credentials.py
+      - ./test.py:/app/test.py
