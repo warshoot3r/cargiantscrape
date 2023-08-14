@@ -1,2 +1,0 @@
-api_token = "5944900753:AAEGUrhUaqXVLLbML18sNFKMYOwVeI0skMY"
-chat_id = "903105825"
