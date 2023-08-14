@@ -492,8 +492,11 @@ class SQLiteDatabase:
                              UPDATE {table} SET CarStatus = ?, NumberReserved = NumberReserved + 1 WHERE REG = ?
                                '''
                             print("Car was reserved so incrementing the count Number Reserved")
-                        self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
-                        self.conn.commit()    
+                            self.cursor.execute(db_string, currentcarreg)
+                            self.conn.commit()    
+                        else:
+                            self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
+                            self.conn.commit()    
 
                 else:  # Add a new car into the database
                     print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
