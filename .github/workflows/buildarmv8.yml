@@ -1,4 +1,4 @@
-name: Build ARM v6 32Bit
+name: Build ARM v8 64Bit
 
 on:
   push:
