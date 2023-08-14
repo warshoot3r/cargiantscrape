@@ -21,7 +21,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: "<registry>/<image>:armv6"
+          tags: "jammyboi/cgwebscrape:armv6"
           platforms: linux/arm/v6
           build-args: |
             PANDAS_VERSION=1.3.3
