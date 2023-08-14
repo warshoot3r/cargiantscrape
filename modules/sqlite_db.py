@@ -472,8 +472,15 @@ class SQLiteDatabase:
                         db_string = f'''
                         UPDATE {table} SET CarStatus = ? WHERE REG = ?
                         '''
-                        if Car_Current_price == "Reserved":
-                            db_string = f'''
+                        if Car_Current_Status == "Reserved":
+                            self.cursor.execute(f"SELECT CarStatus FROM used_cars where Reg = '{currentcarreg}'")
+                            Car_DB_NumberReserved = self.cursor.fetchall()[0][0]
+                            if Car_DB_NumberReserved == "n/a":
+                                db_string = f'''
+                             UPDATE {table} SET CarStatus = ?, NumberReserved = 1 WHERE REG = ?
+                               '''
+                            else:   
+                                db_string = f'''
                              UPDATE {table} SET CarStatus = ?, NumberReserved = NumberReserved + 1 WHERE REG = ?
                                '''
                             print("Car was reserved so incrementing the count NumberReserved")
