@@ -283,3 +283,23 @@ class WebScraperCargiant:
         self.driver.close()
         self.driver.quit()
         #Force killing the processes
+    def check_reg_url_alive(self, Registration):
+        """
+        Returns true if reg url is alive. Used with DB to move to sold database
+        Args:
+        takes a single variable URL(str) eg. https://www.cargiant.co.uk/car/Lexus/CT-200h/YD67PCX
+        """
+
+        # check if car giant is alive 
+        main_website = requests.get("https://www.cargiant.co.uk")
+        if main_website.ok:
+            get_reg_url = requests.get(Registration)
+            if get_reg_url.url == "https://www.cargiant.co.uk/":
+                print(f"Link return {get_reg_url.url}. {Registration} likely sold.")
+                return True
+            else:
+                print(f"{Registration} is not sold . Nothing to do")
+                return False
+            
+        else:
+            return ConnectionRefusedError

@@ -303,7 +303,15 @@ class SQLiteDatabase:
         self.conn.commit()
         for item in self.cursor.fetchall():
             print(item)
+    def get_all_url(self):
+        """
+        Get all car urls. Returns all as list
 
+        Args:
+            None
+        """
+        self.cursor.execute("SELECT URL from used_cars ORDER BY DateUpdated ASC")
+        return self.cursor.fetchall()
   
     def retrieve_db(self, column, input_data):
         """
@@ -322,7 +330,7 @@ class SQLiteDatabase:
         elif column == "doors":  # For integer col
             command = f"SELECT * from used_cars where {column} = {input_data} "
         else:  # For strings
-            command = f"SELECT * from used_cars where {column} LIKE '{input_data}' "
+            command = f"SELECT * from used_cars where {column} LIKE '{input_data}' ORDER BY DateUpdated ASC"
         print(command)
         self.cursor.execute(command)
         data = self.cursor.fetchall()
@@ -501,13 +509,17 @@ class SQLiteDatabase:
 
                     self.cursor.execute(db_string, (*car_properties.values(),))
                     self.conn.commit()
-    def move_sold_cars_to_db():
+    def move_sold_cars_to_db(self, URL):
         """
         Moves the "Sold" cars to a different table and deletes it from database
 
         Args:
-            Optional Db_File. defaults to used_cars_sold.db
+            URL(str) eg. https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/YH16JUK
 
         """
-
-        pass
+        sqlstring = """
+            update used_cars SET CarStatus = 'Sold' WHERE URL = ?
+            """
+        print(f"Setting {URL} to sold ")
+        self.cursor.execute(sqlstring, [URL])
+        self.conn.commit()
