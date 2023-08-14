@@ -13,3 +13,4 @@ services:
       - ./modules:/app/modules/
       - ./credentials.py:/app/credentials.py
       - ./test.py:/app/test.py
+      - ./remove_unresolvable_cars.py:/app/remove_unresolvable_cars.py
