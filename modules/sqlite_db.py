@@ -483,7 +483,7 @@ class SQLiteDatabase:
                                 db_string = f'''
                              UPDATE {table} SET CarStatus = ?, NumberReserved = NumberReserved + 1 WHERE REG = ?
                                '''
-                            print("Car was reserved so incrementing the count NumberReserved")
+                            print("Car was reserved so incrementing the count Number Reserved")
                         self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
                         self.conn.commit()    
 
