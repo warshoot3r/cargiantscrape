@@ -77,7 +77,7 @@ class WebScraperCargiant:
         """
         print(f"\n\nNumber of cars to be imported -> {self.length}\n\n")
 
-    def search_for_manufacturer(self, manufacturer, numberofpages=3):
+    def search_for_manufacturer(self, manufacturer, numberofpages=5):
         """
         Sets the search to a specific manufacturer.
         Args:
