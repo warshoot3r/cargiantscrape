@@ -1,4 +1,4 @@
-name: Build and Push Docker Image ARM/v6
+name: Build and Push Docker Image AMD64
 
 on:
   push:
@@ -27,9 +27,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: "jammyboi/cgwebscrape:armv6"
-          platforms: linux/arm/v6
+          tags: "jammyboi/cgwebscrape:amd64"  # Update the tag for AMD64
+          platforms: linux/amd64  # Change the architecture to AMD64
           build-args: |
             PANDAS_VERSION=1.3.3
-          cache-from: type=registry,ref=jammyboi/cgwebscrape:armv6,mode=max
-          cache-to: type=registry,ref=jammyboi/cgwebscrape:armv6,mode=max
+          cache-from: type=registry,ref=jammyboi/cgwebscrape:amd64,mode=max
+          cache-to: type=registry,ref=jammyboi/cgwebscrape:amd64,mode=max
