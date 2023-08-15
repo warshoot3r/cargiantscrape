@@ -28,7 +28,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: "jammyboi/cgwebscrape:armv7"
+          tags: "jammyboi/cgwebscrape:latest"
           platforms: linux/arm/v7
           build-args: |
             PANDAS_VERSION=1.3.3
