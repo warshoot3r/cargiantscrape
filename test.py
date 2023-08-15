@@ -9,13 +9,10 @@ cars = WebScraperCargiant(driver="chrome", keepalive=True)
 
 filter = {
 
-    'Price': lambda x: x >= 17000,
-    'Year': lambda x: x == 2018,
-    'Manufacturer': lambda x: x == "BMW"
+    'Price': lambda x: x >= 17000
     }
-print(data[["Price", "Model", "Reg"]])
-array = ["SJ68BWP", "YK16ETD", "YH16JUK"]
-data_filter = DB.filter_table( filter, data)
+array = ["MF68CEX", "YK16ETD", "YH16JUK"]
+data_filter = DB.filter_table( filter, data, array)
 print(data_filter)
 
 
