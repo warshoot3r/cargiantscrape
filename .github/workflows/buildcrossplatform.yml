@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-images:
-    runs-on: macos-latest-xl
+    runs-on: macos-latest
 
     steps:
       - name: Checkout code
