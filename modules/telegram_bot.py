@@ -7,8 +7,14 @@ class TelegramBot:
 
 
     def send_dataframe(self, chat_id, dataframe, caption=""):
+        # Format URLs using the provided code
+        dataframe['URL'] = dataframe['URL'].apply(lambda url: f"[{url.split('/')[-1]}]({url})")
+
+        # Convert the DataFrame to a formatted string
         message = caption + "\n" + dataframe.to_string(index=False, justify='left', col_space=15)
-        self.send_message(chat_id, message)   
+
+        # Send the message
+        self.send_message(chat_id, message)
 
     def get_updates(self):
         get_updates_url = f"{self.base_url}getUpdates"
@@ -31,6 +37,7 @@ class TelegramBot:
         data = {
             "chat_id": chat_id,
             "text": message,
+            "parser": "Markdownv2"
         }
         try:
             response = requests.post(send_message_url, data=data)
