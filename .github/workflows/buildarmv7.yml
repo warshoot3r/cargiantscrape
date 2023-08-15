@@ -32,6 +32,6 @@ jobs:
           platforms: linux/arm/v7
           build-args: |
             PANDAS_VERSION=1.3.3
-            cache-from: type=gha
-            cache-to: type=gha,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
   
