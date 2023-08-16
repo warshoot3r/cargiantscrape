@@ -87,7 +87,7 @@ while(True):
         if new_cars:
             database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
             print(database_filtered_new_cars)
-            bot.send_dataframe(chat_id, database_filtered_new_cars[["URL", "Model" ,"Price", "Color", "Transmission", "Mileage"] ], "New cars were added:")
+            bot.send_dataframe(chat_id, database_filtered_new_cars[["URL", "Model", "Mileage", "Price"] ], "New cars were added:")
         if status_changed:
             reg = DB.get_car_status_changed()
             database_filtered = DB.filter_table(filters, database, reg)
