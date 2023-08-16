@@ -225,8 +225,10 @@ class WebScraperCargiant:
                     car_status = "Sold"
                 elif(car_status_get == "RESERVED"):
                     car_status = "Reserved"
-                else:
-                    car_status = "AVAILABLE"
+                elif(car_status_get == "AVAILABLE"):
+                    car_status = "Available"
+                else: 
+                    car_status = car_status_get
             except NoSuchElementException:
                 car_status = ""
             
