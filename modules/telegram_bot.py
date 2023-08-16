@@ -8,17 +8,11 @@ class TelegramBot:
 
     def send_dataframe(self, chat_id, dataframe, caption=""):
         # Format URLs using the provided code
-        urls = dataframe['URL'].apply(lambda url: url.split("/")[-1])
+        hyperlink_column = dataframe.loc[:,'URL'].apply(lambda url: f'<a href="{url}">{url.split("/")[-1]}</a>')
 
-        # Calculate the maximum label length
-        max_label_length = max(len(label) for label in urls)
-
-        # Apply padding to URL labels
-        padded_urls = urls.apply(lambda label: label.ljust(max_label_length))
 
         # Create the hyperlink column
-        hyperlink_column = padded_urls.apply(lambda label: f'<a href="https://www.cargiant.co.uk/car/BMW/i3/{label}">{label}</a>')
-        dataframe['URL'] = hyperlink_column
+        dataframe.loc[:,'URL'] = hyperlink_column
 
         # Convert the DataFrame to a formatted string with adjusted spacing
         header = dataframe.columns.to_list()
@@ -30,12 +24,11 @@ class TelegramBot:
 
         # Format data rows
         for _, row in dataframe.iterrows():
-            formatted_row = ' |  '.join(row.astype(str).values)
+            formatted_row = ' | '.join(row.astype(str).values)
             formatted_rows.append(formatted_row)
 
         # Combine the caption and formatted DataFrame
         message = caption + "\n" + '\n'.join(formatted_rows)
-
         # Send the message
         self.send_message(chat_id, message, ParserType="HTML")
 

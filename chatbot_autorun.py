@@ -82,17 +82,17 @@ while(True):
         if price_changed: #If car prices changed, only send a list of these cars
             database_filtered = DB.filter_table(filters, database, DB.get_car_price_changed())
             database_filtered.loc[:,"PriceChange"] = database_filtered["Price"] - database_filtered["OldPrice"] # should be added to class . temporary here for now
-            bot.send_dataframe(chat_id, database_filtered[["URL", "Model" , "Price", "PriceChange", "Transmission","Mileage" ]], "New car prices were updated:")
+            bot.send_dataframe(chat_id, database_filtered[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:")
 
         if new_cars:
             database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
             print(database_filtered_new_cars)
-            bot.send_dataframe(chat_id, database_filtered_new_cars[["URL", "Model", "Mileage", "Price"] ], "New cars were added:")
+            bot.send_dataframe(chat_id, database_filtered_new_cars[["URL","Manufacturer","Model", "Mileage", "Price"] ], "New cars were added:")
         if status_changed:
             reg = DB.get_car_status_changed()
             database_filtered = DB.filter_table(filters, database, reg)
             print(database_filtered)
-            bot.send_dataframe(chat_id, database_filtered[[ "URL", "CarStatus", "Price", "NumberReserved"]], "Some car status changed:")
+            bot.send_dataframe(chat_id, database_filtered[[ "URL","Manufacturer","Model", "CarStatus", "Price", "NumberReserved"]], "Some car status changed:")
             
         #Send sold cars
         bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=DB.get_car_sold_as_pd(), caption="Sold Cars")
