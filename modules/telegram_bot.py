@@ -1,6 +1,5 @@
 import requests
 import socket
-from tabulate import tabulate
 class TelegramBot:
     def __init__(self, api_token):
         self.api_token = api_token
