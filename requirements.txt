@@ -4,4 +4,4 @@ wheel
 bs4
 requests
 pandas
-selenium
+selenium==4.10.0
