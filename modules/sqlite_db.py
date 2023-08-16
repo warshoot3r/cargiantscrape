@@ -526,3 +526,5 @@ class SQLiteDatabase:
         print(f"Setting {URL} to sold ")
         self.cursor.execute(sqlstring, [URL])
         self.conn.commit()
+
+

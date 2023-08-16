@@ -19,4 +19,8 @@ print(data_filter)
 tb.send_dataframe(chat_id=credentials.chat_id, dataframe=data_filter[[ "URL", "CarStatus", "Price", "NumberReserved"]])
 
 
+# link_message = "[tf](https://www.cargiant.co.uk/car/BMW/118i/GY19NKX/)"
+# text = "Click <a href='http://example.com'>here</a> to visit."
+# tb.send_message(message=link_message, chat_id=credentials.chat_id, ParserType="MarkdownV2")
+# tb.send_message(message=text, chat_id=credentials.chat_id, ParserType="html")
 

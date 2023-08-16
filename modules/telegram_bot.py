@@ -8,13 +8,24 @@ class TelegramBot:
 
     def send_dataframe(self, chat_id, dataframe, caption=""):
         # Format URLs using the provided code
-        dataframe['URL'] = dataframe['URL'].apply(lambda url: f"[{url.split('/')[-1]}]({url})")
+        urls = dataframe['URL'].apply(lambda url: url.split("/")[-1])
+        
+        # Calculate the maximum label length
+        max_label_length = max(len(label) for label in urls)
+
+        # Apply padding to URL labels
+        padded_urls = urls.apply(lambda label: label.ljust(max_label_length))
+
+        # Create the hyperlink column
+        hyperlink_column = padded_urls.apply(lambda label: f'<a href="https://www.cargiant.co.uk/car/BMW/i3/{label}">{label}</a>')
+        dataframe['URL'] = hyperlink_column
 
         # Convert the DataFrame to a formatted string
-        message = caption + "\n" + dataframe.to_string(index=False, justify='left', col_space=15)
+        message = caption + "\n" + dataframe.to_string(index=False, justify="Centre", col_space=6)
 
         # Send the message
-        self.send_message(chat_id, message)
+        self.send_message(chat_id, message, ParserType="HTML")
+
 
     def get_updates(self):
         get_updates_url = f"{self.base_url}getUpdates"
@@ -32,12 +43,12 @@ class TelegramBot:
         except requests.exceptions.RequestException as e:
             print("Error getting updates:", e)
 
-    def send_message(self, chat_id, message):
+    def send_message(self, chat_id, message, ParserType="Markdownv2"):
         send_message_url = f"{self.base_url}sendMessage"
         data = {
             "chat_id": chat_id,
             "text": message,
-            "parser": "Markdownv2"
+            "parse_mode": ParserType
         }
         try:
             response = requests.post(send_message_url, data=data)
