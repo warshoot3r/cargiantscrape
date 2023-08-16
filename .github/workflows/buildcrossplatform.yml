@@ -3,7 +3,7 @@ name: Build and Push ARM/v7 Images
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
