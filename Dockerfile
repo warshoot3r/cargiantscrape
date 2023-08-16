@@ -6,10 +6,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     unzip \
     chromium \
     chromium-driver \
+    gfortran \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
 WORKDIR /app
+ENV PATH="/usr/lib/chromium-browser/:/usr/bin/gcc:/usr/bin/gfortran:${PATH}"
 
 COPY requirements.txt .
 # Install dependencies and set ENV
