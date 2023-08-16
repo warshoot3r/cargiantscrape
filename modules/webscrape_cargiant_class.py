@@ -9,16 +9,13 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
-import datetime
 import requests
-import time
 
 class WebScraperCargiant:
     """
     A web scraper for collecting used car information from the Cargiant website.
     """
 
-    date_retrieved = datetime.time()
     driver = None
     
     def __init__(self, driver, keepalive, manufacturer_search=None):
@@ -115,13 +112,6 @@ class WebScraperCargiant:
         for item in makes:
             print(item.text)
 
-    def print_data(self):
-        """
-        Prints the current data and the date it was retrieved.
-        """
-        print("Printing data")
-        print(self.data)
-        print(self.date_retrieved)
 
     def search_data_for_car(self, search_col, term):
         """
@@ -277,7 +267,7 @@ class WebScraperCargiant:
         #     self.driver.quit()
 
         print(f"Data successfully pulled {(tf.count())[0]} cars")
-        self.print_data()
+
     def stopwebdriver(self):
         """
         Closes the browser and Kills the web driver.
