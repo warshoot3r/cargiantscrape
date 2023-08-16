@@ -451,8 +451,8 @@ class SQLiteDatabase:
                     Car_Current_Status = self.CarStatus
                     self.cursor.execute(f"SELECT CarStatus FROM used_cars where Reg = '{currentcarreg}'")
                     Car_DB_Status = (self.cursor.fetchall()[0][0])
-                    print(f"Car with Reg: {currentcarreg} is existing with the same price")
                     if Car_Current_price != car_DB_PRICE:
+                        print(f"Car with Reg: {currentcarreg} is existing with the same price")
                         self.DateUpdated = datetime.datetime.now()
                         string_updated = f"Car Price Changed, updating DB. DatabasePrice={ car_DB_PRICE} CurrentPrice= {Car_Current_price}"
                         self.number_of_car_prices_changed += 1
@@ -471,15 +471,12 @@ class SQLiteDatabase:
                         self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated, currentcarreg))
                         self.conn.commit()
                         print("Imported updated entry")
-                    if Car_Current_Status != Car_DB_Status:
+                    if (Car_Current_Status != Car_DB_Status) and self.CarStatus:                    
                         self.number_of_car_status_changed_list.append(currentcarreg)
                         self.number_of_car_status_changed += 1
                         table = "used_cars"
                         string_updated = f"Car status changed for {currentcarreg}. Old status:{Car_DB_Status}. New Status: {self.CarStatus}"
                         print(string_updated)
-                        db_string = f'''
-                        UPDATE {table} SET CarStatus = ? WHERE REG = ?
-                        '''
                         if Car_Current_Status == "Reserved":
                             self.cursor.execute(f"SELECT NumberReserved FROM used_cars where Reg = '{currentcarreg}'")
                             Car_DB_NumberReserved = self.cursor.fetchone()
@@ -491,25 +488,30 @@ class SQLiteDatabase:
                                 db_string = f'''
                              UPDATE {table} SET CarStatus = ?, NumberReserved = NumberReserved + 1 WHERE REG = ?
                                '''
+                            self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
+                            self.conn.commit()   
                             print("Car was reserved so incrementing the count Number Reserved")
-                        self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
-                        
-                        self.conn.commit()    
+                        else: #Push the scraped status to the database
+                            db_string = f'''
+                            UPDATE {table} SET CarStatus = ? WHERE REG = ?
+                            '''
+                            self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
+                            self.conn.commit()   
 
                 else:  # Add a new car into the database
-                    print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
-                    table = "used_cars"
-                    self.number_of_car_new_changed += 1
-                    self.number_of_car_new_changed_list.append(data['Reg']) # Store the REG of new car in a list
-                    car_properties = incoming_data[0]
-                    car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])
+                        print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
+                        table = "used_cars"
+                        self.number_of_car_new_changed += 1
+                        self.number_of_car_new_changed_list.append(data['Reg']) # Store the REG of new car in a list
+                        car_properties = incoming_data[0]
+                        car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])
 
-                    sql_values_count_string = ", ".join([f"?" for _ in car_properties])
+                        sql_values_count_string = ", ".join([f"?" for _ in car_properties])
 
-                    db_string = f"INSERT INTO {table} ({car_properties_keys}) VALUES({sql_values_count_string})"
+                        db_string = f"INSERT INTO {table} ({car_properties_keys}) VALUES({sql_values_count_string})"
 
-                    self.cursor.execute(db_string, (*car_properties.values(),))
-                    self.conn.commit()
+                        self.cursor.execute(db_string, (*car_properties.values(),))
+                        self.conn.commit()
     def move_sold_cars_to_db(self, URL):
         """
         Moves the "Sold" cars to a different table and deletes it from database
