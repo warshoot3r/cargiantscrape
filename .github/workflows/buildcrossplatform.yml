@@ -54,7 +54,7 @@ jobs:
           context: .
           push: true
           tags: "jammyboi/cgwebscrape:windows-amd64"
-          platforms: windows/amd64,linux/amd64
+          platforms: windows/amd64
           file: Dockerfile.windows
           build-args: |
             PANDAS_VERSION=1.3.3
