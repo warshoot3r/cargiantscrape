@@ -9,5 +9,9 @@ services:
     init: true
     image: jammyboi/cgwebscrape:latest
     volumes:
-      - ${PWD}/used_cars.db:/app/used_cars.db
-      - ${PWD}credentials.py:/app/credentials.py
+      - type: bind
+        source: ./used_cars.db
+        target: /app/used_cars.db
+      - type : bind
+        source: ./credentials.py
+        target: app/credentials.py
