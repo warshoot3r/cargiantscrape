@@ -31,6 +31,8 @@ filters = {
 
 #scrape cars
 def scrape_cars():
+    print(DB.is_db_recently_written())
+    print(force_scrape)
     if(DB.is_db_recently_written() and not force_scrape):
         print("Not scraping as DB written in last 10 minutes")
         time.sleep(2)
