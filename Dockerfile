@@ -17,7 +17,7 @@ RUN ARCH="$(dpkg --print-architecture)" && \
 
 
 # Install the other dependencies from requirements.txt
-RUN pip3 install -r requirements.txt
+RUN pip3 install --only-binary :all: -r requirements.txt
 
 # Set up chrome selenium
 RUN apt-get update && apt-get install -y \
