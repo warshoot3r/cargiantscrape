@@ -39,4 +39,5 @@ COPY remove_unresolvable_cars.py .
 COPY test.py .
 # Make scripts executable
 RUN chmod +x *.py 
-CMD [ "python", "chatbot_autorun.py" ] 
+ENTRYPOINT ["python"]
+CMD["chatbot_autorun.py"]
