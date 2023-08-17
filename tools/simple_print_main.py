@@ -27,7 +27,8 @@ for item in car_listing_items:
    print("Car = " + model.text)
    print("Price = " + price.text)
    print("Year = " + year.text.replace(",", ""))
-   print("Details = " + details.text.strip() + "\n")
+   print("Details = " + details.text.strip() + "\n", flush="True")
+
 
 driver.quit()
 

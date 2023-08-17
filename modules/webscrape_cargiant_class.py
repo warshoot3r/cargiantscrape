@@ -97,7 +97,7 @@ class WebScraperCargiant:
         Args:
             data_frame (pd.DataFrame): The DataFrame containing past data to be imported.
         """
-        print("Importing past data")
+        print("Importing past data", flush="True")
         self.data = data_frame
 
     def get_car_makes(self):
@@ -108,7 +108,7 @@ class WebScraperCargiant:
         content = driver.content
         soup = BeautifulSoup(content, 'html.parser')
         makes = soup.find_all(id="Makes")
-        print("Listing Car makes")
+        print("Listing Car makes", flush="True")
         for item in makes:
             print(item.text)
 
@@ -145,7 +145,7 @@ class WebScraperCargiant:
 
         """
 
-        print("Pulling new data")
+        print("Pulling new data", flush="True")
         self.initialize_driver()
         wait = WebDriverWait(self.driver, 20)
         self.driver.get(self.url)
@@ -163,9 +163,9 @@ class WebScraperCargiant:
                 wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
                 current_page = self.driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
                 self.extract_web_data(current_page)
-                print("Page successfully scraped")
+                print("Page successfully scraped", flush="True")
             except IndexError:
-                print("No more pages to scrape")
+                print("No more pages to scrape", flush="True")
                 return
    
     def extract_web_data(self, scraped_data):

@@ -62,7 +62,7 @@ class TelegramBot:
             response = requests.post(send_message_url, data=data)
             response_json = response.json()
             if response_json["ok"]:
-                print("Message sent successfully!")
+                print("Message sent successfully!", flush="True")
             else:
                 print("Failed to send message. Error:", response_json["description"])
         except requests.exceptions.RequestException as e:
@@ -92,7 +92,7 @@ class TelegramBot:
             response = requests.post(send_document_url, data={"chat_id": chat_id, "caption": caption}, files=files)
             response_json = response.json()
             if response_json["ok"]:
-                print("File sent successfully!")
+                print("File sent successfully!", flush="True")
             else:
                 print("Failed to send file. Error:", response_json["description"])
         except requests.exceptions.RequestException as e:

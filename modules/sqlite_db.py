@@ -210,9 +210,9 @@ class SQLiteDatabase:
                 ADD {}
                 '''
                 self.cursor.execute(db_string.format(table_name, missingcolumn))
-                print("DB updated")
+                print("DB updated", flush="True")
         else:
-            print("No changes needed")
+            print("No changes needed", flush="True")
         
 
     def delete_car_from_table(self, REG, table=None):
@@ -298,7 +298,7 @@ class SQLiteDatabase:
         """
         Prints all the data in the 'used_cars' table.
         """
-        print("Printing table information:")
+        print("Printing table information:", flush="True")
         self.cursor.execute("SELECT * from used_cars")
         self.conn.commit()
         for item in self.cursor.fetchall():
@@ -361,7 +361,7 @@ class SQLiteDatabase:
         if(self.number_of_car_status_changed == 0):
             return False
         else: 
-            print("Car Status Changed")
+            print("Car Status Changed", flush="True")
             value = self.number_of_car_status_changed
             self.number_of_car_status_changed = 0
             return value
@@ -379,7 +379,7 @@ class SQLiteDatabase:
         if(self.number_of_car_prices_changed == 0):
             return False
         else:
-            print("Car Prices Changed")
+            print("Car Prices Changed", flush="True")
             value = self.number_of_car_prices_changed
             self.number_of_car_prices_changed = 0
             return value
@@ -470,7 +470,7 @@ class SQLiteDatabase:
                         print(self.DateUpdated)
                         self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated, currentcarreg))
                         self.conn.commit()
-                        print("Imported updated entry")
+                        print("Imported updated entry", flush="True")
                     if (Car_Current_Status != Car_DB_Status) and self.CarStatus:                    
                         self.number_of_car_status_changed_list.append(currentcarreg)
                         self.number_of_car_status_changed += 1
@@ -490,7 +490,7 @@ class SQLiteDatabase:
                                '''
                             self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
                             self.conn.commit()   
-                            print("Car was reserved so incrementing the count Number Reserved")
+                            print("Car was reserved so incrementing the count Number Reserved", flush="True")
                         else: #Push the scraped status to the database
                             db_string = f'''
                             UPDATE {table} SET CarStatus = ? WHERE REG = ?
