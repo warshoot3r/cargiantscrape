@@ -55,7 +55,7 @@ jobs:
           context: .
           push: true
           tags: "jammyboi/cgwebscrape:linux-arm64-v8-latest"
-          platforms: linux/arm64/v8
+          platforms: linux/arm/v8
           build-args: |
             PANDAS_VERSION=1.3.3
           cache-from: type=gha
