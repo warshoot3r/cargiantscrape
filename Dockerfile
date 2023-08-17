@@ -4,7 +4,6 @@ FROM --platform=$BUILDPLATFORM python:3.9-slim AS base
 # Set up requirements for scraping
 WORKDIR /app
 COPY requirements.txt .
-RUN apt-get update && apt-get install -y python3 python3-dev virtualenv python3-venv
 ENV _PYTHON_HOST_PLATFORM linux_armv7l
 
 # Install numpy from a pre-built wheel
