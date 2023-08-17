@@ -14,4 +14,4 @@ services:
         target: /app/used_cars.db
       - type : bind
         source: ./credentials.py
-        target: app/credentials.py
+        target: /app/credentials.py
