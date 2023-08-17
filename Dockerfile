@@ -4,7 +4,17 @@ FROM --platform=$BUILDPLATFORM python:3.9-slim AS base
 # Set up requirements for scraping
 WORKDIR /app
 COPY requirements.txt .
-ENV _PYTHON_HOST_PLATFORM linux_armv7l
+# Automatically determine the platform and set the environment variable
+RUN ARCH="$(dpkg --print-architecture)" && \
+    if [ "$ARCH" = "armhf" ]; then \
+        echo "Setting _PYTHON_HOST_PLATFORM to linux_armv7l"; \
+        export _PYTHON_HOST_PLATFORM=linux_armv7l; \
+    else \
+        echo "Setting _PYTHON_HOST_PLATFORM to $ARCH"; \
+        export _PYTHON_HOST_PLATFORM="$ARCH"; \
+    fi && \
+    echo "export _PYTHON_HOST_PLATFORM=$ARCH" >> /etc/environment
+
 
 # Install the other dependencies from requirements.txt
 RUN pip3 install -r requirements.txt
