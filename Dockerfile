@@ -1,6 +1,5 @@
 # Use a smaller base image
-ARG DOCKER_PLATFORM
-FROM --platform=$DOCKER_PLATFORM python:3.9-slim AS base
+FROM python:3.9-slim-bullseye AS base
 
 # Set up requirements for scraping
 WORKDIR /app
