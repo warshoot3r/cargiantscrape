@@ -7,7 +7,7 @@ COPY requirements.txt .
 ENV _PYTHON_HOST_PLATFORM linux_armv7l
 
 # Install the other dependencies from requirements.txt
-RUN pip3 install -r requirements.txt --no-build-isolation
+RUN pip3 install -r requirements.txt
 
 # Set up chrome selenium
 RUN apt-get update && apt-get install -y \
