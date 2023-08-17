@@ -6,6 +6,16 @@ on:
       - master
 
 jobs:
+  validate-dockerfile:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build and Validate Dockerfile
+      run: |
+        docker build --no-cache --tag temp-image-name:latest -f Dockerfile .
   build_arm_v7:
     runs-on: ubuntu-latest
 
