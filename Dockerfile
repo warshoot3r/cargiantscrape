@@ -5,16 +5,11 @@ FROM --platform=$BUILDPLATFORM python:3.9-slim AS base
 WORKDIR /app
 COPY requirements.txt .
 # Automatically determine the platform and set the environment variable
-RUN ARCH="$(dpkg --print-architecture)" && \
-    if [ "$ARCH" = "armhf" ]; then \
-        echo "Setting _PYTHON_HOST_PLATFORM to linux_armv7l"; \
-        export _PYTHON_HOST_PLATFORM=linux_armv7l; \
-    else \
-        echo "Setting _PYTHON_HOST_PLATFORM to $ARCH"; \
-        export _PYTHON_HOST_PLATFORM="$ARCH"; \
-    fi && \
-    echo "export _PYTHON_HOST_PLATFORM=$ARCH" >> /etc/environment
+ENV ARCH="$(dpkg --print-architecture)"
+ENV _PYTHON_HOST_PLATFORM=${ARCH}
 
+RUN echo "Setting _PYTHON_HOST_PLATFORM to ${_PYTHON_HOST_PLATFORM}" && \
+    echo "export _PYTHON_HOST_PLATFORM=${_PYTHON_HOST_PLATFORM}" >> /etc/environment
 
 # Install the other dependencies from requirements.txt
 RUN pip3 install --only-binary :all: -r requirements.txt
