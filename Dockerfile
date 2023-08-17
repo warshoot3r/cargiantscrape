@@ -6,10 +6,6 @@ WORKDIR /app
 COPY requirements.txt .
 ENV _PYTHON_HOST_PLATFORM linux_armv7l
 
-# Install numpy from a pre-built wheel
-RUN pip3 install -U pip 
-RUN pip3 install --no-cache-dir numpy 
-
 # Install the other dependencies from requirements.txt
 RUN pip3 install -r requirements.txt --no-build-isolation
 
