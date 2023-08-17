@@ -27,7 +27,7 @@ ENV CHROME_DRIVER=/usr/lib/chromium-browser/chromedriver
 ENV CHROME_OPTIONS="--headless"
 
 # Copy class files and main.py
-COPY modules .
+COPY modules /app/modules
 COPY chatbot_autorun.py .
 COPY remove_unresolvable_cars.py .
 COPY test.py .
