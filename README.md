@@ -38,3 +38,9 @@ telegram chat commands for on-demand scrape. eg. on demand spec search for a spe
 tidy up the dockerfile and speed up the build. pandas take a long time to build
 
 Delete old cars from DB if not being pulled when scraped
+
+# updating requirements.txt
+`
+pip install pip-tools
+pip-compile packages.txt 
+`

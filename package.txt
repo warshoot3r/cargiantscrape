@@ -1,0 +1,5 @@
+numpy
+pandas
+selenium==4.10.0
+beautifulsoup4
+requests
