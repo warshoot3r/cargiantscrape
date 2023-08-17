@@ -21,7 +21,6 @@ RUN pip3 install --only-binary :all: -r requirements.txt
 
 # Set up chrome selenium
 RUN apt-get update && apt-get install -y \
-    unzip \
     chromium \
     chromium-driver
 
@@ -34,7 +33,7 @@ ENV CHROME_DRIVER=/usr/lib/chromium-browser/chromedriver
 ENV CHROME_OPTIONS="--headless"
 
 # Copy class files and main.py
-COPY modules .
+COPY modules /app/modules
 COPY chatbot_autorun.py .
 COPY remove_unresolvable_cars.py .
 COPY test.py .
