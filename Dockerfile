@@ -17,12 +17,15 @@ RUN ARCH="$(dpkg --print-architecture)" && \
 
 
 # Install the other dependencies from requirements.txt
-RUN pip3 install -r requirements.txt
-
 # Set up chrome selenium
 RUN apt-get update && apt-get install -y \
     chromium \
-    chromium-driver
+    chromium-driver \
+    gfortran
+
+RUN pip3 install -r requirements.txt
+
+
 
 # Final runtime image
 FROM base AS final
