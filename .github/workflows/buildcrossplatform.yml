@@ -36,7 +36,8 @@ jobs:
 
   build_arm64_v8:
     runs-on: ubuntu-latest
-
+    env:
+      DOCKER_PLATFORM: linux/arm64/v8
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
