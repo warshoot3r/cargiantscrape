@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y python3 python3-dev virtualenv python3-
 ENV _PYTHON_HOST_PLATFORM linux_armv7l
 
 # Install numpy from a pre-built wheel
-RUN pip3 install -U pip
-RUN pip3 install numpy
+RUN pip3 install -U pip 
+RUN pip3 install numpy --no-cache-dir
 
 # Install the other dependencies from requirements.txt
 RUN pip3 install -r requirements.txt --no-build-isolation
