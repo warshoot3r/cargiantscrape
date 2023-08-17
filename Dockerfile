@@ -40,4 +40,4 @@ COPY test.py .
 # Make scripts executable
 RUN chmod +x *.py 
 ENTRYPOINT ["python"]
-CMD["chatbot_autorun.py"]
+CMD ["chatbot_autorun.py"]
