@@ -1,0 +1,22 @@
+name: Pull and run images from Docker Hub Workflow
+on:
+    workflow_run:
+        workflows:
+            - "Build and Push Cross-Platform Images"
+        types:
+            - completed
+jobs:
+    build-and-test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Pull main repo
+              uses: actions/checkout@v2
+            
+            - name: Pull docker image
+              run: |
+                docker pull jammyboi/cgwebscrape:linux-amd64-latest
+                docker compose run jammyboi/cgwebscrape:linux-amd64-latest test.py
+            - name: Stop container
+              run: |
+                docker compose down 
