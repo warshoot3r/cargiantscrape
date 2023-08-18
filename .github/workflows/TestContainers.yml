@@ -21,10 +21,10 @@ jobs:
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v2
               
-            - name: Pull docker image
+
+            - name: Run Docker-in-QEMU
               run: |
-                docker pull jammyboi/cgwebscrape:linux-arm-v8-latest
-                docker compose -f test-docker-compose.yaml up
+                docker run -v /var/run/docker.sock:/var/run/docker.sock --rm tonistiigi/binfmt:latest sh -c "docker pull jammyboi/cgwebscrape:linux-arm-v8-latest && docker-compose -f test-docker-compose.yaml up"
 
             - name: Stop container
               run: |
