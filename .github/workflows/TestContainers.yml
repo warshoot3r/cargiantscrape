@@ -14,13 +14,18 @@ jobs:
         steps:
             - name: Pull main repo
               uses: actions/checkout@v2
+
             - name: Create credentials File
               run: touch credentials.py        
-            
+
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v2
+              
             - name: Pull docker image
               run: |
                 docker pull jammyboi/cgwebscrape:linux-arm-v8-latest
                 docker compose -f test-docker-compose.yaml up
+
             - name: Stop container
               run: |
                 docker compose down 
