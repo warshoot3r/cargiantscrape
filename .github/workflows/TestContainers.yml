@@ -4,7 +4,7 @@ on:
         branches: 
             - master
         workflows:
-            - "Build and Push Cross-Platform Images"
+            - "Build from source & Push to DockerHub as individual tags"
         types:
             - completed
 jobs:
