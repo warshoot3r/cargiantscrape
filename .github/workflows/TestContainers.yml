@@ -3,8 +3,6 @@ on:
     workflow_run:
         branches: 
             - master
-        workflows:
-            - "Build and Push Cross-Platform Images"
         types:
             - completed
 jobs:
