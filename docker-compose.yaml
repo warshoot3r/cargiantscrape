@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     init: true
-    image: jammyboi/cgwebscrape:linux-arm64-v8-latest
+    image: jammyboi/cgwebscrape:linux-arm-v8-latest
     volumes:
       - type: bind
         source: ./used_cars.db
