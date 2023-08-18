@@ -32,4 +32,5 @@ COPY chatbot_autorun.py .
 COPY remove_unresolvable_cars.py .
 COPY test.py .
 
-CMD [ "python", "chatbot_autorun.py" ]
+ENTRYPOINT ["python3"]
+CMD ["chatbot_autorun.py"]
