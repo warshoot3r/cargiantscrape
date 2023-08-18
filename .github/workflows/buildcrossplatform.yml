@@ -1,21 +1,10 @@
-name: Build and Push Cross-Platform Images - Manually triggered
+name: Build and cache Cross-Platform latest Images to DockerHub - Manual
 
 on:
   workflow_dispatch:  # This event allows manual triggering
 
 
 jobs:
-  validate-dockerfile:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Build and Validate Dockerfile
-      run: |
-        docker build --no-cache --tag temp-image-name:latest -f Dockerfile .
-
   build_arm_v7:
     runs-on: ubuntu-latest
 
@@ -45,7 +34,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: "jammyboi/cgwebscrape:linux-armv7-latest"
+          tags: "jammyboi/cgwebscrape:linux-latest"
           platforms: linux/arm/v7
           build-args: |
             PANDAS_VERSION=1.3.3
@@ -82,7 +71,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: "jammyboi/cgwebscrape:linux-arm64-v8-latest"
+          tags: "jammyboi/cgwebscrape:linux-latest"
           platforms: linux/arm64/v8
           build-args: |
             PANDAS_VERSION=1.3.3
@@ -120,7 +109,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: "jammyboi/cgwebscrape:linux-arm-v8-latest"
+          tags: "jammyboi/cgwebscrape:linux-latest"
           platforms: linux/arm/v8
           build-args: |
             PANDAS_VERSION=1.3.3
@@ -158,7 +147,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: "jammyboi/cgwebscrape:linux-amd64-latest"
+          tags: "jammyboi/cgwebscrape:linux-latest"
           platforms: linux/amd64
           build-args: |
             PANDAS_VERSION=1.3.3
