@@ -27,7 +27,7 @@ jobs:
       - name: Cache dependencies for ARM/v7 image
         uses: actions/cache@v2
         with:
-          path: .github/.cache/pip
+          path: ~/.cache/pip
           key: cache-arm-v7-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             cache-arm-v7-
@@ -62,7 +62,7 @@ jobs:
       - name: Cache dependencies for ARM64/v8 image
         uses: actions/cache@v2
         with:
-          path: .github/.cache/pip
+          path: ~/.cache/pip
           key: cache-arm64-v8-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             cache-arm64-v8-
@@ -98,7 +98,7 @@ jobs:
       - name: Cache dependencies for ARM/v8 image
         uses: actions/cache@v2
         with:
-          path: .github/.cache/pip
+          path: ~/.cache/pip
           key: cache-arm-v8-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             cache-arm-v8-
@@ -134,7 +134,7 @@ jobs:
       - name: Cache dependencies for AMD64 image
         uses: actions/cache@v2
         with:
-          path: .github/.cache/pip
+          path: ~/.cache/pip
           key: cache-amd64-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             cache-amd64-
