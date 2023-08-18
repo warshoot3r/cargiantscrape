@@ -1,4 +1,4 @@
-name: Build and Push Cross-Platform as separate tags - Manually triggered
+name: Build & Push Cross-Platform as separate tags - Manual
 
 on:
   workflow_dispatch:  # This event allows manual triggering
