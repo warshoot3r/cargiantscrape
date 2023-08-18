@@ -1,9 +1,8 @@
-name: Build and Push Cross-Platform Images
+name: Build and Push Cross-Platform Images - Manually triggered
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:  # This event allows manual triggering
+
 
 jobs:
   validate-dockerfile:
