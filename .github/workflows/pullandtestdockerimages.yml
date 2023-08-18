@@ -16,7 +16,7 @@ jobs:
             - name: Pull docker image
               run: |
                 docker pull jammyboi/cgwebscrape:linux-amd64-latest
-                docker compose run cargiantscrape test.py
+                docker compose -f test-docker-compose.yaml
             - name: Stop container
               run: |
                 docker compose down 
