@@ -17,8 +17,9 @@ jobs:
 
             - name: Create credentials File
               run: |
+                uname -m
                 touch credentials.py
-                docker run --rm -t arm64v8/ubuntu uname -m 
+
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v2
               
@@ -28,6 +29,7 @@ jobs:
             
             - name: Pull docker image
               run: |
+                uname -m
                 docker run --rm -t arm64v8/ubuntu uname -m 
                 sudo apt-get install qemu binfmt-support qemu-user-static
                 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
