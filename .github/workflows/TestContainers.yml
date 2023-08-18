@@ -27,6 +27,7 @@ jobs:
             
             - name: Pull docker image
               run: |
+                docker pull jammyboi/cgwebscrape:linux-arm-v8-latest
                 docker run --rm -v /usr/local/bin/linux/arm64:/usr/bin/linux/arm64 jammyboi/cgwebscrape:linux-arm-v8-latest
 
                 
