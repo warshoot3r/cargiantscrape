@@ -1,8 +1,7 @@
 name: Build from source & Push as latest tag
 on:
-  push: 
-    branches: 
-        - master
+  workflow_dispatch: #manul
+
 
 jobs:
   build:
