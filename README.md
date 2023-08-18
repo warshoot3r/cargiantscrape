@@ -1,6 +1,9 @@
 # cargiantscrape
 pythonised scraping car giant for models and prices. Sends a report via telegram.
 
+[![Pull and run images from Docker Hub Workflow](https://github.com/warshoot3r/cargiantscrape/actions/workflows/pullandtestdockerimages.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/pullandtestdockerimages.yml)
+[![Build and Push Cross-Platform Images](https://github.com/warshoot3r/cargiantscrape/actions/workflows/buildcrossplatform.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/buildcrossplatform.yml)
+
 # Compatibility 
 Should run on anything. Run in a docker isolated env
 tested on:
