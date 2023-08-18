@@ -27,8 +27,8 @@ jobs:
             
             - name: Pull docker image
               run: |
-                docker pull jammyboi/cgwebscrape:linux-arm-v8-latest
-                docker compose -f test-docker-compose.yaml up
+                docker run --rm -it -v /usr/local/bin/qemu-aarch64:/usr/bin/qemu-aarch64 jammyboi/cgwebscrape:linux-arm-v8-latest
+
                 
             - name: Stop container
               run: |
