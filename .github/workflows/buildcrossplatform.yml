@@ -1,7 +1,8 @@
-name: Build & Push Cross-Platform as separate tags - Manual
-
+name: Build from source & Push to DockerHub as individual tags
 on:
-  workflow_dispatch:  # This event allows manual triggering
+  push: 
+    branches: 
+        - master
 
 
 jobs:

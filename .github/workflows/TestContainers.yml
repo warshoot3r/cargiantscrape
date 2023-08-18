@@ -1,8 +1,10 @@
-name: Pull latest and run test
+name: Run test on "Build from source & Push to DockerHub as individual tags" workflow
 on:
     workflow_run:
         branches: 
             - master
+        workflows:
+            - "Build from source & Push to DockerHub as individual tags"
         types:
             - completed
 jobs:
