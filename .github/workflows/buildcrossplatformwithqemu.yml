@@ -1,0 +1,50 @@
+name: Build and Push Cross-Platform Images with QEMU emulation
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build_cross_platform_images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: cache-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            cache-${{ runner.os }}-
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push images
+        run: |
+          docker buildx build \
+            --push \
+            --tag jammyboi/cgwebscrape:linux-stable \
+            --platform linux/amd64,linux/arm/v7,linux/arm64/v8 \
+            --build-arg PANDAS_VERSION=1.3.3 \
+            --build-arg DOCKER_BUILDKIT=1 \
+            --build-arg PIP_CACHE_DIR=/root/.cache/pip \
+            --cache-from type=registry,ref=jammyboi/cgwebscrape:linux-amd64-latest-buildcache \
+            --cache-from type=registry,ref=jammyboi/cgwebscrape:linux-armv7-latest-buildcache \
+            --cache-from type=registry,ref=jammyboi/cgwebscrape:linux-arm64-v8-latest-buildcache \
+            --cache-to type=registry,ref=jammyboi/cgwebscrape:linux-amd64-latest-buildcache,mode=max \
+            --cache-to type=registry,ref=jammyboi/cgwebscrape:linux-armv7-latest-buildcache,mode=max \
+            --cache-to type=registry,ref=jammyboi/cgwebscrape:linux-arm64-v8-latest-buildcache,mode=max .
