@@ -27,8 +27,9 @@ jobs:
             
             - name: Pull docker image
               run: |
-                docker pull --all-tags jammyboi/cgwebscrape
-                docker run --rm -v jammyboi/cgwebscrape:linux-arm-v8-latest
+                sudo apt-get install qemu binfmt-support qemu-user-static
+                docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+                docker run --rm -t arm64v8/ubuntu uname -m 
 
                 
             - name: Stop container
