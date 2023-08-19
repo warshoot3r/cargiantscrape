@@ -1,8 +1,9 @@
 # cargiantscrape
 pythonised scraping car giant for models and prices. Sends a report via telegram.
 
-[![Pull and run images from Docker Hub Workflow](https://github.com/warshoot3r/cargiantscrape/actions/workflows/pullandtestdockerimages.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/pullandtestdockerimages.yml)
-[![Build and Push Cross-Platform Images](https://github.com/warshoot3r/cargiantscrape/actions/workflows/buildcrossplatform.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/buildcrossplatform.yml)
+[![Build and Push as individual tags as *-latest](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master-branch(individual).yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master-branch(individual).yml)
+[![Build and Push as latest](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master-branch(singletag).yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master-branch(singletag).yml)
+[![Test Containers](https://github.com/warshoot3r/cargiantscrape/actions/workflows/test-master-branch.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/test-master-branch.yml)
 
 # Compatibility 
 Should run on anything. Run in a docker isolated env
