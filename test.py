@@ -2,6 +2,10 @@ from modules.sqlite_db import SQLiteDatabase
 from modules.webscrape_cargiant_class import WebScraperCargiant
 from modules.telegram_bot import TelegramBot
 
+import platform
+
+print("Operating System:", platform.system())
+print("Architecture:", platform.machine())
 
 #Create DB 
 DB = SQLiteDatabase()
@@ -26,7 +30,8 @@ filter = {
     }
 array = ["MF68CEX", "YK16ETD", "YH16JUK"]
 data_filter = DB.filter_table( filter, data, array)
-
-print("Successful filtertable")
-
+print(data_filter)
+print("Successful filter table")
+print("===============================")
 print("Successful execution")
+print("===============================")
