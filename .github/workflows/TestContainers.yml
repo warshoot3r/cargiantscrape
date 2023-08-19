@@ -25,9 +25,6 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
-      - name: Install QEMU emulation
-        run: docker run --privileged --rm tonistiigi/binfmt --install all
-
       - name: Pull docker image
         run: docker pull --all-tags ${{ matrix.image_variant }}
 
