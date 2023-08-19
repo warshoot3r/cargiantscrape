@@ -4,9 +4,6 @@ from modules.telegram_bot import TelegramBot
 
 import platform
 
-print("Operating System:", platform.system())
-print("Architecture:", platform.machine())
-
 #Create DB 
 DB = SQLiteDatabase()
 
@@ -31,7 +28,11 @@ filter = {
 array = ["MF68CEX", "YK16ETD", "YH16JUK"]
 data_filter = DB.filter_table( filter, data, array)
 print(data_filter)
+
+
 print("Successful filter table")
 print("===============================")
-print("Successful execution")
+print("Successful execution:")
+print("Operating System:", platform.system())
+print("Architecture:", platform.machine())
 print("===============================")
