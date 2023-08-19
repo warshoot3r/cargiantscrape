@@ -40,8 +40,8 @@ jobs:
           push: false
           tags: "mytempimage-${{ matrix.platform }}"
           platforms: ${{ matrix.platform }}
-          cache-from: type=custom,local
-          cache-to: type=custom,local
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   combine-and-push:
     needs: [build-and-push]
