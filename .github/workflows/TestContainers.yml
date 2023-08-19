@@ -46,7 +46,7 @@ jobs:
           for PLATFORM in $PLATFORMS; do
             echo docker pull --platform "${PLATFORM}" "${IMAGE_NAME}"
             docker pull --platform "${PLATFORM}" "${IMAGE_NAME}"
-          done
+          done || true
 
 
       - name: Run Tests
