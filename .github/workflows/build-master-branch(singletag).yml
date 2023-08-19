@@ -33,7 +33,7 @@ jobs:
         run: |
           docker buildx build --file Dockerfile \
             --tag "jammyboi/cgwebscrape:${{ matrix.platform }}" \
-            --push .
+            --load .
           echo "::set-output name=image::jammyboi/cgwebscrape:${{ matrix.platform }}"
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
