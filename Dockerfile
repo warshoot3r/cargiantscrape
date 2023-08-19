@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
 FROM base AS final
 
 # Install pandas
-RUN pip3 install pandas -v
+RUN pip3 install pandas -v --only-binary :all
 
 # Set ENV
 ENV PATH="/usr/lib/chromium-browser/:${PATH}"
