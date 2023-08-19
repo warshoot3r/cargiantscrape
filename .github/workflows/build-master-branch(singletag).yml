@@ -26,7 +26,7 @@ jobs:
         id: build-image
         run: |
           docker buildx build --file Dockerfile \
-            --tag "mytempimage:${{ matrix.platform }}" \
+            --tag "mytempimage-${{ matrix.platform }}" \
             --platform ${{ matrix.platform }} --load .
 
       - name: Push image to Docker Hub
