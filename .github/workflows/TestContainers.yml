@@ -35,8 +35,7 @@ jobs:
           docker buildx create --name mybuilder --use
           docker buildx inspect mybuilder --bootstrap
           docker pull --platform linux/arm/v8 jammyboi/cgwebscrape:linux-arm-v8-latest
-          docker buildx build --platform linux/arm/v8 --tag mytempimage --load jammyboi/cgwebscrape:linux-arm-v8-latest
-          docker run --rm mytempimage test.py
+          docker run jammyboi/cgwebscrape:linux-arm-v8-latest
 
       - name: Stop container
         run: |
