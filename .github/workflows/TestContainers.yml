@@ -12,10 +12,11 @@ jobs:
 
     strategy:
       matrix:
+        # Select the images from DockerHub here to test
         image_variant:
-          - variant1:jammyboi/cgwebscrape:linux-armv7-latest
-          - variant2:jammyboi/cgwebscrape:linux-amd64-latest
-          - variant3:jammyboi/cgwebscrape:linux-arm64-v8-latest
+          - jammyboi/cgwebscrape:linux-armv7-latest
+          - jammyboi/cgwebscrape:linux-amd64-latest
+          - jammyboi/cgwebscrape:linux-arm64-v8-latest
 
     steps:
       - name: Checkout Repository
