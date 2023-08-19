@@ -25,8 +25,22 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
-      - name: Pull docker image
-        run: docker pull --all-tags ${{ matrix.image_variant }}
+      - name: Get all platform manifests of Docker Tag
+        run: |
+          # Replace `library/ubuntu` with your image's repository name
+          IMAGE_NAME="${{ matrix.image_variant }}"
+
+          # Fetch the image manifest using Docker's `docker manifest inspect` command
+          MANIFEST=$(docker manifest inspect "${IMAGE_NAME}")
+
+          # Extract all available platforms from the manifest
+          PLATFORMS=$(echo "${MANIFEST}" | jq -r '.manifests[].platform | select(. != null) | .os + "/" + .architecture')
+
+          # Iterate over platforms and pull the image for each platform
+          for PLATFORM in $PLATFORMS; do
+            docker pull --platform "${PLATFORM}" "${IMAGE_NAME}"
+          done
+
 
       - name: Run Tests
         run: |
