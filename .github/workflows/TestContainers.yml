@@ -34,7 +34,8 @@ jobs:
           # Pull and run the ARM image using Docker Buildx with specified platform
           docker buildx create --name mybuilder --use
           docker buildx inspect mybuilder --bootstrap
-          docker buildx build --platform linux/arm64 --tag mytempimage --load jammyboi/cgwebscrape:linux-arm-v8-latest
+          docker pull --platform linux/arm/v8 jammyboi/cgwebscrape:linux-arm-v8-latest
+          docker buildx build --platform linux/arm/v8 --tag mytempimage --load jammyboi/cgwebscrape:linux-arm-v8-latest
           docker run --rm mytempimage test.py
 
       - name: Stop container
