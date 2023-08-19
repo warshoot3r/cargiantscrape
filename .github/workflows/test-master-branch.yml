@@ -2,7 +2,7 @@ name: Test jammyboi/cgwebscrape DockerHub Containers
 on:
   workflow_run:
     workflows:
-      - "Build from source & Push to DockerHub as individual tags"
+      - "Build and Push as individual tags as *-latest"
     types:
       - completed
 
@@ -14,6 +14,7 @@ jobs:
       matrix:
         # Select the images from DockerHub here to test
         image_variant:
+          - jammyboi/cgwebscrape:latest
           - jammyboi/cgwebscrape:linux-armv7-latest
           - jammyboi/cgwebscrape:linux-amd64-latest
           - jammyboi/cgwebscrape:linux-arm64-v8-latest

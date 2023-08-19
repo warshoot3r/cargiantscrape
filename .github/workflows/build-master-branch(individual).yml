@@ -1,4 +1,4 @@
-name: Build from source & Push to DockerHub as individual tags
+name: Build and Push as individual tags as *-latest
 on:
   push: 
     branches: 

@@ -1,4 +1,4 @@
-name: Build from source & Push as latest tag
+name:  Build and Push individual tags as latest 
 on:
   workflow_dispatch: #manul
 
