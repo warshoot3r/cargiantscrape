@@ -26,7 +26,7 @@ jobs:
         uses: docker/setup-qemu-action@v2
 
       - name: Install jq 
-        run: 
+        run: sudo apt-get install -y jq
 
 
       - name: Get all platform manifests of Docker Tag
