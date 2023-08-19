@@ -44,6 +44,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Set Output Image
+        id: set_output_image
+        run: echo "::set-output name=image::jammyboi/cgwebscrape:${{ matrix.platform }}"
+
   combine-and-push:
     needs: [build-and-push]
     runs-on: ubuntu-latest
