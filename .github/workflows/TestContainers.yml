@@ -24,13 +24,14 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
-        
+
       - name: Install jq 
-        run: sudo apt-get install -y jq
+        run: 
 
 
       - name: Get all platform manifests of Docker Tag
         run: |
+          sudo apt-get install -y jq
           # Replace `library/ubuntu` with your image's repository name
           IMAGE_NAME="${{ matrix.image_variant }}"
 
@@ -42,6 +43,7 @@ jobs:
 
           # Iterate over platforms and pull the image for each platform
           for PLATFORM in $PLATFORMS; do
+            echo docker pull --platform "${PLATFORM}" "${IMAGE_NAME}"
             docker pull --platform "${PLATFORM}" "${IMAGE_NAME}"
           done
 
