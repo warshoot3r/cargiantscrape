@@ -6,7 +6,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN apt-get update && apt-get install -y python3 python3-dev virtualenv python3-venv
 RUN pip3 install -U pip
-RUN pip3 install -v -r --only-binary :all requirements.txt 
+RUN pip3 install -v --only-binary :all -r requirements.txt 
 
 # Set up chrome selenium
 RUN apt-get update && apt-get install -y \
