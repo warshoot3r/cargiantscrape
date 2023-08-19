@@ -1,4 +1,5 @@
-name: Parallel Build and Push
+name: Parallel Build and Push with Caching
+
 on:
   push: 
     branches: 
@@ -22,22 +23,25 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build image
-        id: build-image
-        run: |
-          docker buildx build --file Dockerfile \
-            --tag "mytempimage-${{ matrix.platform }}" \
-            --platform ${{ matrix.platform }} --load .
+      - name: Cache Docker layers
+        id: cache-layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: layers-${{ runner.os }}-${{ hashFiles('**/Dockerfile') }}
+          restore-keys: |
+            layers-${{ runner.os }}-
 
-      - name: Push image to Docker Hub
-        run: |
-          docker buildx build --file Dockerfile \
-            --tag "jammyboi/cgwebscrape:${{ matrix.platform }}" \
-            --push .
-          echo "::set-output name=image::jammyboi/cgwebscrape:${{ matrix.platform }}"
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push image
+        id: build-push-image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: false
+          tags: "mytempimage-${{ matrix.platform }}"
+          platforms: ${{ matrix.platform }}
+          cache-from: type=custom,local
+          cache-to: type=custom,local
 
   combine-and-push:
     needs: [build-and-push]
@@ -52,14 +56,6 @@ jobs:
           for job_id in ${{ needs.build-and-push.* }}; do
             images="${images} ${{ needs.build-and-push['${job_id}'].outputs.image }}"
           done
-
           # Combine images using docker manifest
           docker manifest create jammyboi/cgwebscrape:latest $images
           docker manifest push jammyboi/cgwebscrape:latest
-
-      - name: Clean up
-        run: |
-          # Clean up temporary images
-          for job_id in ${{ needs.build-and-push.* }}; do
-            docker image rm ${{ needs.build-and-push['${job_id}'].outputs.image }}
-          done
