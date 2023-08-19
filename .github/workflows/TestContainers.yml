@@ -25,12 +25,6 @@ jobs:
 
       - name: Pull docker image
         run: |
-          # Install QEMU user emulation for ARM
-          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-
-          # Pull and run the ARM image using Docker Buildx with specified platform
-          docker buildx create --name mybuilder --use
-          docker buildx inspect mybuilder --bootstrap
           docker pull --platform linux/arm/v8 jammyboi/cgwebscrape:linux-arm-v8-latest
           docker run --rm jammyboi/cgwebscrape:linux-arm-v8-latest test.py
 
