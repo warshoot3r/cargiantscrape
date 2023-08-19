@@ -18,10 +18,8 @@ jobs:
           - jammyboi/cgwebscrape:linux-armv7-latest
           - jammyboi/cgwebscrape:linux-amd64-latest
           - jammyboi/cgwebscrape:linux-arm64-v8-latest
-
-    outputs:
-      status: ${{ steps.get-platform-manifests.outputs.status }}
-
+      fail-fast: false
+      
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -51,9 +49,8 @@ jobs:
             echo docker pull --platform "${PLATFORM}" "${IMAGE_NAME}"
             docker pull --platform "${PLATFORM}" "${IMAGE_NAME}" || true
           done 
-          echo "::set-output name=status::success"  # Set the status to success
           
       - name: Run Tests
         run: |
           docker run --rm ${{ matrix.image_variant }} test.py
-        if: ${{ needs.pull-and-test.outputs.status == 'success' }}
+
