@@ -14,9 +14,6 @@ jobs:
       - name: Pull main repo
         uses: actions/checkout@v2
 
-      - name: Create credentials File
-        run: touch credentials.py
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -35,7 +32,7 @@ jobs:
           docker buildx create --name mybuilder --use
           docker buildx inspect mybuilder --bootstrap
           docker pull --platform linux/arm/v8 jammyboi/cgwebscrape:linux-arm-v8-latest
-          docker run jammyboi/cgwebscrape:linux-arm-v8-latest
+          docker run --rm jammyboi/cgwebscrape:linux-arm-v8-latest test.py
 
       - name: Stop container
         run: |

@@ -1,13 +1,13 @@
 from modules.sqlite_db import SQLiteDatabase
 from modules.webscrape_cargiant_class import WebScraperCargiant
 from modules.telegram_bot import TelegramBot
-import credentials
+
 
 #Create DB 
 DB = SQLiteDatabase()
 
 #create Telegrambot
-tb = TelegramBot(api_token=credentials.api_token)
+tb = TelegramBot(api_token=33)
 
 
 data = DB.return_as_panda_dataframe()
