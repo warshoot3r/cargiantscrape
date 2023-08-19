@@ -1,4 +1,4 @@
-name: Pull latest and run test
+name: Pull different images and run test
 on:
   workflow_run:
     workflows:
@@ -7,11 +7,18 @@ on:
       - completed
 
 jobs:
-  build-and-test:
+  pull-and-test:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        image_variant:
+          - variant1:jammyboi/cgwebscrape:linux-armv7-latest
+          - variant2:jammyboi/cgwebscrape:linux-amd64-latest
+          - variant3:jammyboi/cgwebscrape:linux-arm64-v8-latest
+
     steps:
-      - name: Pull main repo
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Set up QEMU
@@ -20,14 +27,12 @@ jobs:
       - name: Install QEMU emulation
         run: docker run --privileged --rm tonistiigi/binfmt --install all
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
       - name: Pull docker image
+        run: docker pull --all-tags ${{ matrix.image_variant }}
+
+      - name: Run Tests
         run: |
-          docker pull --platform linux/arm/v8 jammyboi/cgwebscrape:linux-arm-v8-latest
-          docker run --rm jammyboi/cgwebscrape:linux-arm-v8-latest test.py
+          docker run --rm ${{ matrix.image_variant }} test.py
 
       - name: Stop container
-        run: |
-          docker compose down
+        run: docker compose down
