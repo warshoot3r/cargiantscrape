@@ -1,4 +1,4 @@
-name: Test jammyboi/cgwebscrape DockerHub Containers 
+name: Test Containers 
 on:
   workflow_run:
     workflows:
