@@ -1,41 +1,42 @@
 name: Pull latest and run test
 on:
-    workflow_run:
-        branches: 
-            - master
-        workflows:
-            - "Build from source & Push to DockerHub as individual tags"
-        types:
-            - completed
+  workflow_run:
+    workflows:
+      - "Build from source & Push to DockerHub as individual tags"
+    types:
+      - completed
+
 jobs:
-    build-and-test:
-        runs-on: ubuntu-latest
+  build-and-test:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Pull main repo
-              uses: actions/checkout@v2
+    steps:
+      - name: Pull main repo
+        uses: actions/checkout@v2
 
-            - name: Create credentials File
-              run: touch credentials.py
+      - name: Create credentials File
+        run: touch credentials.py
 
-            - name: Set up QEMU
-              uses: docker/setup-qemu-action@v2
-              
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
 
-            - name: Install QEMU emulation
-              run: docker run --privileged --rm tonistiigi/binfmt --install all
+      - name: Install QEMU emulation
+        run: docker run --privileged --rm tonistiigi/binfmt --install all
 
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v1
-              
-            
-            - name: Pull docker image
-              run: |
-                # sudo apt-get install qemu binfmt-support qemu-user-static
-                docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-                docker run --rm jammyboi/cgwebscrape:linux-arm-v8-latest test.py
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-                
-            - name: Stop container
-              run: |
-                docker compose down 
+      - name: Pull docker image
+        run: |
+          # Install QEMU user emulation for ARM
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+          # Pull and run the ARM image using Docker Buildx with specified platform
+          docker buildx create --name mybuilder --use
+          docker buildx inspect mybuilder --bootstrap
+          docker buildx build --platform linux/arm64 --tag mytempimage --load jammyboi/cgwebscrape:linux-arm-v8-latest
+          docker run --rm mytempimage test.py
+
+      - name: Stop container
+        run: |
+          docker compose down
