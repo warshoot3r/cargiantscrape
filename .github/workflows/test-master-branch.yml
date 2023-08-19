@@ -56,5 +56,4 @@ jobs:
       - name: Run Tests
         run: |
           docker run --rm ${{ matrix.image_variant }} test.py
-        continue-on-error: true
         if: ${{ needs.pull-and-test.outputs.status == 'success' }}
