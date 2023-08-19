@@ -1,9 +1,7 @@
 name: Parallel Build and Push with Caching (feature Branch)
 
 on:
-  push: 
-    branches: 
-      - buildfromsource
+  workflow_dispatch: 
 
 jobs:
   build-and-push:
