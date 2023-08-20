@@ -6,7 +6,7 @@ on:
       - "master"
 
 env:
-  REGISTRY_IMAGE: jammyboi/cgwebscrape:latest
+  REGISTRY_IMAGE: jammyboi/cgwebscrape:stable-latest
 
 jobs:
   build:
