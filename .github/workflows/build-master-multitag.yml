@@ -6,8 +6,8 @@ on:
       - "master"
 
 env:
-  REGISTRY_IMAGE: jammyboi/cgwebscrape:stable-latest
-
+  REGISTRY_IMAGE: jammyboi/cgwebscrape
+  
 jobs:
   build:
     runs-on: ubuntu-latest
