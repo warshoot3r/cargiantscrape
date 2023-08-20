@@ -20,9 +20,6 @@ jobs:
           - linux/arm/v7
           - linux/arm64
     steps:
-      - name: Remove Slashes
-        run: echo "MATRIX_PLATFORM_NO_SLASH=${{ matrix.platform//\//- }}" >> $GITHUB_ENV
-
       - name: Checkout
         uses: actions/checkout@v3
       
@@ -52,8 +49,8 @@ jobs:
           platforms: ${{ matrix.platform }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
-          cache-from: type=registry,ref=jammyboi/cgwebscrape-multi-${{ env.MATRIX_PLATFORM_NO_SLASH }}-latest-buildcache
-          cache-to: type=registry,ref=jammyboi/cgwebscrape-multi-${{ env.MATRIX_PLATFORM_NO_SLASH }}-latest-buildcache,mode=max
+          cache-from: type=registry,ref=jammyboi/cgwebscrape-multi-${{ matrix.platform }}-latest-buildcache
+          cache-to: type=registry,ref=jammyboi/cgwebscrape-multi-${{ matrix.platform }}-latest-buildcache,mode=max
       
       - name: Export digest
         run: |
