@@ -1,10 +1,8 @@
-name: Test Containers 
+name: Test Containers - Build and push multi tag as branch name
 on:
-  workflow_run:
-    branches: 
-      - master
+  workflow_run: 
     workflows:
-      - "Build and Push as individual tags as *-latest"
+      - "Build and push multi tag as branch name"
     types:
       - completed
 

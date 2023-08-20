@@ -1,5 +1,5 @@
 
-name: "[Feature Branch] Build Single Tag and push"
+name: "Manual Build and push"
 on:
   workflow_dispatch: 
 
@@ -41,7 +41,3 @@ jobs:
           platforms: ${{ matrix.platform }}
           cache-from: type=gha, scope=buildcache-${{ matrix.platform}}
           cache-to: type=gha,mode=max, scope=buildcache-${{ matrix.platform}}
-
-      - name: Set Output Image
-        id: set_output_image
-        run: echo "::set-output name=image::jammyboi/cgwebscrape:${{ matrix.platform }}"

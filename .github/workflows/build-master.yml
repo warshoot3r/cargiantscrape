@@ -1,4 +1,4 @@
-name: "[Production Branch] Test - Build Multi Tag and push as latest"
+name: "Build and push multi tag as branch name"
 
 on:
   push:
@@ -112,8 +112,3 @@ jobs:
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
-
-      - name: Push manifest list
-        run: |
-            docker buildx imagetools push "${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}"
-        

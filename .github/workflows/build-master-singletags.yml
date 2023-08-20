@@ -1,4 +1,4 @@
-name: "[Production Branch] Build Multi Tag and push as latest"
+name: "Build master as single tags and push as latest"
 on:
   push: 
     branches: 
