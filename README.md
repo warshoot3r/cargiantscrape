@@ -12,24 +12,35 @@ ubuntu amd64
 pi4 aarch64
 
 
-# install
+# Container Install
+
 install docker and docker-compose on linux distro
 
 clone the git repo
-
+```
+git clone https://github.com/warshoot3r/cargiantscrape.git
+```
 cd folder
-
-
+```
+cd cargiantscrape
+```
 Create a credentials.py
+```
+echo 'api_token = "" \nchat_id = ""' >> credentials.py
+```
 
-create a used_cars.db file
-
-./run_container.sh
-
+create an empty used_cars.db file
+```
+touch used_cars.db
+```
+Run the docker container
+```
+docker compose pull && docker compose up -d 
+```
 
 
 # Manually Running
-Run main.py for terminal output of car scrape and telegram sending the report
+Run chatbot_autorun.py for terminal output of car scrape and telegram sending the report
 
 
 # Todo:
