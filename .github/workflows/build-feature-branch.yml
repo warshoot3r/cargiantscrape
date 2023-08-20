@@ -64,6 +64,6 @@ jobs:
                 image_tags=($images)
                 
                 # Combine images using docker manifest
-                docker manifest create jammyboi/cgwebscrape:latest "${image_tags[@]}"
-                docker manifest push jammyboi/cgwebscrape:latest
+                docker manifest create jammyboi/cgwebscrape:dev "${image_tags[@]}"
+                docker manifest push jammyboi/cgwebscrape:dev
       
