@@ -1,9 +1,9 @@
-name: Parallel Build and Push with Caching
-
+name: "[Production Branch] Build single Tag and push as latest"
 on:
-  push:
-    branches:
+  push: 
+    branches: 
       - master
+
 
 jobs:
   build-and-push:

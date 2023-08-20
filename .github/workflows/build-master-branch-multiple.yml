@@ -1,9 +1,8 @@
-name: Build and Push as individual tags as *-latest
+name: "[Production Branch] Build Multi Tag and push as latest"
 on:
   push: 
     branches: 
-        - master
-
+      - master
 
 jobs:
   build_arm_v7:
