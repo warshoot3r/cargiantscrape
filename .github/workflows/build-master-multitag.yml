@@ -2,7 +2,7 @@ name: "[Production Branch] Test - Build Multi Tag and push as latest"
 on:
   push:
     branches:
-      - "main"
+      - "master"
 
 env:
   REGISTRY_IMAGE: jammyboi/cgwebscrape:latest
