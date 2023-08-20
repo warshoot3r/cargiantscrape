@@ -47,7 +47,7 @@ jobs:
             PLATFORM: ${{ matrix.platform }}
         run: |
             echo "PLATFORM=${PLATFORM}"
-            echo "${platform_without_slash}=$(echo $PLATFORM | tr -d '/')"  >> $GITHUB_ENV
+            echo "platform_without_slash=$(echo $PLATFORM | tr -d '/')"  >> "$GITHUB_ENV"
         
 
       
@@ -59,8 +59,8 @@ jobs:
           platforms: ${{ matrix.platform }}
           labels: ${{ steps.meta.outputs.labels }}
           load: true
-          cache-from: type=registry,ref=jammyboi/cgwebscrape:multi-${{ steps.remove_slash.outputs.platform_without_slash }}-latest-buildcache
-          cache-to: type=registry,ref=jammyboi/cgwebscrape:multi-${{ steps.remove_slash.outputs.platform_without_slash  }}-latest-buildcache,mode=max
+          cache-from: type=registry,ref=jammyboi/cgwebscrape:multi-${{ env.platform_without_slash }}-latest-buildcache
+          cache-to: type=registry,ref=jammyboi/cgwebscrape:multi-${{ env.platform_without_slash  }}-latest-buildcache,mode=max
       
       - name: Export digest
         run: |
