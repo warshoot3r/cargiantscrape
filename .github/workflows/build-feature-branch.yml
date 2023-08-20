@@ -47,18 +47,23 @@ jobs:
         run: echo "::set-output name=image::jammyboi/cgwebscrape:${{ matrix.platform }}"
 
   combine-and-push:
-    needs: [build-and-push]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Combine images and push as single tag
-        id: combine-images
-        run: |
-          # Retrieve image tags from outputs of build jobs
-          images=""
-          for job_id in ${{ needs.build-and-push.* }}; do
-            images="${images} ${{ needs.build-and-push['${job_id}'].outputs.image }}"
-          done
-          # Combine images using docker manifest
-          docker manifest create jammyboi/cgwebscrape:dev $images
-          docker manifest push jammyboi/cgwebscrape:dev
+          needs: [build-and-push]
+          runs-on: ubuntu-latest
+      
+          steps:
+            - name: Combine images and push as single tag
+              id: combine-images
+              run: |
+                # Retrieve image tags from outputs of build jobs
+                images=""
+                for job_id in ${{ needs.build-and-push.* }}; do
+                  images="${images} ${{ needs.build-and-push['${job_id}'].outputs.image }}"
+                done
+                
+                # Convert the space-separated image tags into an array
+                image_tags=($images)
+                
+                # Combine images using docker manifest
+                docker manifest create jammyboi/cgwebscrape:latest "${image_tags[@]}"
+                docker manifest push jammyboi/cgwebscrape:latest
+      
