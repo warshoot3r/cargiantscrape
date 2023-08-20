@@ -42,10 +42,11 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Remove slash from platform
+        env:
+            PLATFORM: ${{ matrix.platform }}
         run: |
-          echo "::set-env name=PLATFORM::${{ matrix.platform }}"
-          echo "::set-output name=platform_without_slash::$(echo $PLATFORM | tr -d '/')"
-        id: remove_slash
+            echo "PLATFORM=${PLATFORM}"
+            echo "platform_without_slash=$(echo $PLATFORM | tr -d '/')"
 
       
       - name: Build and push by digest
