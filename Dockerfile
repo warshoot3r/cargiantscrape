@@ -10,15 +10,11 @@ RUN pip3 install -v -r requirements.txt
 
 # Set up chrome selenium
 RUN apt-get update && apt-get install -y \
-    unzip \
     chromium \
     chromium-driver
 
 # Final runtime image
 FROM base AS final
-
-# Install pandas
-RUN pip3 install pandas -v
 
 # Set ENV
 ENV PATH="/usr/lib/chromium-browser/:${PATH}"
