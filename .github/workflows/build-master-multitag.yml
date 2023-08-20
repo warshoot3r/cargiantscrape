@@ -49,8 +49,8 @@ jobs:
           platforms: ${{ matrix.platform }}
           labels: ${{ steps.meta.outputs.labels }}
           load: true
-          cache-from: type=registry,ref=jammyboi/cgwebscrape-multi-${{ matrix.platform }}-latest-buildcache
-          cache-to: type=registry,ref=jammyboi/cgwebscrape-multi-${{ matrix.platform }}-latest-buildcache,mode=max
+          cache-from: type=registry,ref=jammyboi/cgwebscrape:multi-${{ matrix.platform }}-latest-buildcache
+          cache-to: type=registry,ref=jammyboi/cgwebscrape:multi-${{ matrix.platform }}-latest-buildcache,mode=max
       
       - name: Export digest
         run: |
