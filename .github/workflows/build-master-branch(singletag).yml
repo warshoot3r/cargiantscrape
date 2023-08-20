@@ -28,9 +28,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
-          key: layers-${{ runner.os }}-${{ hashFiles('**/Dockerfile') }}
+          key: layers-${{ matrix.platform }}-${{ hashFiles('**/Dockerfile') }}
           restore-keys: |
-            layers-${{ runner.os }}-
+            layers-${{ matrix.platform }}-
 
       - name: Build and push image
         id: build-push-image

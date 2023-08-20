@@ -1,6 +1,8 @@
 name: Test Containers 
 on:
   workflow_run:
+    branches: 
+      - master
     workflows:
       - "Build and Push as individual tags as *-latest"
     types:
