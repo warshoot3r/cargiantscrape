@@ -1,10 +1,10 @@
 # cargiantscrape
 pythonised scraping car giant for models and prices. Sends a report via telegram.
 
-[![Build and Push as individual tags as *-latest](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master-branch(individual).yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master-branch(individual).yml)
-[![Build and Push as latest](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master-branch(singletag).yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master-branch(singletag).yml)
-[![Test Containers](https://github.com/warshoot3r/cargiantscrape/actions/workflows/test-master-branch.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/test-master-branch.yml)
-
+[![Build and push multi tag as branch name](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master.yml)
+[![Build master as single tags and push as latest](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master-singletags.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master-singletags.yml)
+[![Manual Build and push](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-feature-branch.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-feature-branch.yml)
+[![Test Containers - Build and push multi tag as branch name](https://github.com/warshoot3r/cargiantscrape/actions/workflows/test-master.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/test-master.yml)
 # Compatibility 
 Should run on anything. Run in a docker isolated env
 tested on:
