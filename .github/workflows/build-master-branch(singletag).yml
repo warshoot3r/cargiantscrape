@@ -41,8 +41,8 @@ jobs:
           load: true
           tags: "mytempimage-${{ matrix.platform }}"
           platforms: ${{ matrix.platform }}
-          cache-from: type=gha, scope=buildcache-${{ matrix.platform}}
-          cache-to: type=gha,mode=max, scope=buildcache-${{ matrix.platform}}
+          cache-from: type=gha, scope=masterbuildcache-${{ matrix.platform}}
+          cache-to: type=gha,mode=max, scope=masterbuildcache-${{ matrix.platform}}
 
       - name: Set Output Image
         id: set_output_image
