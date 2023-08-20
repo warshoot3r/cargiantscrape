@@ -28,13 +28,7 @@ jobs:
           docker buildx build --file Dockerfile \
             --tag "mytempimage-${{ matrix.platform }}" \
             --platform ${{ matrix.platform }} --load .
-
-      - name: Push image to Docker Hub
-        run: |
-          docker buildx build --file Dockerfile \
-            --tag "jammyboi/cgwebscrape:${{ matrix.platform }}" \
-            --push .
-          echo "::set-output name=image::jammyboi/cgwebscrape:${{ matrix.platform }}"
+            
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
