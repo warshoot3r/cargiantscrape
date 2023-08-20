@@ -33,7 +33,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: true
+          push: false
           load: true
           tags: "jammyboi/cgwebscrape:linux-armv7-latest"
           platforms: linux/arm/v7
@@ -71,7 +71,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: true
+          push: false
           load: true
           tags: "jammyboi/cgwebscrape:linux-arm64-v8-latest"
           platforms: linux/arm64/v8
@@ -110,7 +110,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: true
+          push: false
           load: true
           tags: "jammyboi/cgwebscrape:linux-arm-v8-latest"
           platforms: linux/arm/v8
@@ -149,7 +149,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: true
+          push: false
           load: true
           tags: "jammyboi/cgwebscrape:linux-amd64-latest"
           platforms: linux/amd64
