@@ -34,6 +34,7 @@ jobs:
         with:
           context: .
           push: true
+          load: true
           tags: "jammyboi/cgwebscrape:linux-armv7-latest"
           platforms: linux/arm/v7
           build-args: |
@@ -71,6 +72,7 @@ jobs:
         with:
           context: .
           push: true
+          load: true
           tags: "jammyboi/cgwebscrape:linux-arm64-v8-latest"
           platforms: linux/arm64/v8
           build-args: |
@@ -109,6 +111,7 @@ jobs:
         with:
           context: .
           push: true
+          load: true
           tags: "jammyboi/cgwebscrape:linux-arm-v8-latest"
           platforms: linux/arm/v8
           build-args: |
@@ -147,6 +150,7 @@ jobs:
         with:
           context: .
           push: true
+          load: true
           tags: "jammyboi/cgwebscrape:linux-amd64-latest"
           platforms: linux/amd64
           build-args: |
