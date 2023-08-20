@@ -155,4 +155,27 @@ jobs:
             PIP_CACHE_DIR=/root/.cache/pip
           cache-from: type=registry,ref=jammyboi/cgwebscrape:linux-amd64-latest-buildcache
           cache-to: type=registry,ref=jammyboi/cgwebscrape:linux-amd64-latest-buildcache,mode=max
-
+  create_combined_manifest:
+            needs:
+              - build_arm_v7
+              - build_arm64_v8
+              - build_arm_v8
+              - build_amd64
+            runs-on: ubuntu-latest
+            steps:
+              - name: Checkout code
+                uses: actions/checkout@v2
+                
+              - name: Set up Docker Buildx
+                uses: docker/setup-buildx-action@v2
+        
+        
+              - name: Create Docker manifest
+                run: |
+                  docker manifest create "jammyboi/cgwebscrape:latest" \
+                    "jammyboi/cgwebscrape:linux-armv7-latest" \
+                    "jammyboi/cgwebscrape:linux-arm64-v8-latest" \
+                    "jammyboi/cgwebscrape:linux-arm-v8-latest" \
+                    "jammyboi/cgwebscrape:linux-amd64-latest"
+                  docker manifest push "jammyboi/cgwebscrape:latest"
+        
