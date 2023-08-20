@@ -37,7 +37,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: false
+          push: true
           load: true
           tags: "mytempimage-${{ matrix.platform }}"
           platforms: ${{ matrix.platform }}

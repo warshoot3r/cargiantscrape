@@ -1,8 +1,8 @@
-name: Parallel Build and Push with Caching (feature Branch)
 
+name: "[Feature Branch] Build Single Tag and push"
 on:
   workflow_dispatch: 
-    
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -35,7 +35,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: false
+          push: true
           load: true
           tags: "mytempimage-${{ matrix.platform }}"
           platforms: ${{ matrix.platform }}
