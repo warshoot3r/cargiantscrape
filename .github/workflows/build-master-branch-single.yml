@@ -1,9 +1,8 @@
-name: "[Production Branch] Build single Tag and push as latest"
+name: Parallel Build and Push
 on:
   push: 
     branches: 
       - master
-
 
 jobs:
   build-and-push:
@@ -15,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -23,30 +22,22 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Cache Docker layers
-        id: cache-layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: layers-${{ matrix.platform }}-${{ hashFiles('**/Dockerfile') }}
-          restore-keys: |
-            layers-${{ matrix.platform }}-
+      - name: Build image
+        id: build-image
+        run: |
+          docker buildx build --file Dockerfile \
+            --tag "mytempimage-${{ matrix.platform }}" \
+            --platform ${{ matrix.platform }} --load .
 
-      - name: Build and push image
-        id: build-push-image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: false
-          load: true
-          tags: "mytempimage-${{ matrix.platform }}"
-          platforms: ${{ matrix.platform }}
-          cache-from: type=gha, scope=masterbuildcache-${{ matrix.platform}}
-          cache-to: type=gha, mode=max, scope=masterbuildcache-${{ matrix.platform}}
-
-      - name: Set Output Image
-        id: set_output_image
-        run: echo "::set-output name=IMAGE_TAG::jammyboi/cgwebscrape:${{ matrix.platform }}"
+      - name: Push image to Docker Hub
+        run: |
+          docker buildx build --file Dockerfile \
+            --tag "jammyboi/cgwebscrape:${{ matrix.platform }}" \
+            --push .
+          echo "::set-output name=image::jammyboi/cgwebscrape:${{ matrix.platform }}"
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
   combine-and-push:
     needs: [build-and-push]
@@ -59,12 +50,16 @@ jobs:
           # Retrieve image tags from outputs of build jobs
           images=""
           for job_id in ${{ needs.build-and-push.* }}; do
-            images="${images} ${{ needs.build-and-push['${job_id}'].outputs.IMAGE_TAG }}"
+            images="${images} ${{ needs.build-and-push['${job_id}'].outputs.image }}"
           done
 
-          # Convert the space-separated image tags into an array
-          image_tags=($images)
-
           # Combine images using docker manifest
-          docker manifest create jammyboi/cgwebscrape:latest "${image_tags[@]}"
+          docker manifest create jammyboi/cgwebscrape:latest $images
           docker manifest push jammyboi/cgwebscrape:latest
+
+      - name: Clean up
+        run: |
+          # Clean up temporary images
+          for job_id in ${{ needs.build-and-push.* }}; do
+            docker image rm ${{ needs.build-and-push['${job_id}'].outputs.image }}
+          done
