@@ -42,6 +42,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Remove slash from platform
+        id: remove_slash
         env:
             PLATFORM: ${{ matrix.platform }}
         run: |
