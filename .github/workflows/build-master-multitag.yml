@@ -47,7 +47,8 @@ jobs:
             PLATFORM: ${{ matrix.platform }}
         run: |
             echo "PLATFORM=${PLATFORM}"
-            echo "platform_without_slash=$(echo $PLATFORM | tr -d '/')"  >> $GITHUB_ENV
+            echo "${platform_without_slash}=$(echo $PLATFORM | tr -d '/')"  >> $GITHUB_ENV
+        
 
       
       - name: Build and push by digest
