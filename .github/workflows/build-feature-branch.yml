@@ -46,16 +46,17 @@ jobs:
         run: |
             echo "PLATFORM=${PLATFORM}"
             echo "platform_without_slash=$(echo $PLATFORM | tr -d '/')"  >> "$GITHUB_ENV"
-        
 
-      
+      - name: Set up Docker BuildKit
+        run: echo 'DOCKER_BUILDKIT=1' >> $GITHUB_ENV
+        
       - name: Build and push by digest
         id: build
         uses: docker/build-push-action@v4
         with:
           context: .
           platforms: ${{ matrix.platform }}
-          build-args: DOCKER_BUILDKIT=1
+          build-args: BUILDKIT_INLINE_CACHE=1
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=jammyboi/cgwebscrape:multi-${{ env.platform_without_slash }}-${{ github.ref_name }}-buildcache
           cache-to: type=registry,ref=jammyboi/cgwebscrape:multi-${{ env.platform_without_slash }}-${{ github.ref_name }}-buildcache
