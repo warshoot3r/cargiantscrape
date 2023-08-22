@@ -1,31 +1,37 @@
-# Use a smaller base image
-FROM python:3.9-slim-bullseye AS base
+# syntax=docker/dockerfile:1.4
 
-# Set up requirements for scraping
-WORKDIR /app
+# Stage 1: Install Python packages
+FROM python:3.9-slim-bookworm AS pythonpackages
+
+# Install build dependencies for numpy
 COPY requirements.txt .
-RUN apt-get update && apt-get install -y python3 python3-dev virtualenv python3-venv
-RUN pip3 install -U pip
-RUN pip3 install -v -r requirements.txt 
+#As per piwheels
 
-# Set up chrome selenium
-RUN apt-get update && apt-get install -y \
+RUN pip install --prefer-binary --prefix=/app/pip-packages --no-cache-dir --extra-index-url https://www.piwheels.org/simple -r requirements.txt
+
+
+
+from python:3.9-slim-bookworm as final
+COPY --from=pythonpackages /app/pip-packages /usr/local
+RUN --mount=type=cache,target=/var/cache/apt \
+    apt update && apt install libatlas3-base libgfortran5 -y 
+RUN --mount=type=cache,target=/var/cache/apt \
+    apt-get update && apt-get install -y --no-install-recommends \
     chromium \
     chromium-driver
 
-# Final runtime image
-FROM base AS final
 
-# Set ENV
-ENV PATH="/usr/lib/chromium-browser/:${PATH}"
-ENV CHROME_DRIVER=/usr/lib/chromium-browser/chromedriver
-ENV CHROME_OPTIONS="--headless"
+#Set env
+ENV PATH="/usr/lib/chromium/:${PATH}"
+ENV CHROME_DRIVER=/usr/bin/chromedriver
+RUN chmod +x /usr/lib/chromium/chromium
 
+workdir /app
 # Copy class files and main.py
 COPY modules /app/modules
-COPY chatbot_autorun.py .
 COPY remove_unresolvable_cars.py .
+COPY chatbot_autorun.py .
 COPY test.py .
 
 ENTRYPOINT ["python3"]
-CMD ["chatbot_autorun.py"]
+CMD ["chatbot_autorun.py"] 

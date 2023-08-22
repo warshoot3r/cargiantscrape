@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.chromium.options import ChromiumOptions as ChromiumOptions
 from selenium.webdriver.safari.options import Options as SafariOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from bs4 import BeautifulSoup
@@ -47,19 +48,35 @@ class WebScraperCargiant:
             safari_options = SafariOptions()
             safari_options.headless = True  # Safari doesn't support the "--headless" argument, so we use the headless property
             self.driver = webdriver.Safari(safari_options)
-
+        
         elif self.driver == "chrome":
             chrome_options = ChromeOptions()
+            chrome_options.headless = True
             chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-gpu")
+            chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--window-size=1920,1200")
             chrome_options.add_argument("--ignore-certificate-errors")
-            chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-extensions")
-            chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--start-minimized")
             self.driver = webdriver.Chrome(options=chrome_options)
-    
+        elif self.driver == "chromium":
+            chromium_options = ChromiumOptions()
+            chromium_options.add_argument("--no-sandbox")
+            chromium_options.add_argument("headless")
+            chromium_options.add_argument("--crash-dumps-dir=/tmp")
+            chromium_options.add_argument("--disable-gpu")
+            chromium_options.add_argument("--disable-dev-shm-usage")
+            chromium_options.add_argument("--window-size=800,600")
+            chromium_options.add_argument("--ignore-certificate-errors")
+            chromium_options.add_argument("--disable-extensions")
+            chromium_options.add_argument("--start-minimized")
+            print(f"binary={chromium_options.binary_location}")
+            print(f"headless={chromium_options.headless}")
+            print(f"brwoser={chromium_options.browser_version}")
+            self.driver = webdriver.Chrome(options=chromium_options)
+       
         elif self.driver == "firefox":
             firefox_options = FirefoxOptions()
             firefox_options.headless = True

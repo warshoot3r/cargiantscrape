@@ -1,7 +1,7 @@
 from modules.sqlite_db import SQLiteDatabase
 from modules.webscrape_cargiant_class import WebScraperCargiant
 from modules.telegram_bot import TelegramBot
-
+import time
 import platform
 
 #Create DB 
@@ -14,7 +14,7 @@ print("Successful teleegram bot init")
 data = DB.return_as_panda_dataframe()
 
 #Create selenium
-cars = WebScraperCargiant(driver="chrome", keepalive=True)
+cars = WebScraperCargiant(driver="chromium", keepalive=True)
 print("Successful selenium init")
 # test 1
 cars.get_car_makes()
@@ -29,10 +29,20 @@ array = ["MF68CEX", "YK16ETD", "YH16JUK"]
 data_filter = DB.filter_table( filter, data, array)
 print(data_filter)
 
+#test 3 pull data only for amd64 as no emulation isn possible ###
+
+
 
 print("Successful filter table")
 print("===============================")
 print("Successful execution:")
 print("Operating System:", platform.system())
 print("Architecture:", platform.machine())
+if( platform.machine() == "x86_64"):
+    print("Testing a 3 page scrape for performance test")
+    start_time = time.time()
+    cars.search_for_manufacturer(manufacturer="BMW", numberofpages=3)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print(f"Execution time for test: web scrape: {elapsed_time:.6f} seconds")
 print("===============================")
