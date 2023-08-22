@@ -49,7 +49,7 @@ jobs:
 
       - name: Set up Docker BuildKit
         run: echo 'DOCKER_BUILDKIT=1' >> $GITHUB_ENV
-        
+
       - name: Build and push by digest
         id: build
         uses: docker/build-push-action@v4
@@ -131,7 +131,8 @@ jobs:
         
         - name: Set up QEMU
           uses: docker/setup-qemu-action@v2
-        
+          if: startsWith(matrix.platform, 'linux/arm')
+
         - name: Run Tests on built docker image
           run: |
             docker run --platform ${{ matrix.platform }} --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} test.py

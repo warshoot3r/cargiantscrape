@@ -26,6 +26,8 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
+        if: startsWith(matrix.platform, 'linux/arm')
+
 
       - name: Install jq 
         run: sudo apt-get install -y jq
