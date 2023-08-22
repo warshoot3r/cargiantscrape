@@ -1,8 +1,8 @@
-name: Test Containers - Build and push multi tag as branch name
+name: Test pushed individual tagged images
 on:
   workflow_run: 
     workflows:
-      - "Build and push multi tag as branch name"
+      - "Manual - Build as single tags and push as testing"
     types:
       - completed
 
@@ -14,7 +14,7 @@ jobs:
       matrix:
         # Select the images from DockerHub here to test
         image_variant:
-          - jammyboi/cgwebscrape:master
+
           - jammyboi/cgwebscrape:linux-armv7-latest
           - jammyboi/cgwebscrape:linux-amd64-latest
           - jammyboi/cgwebscrape:linux-arm64-v8-latest
