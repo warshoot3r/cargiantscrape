@@ -72,9 +72,6 @@ class WebScraperCargiant:
             chromium_options.add_argument("--ignore-certificate-errors")
             chromium_options.add_argument("--disable-extensions")
             chromium_options.add_argument("--start-minimized")
-            print(f"binary={chromium_options.binary_location}")
-            print(f"headless={chromium_options.headless}")
-            print(f"brwoser={chromium_options.browser_version}")
             self.driver = webdriver.Chrome(options=chromium_options)
        
         elif self.driver == "firefox":
