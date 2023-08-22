@@ -12,6 +12,7 @@ RUN pip install --prefer-binary --extra-index-url https://www.piwheels.org/simpl
 
 
 from python:3.9-slim-bookworm as final
+workdir /app
 COPY --link --from=pythonpackages /app/venv ./venv
 ENV PATH="/app/venv/bin:$PATH"
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -25,7 +26,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 ENV PATH="/usr/lib/chromium/:$PATH"
 ENV CHROME_DRIVER=/usr/bin/chromedriver
 
-workdir /app
 # Copy class files and main.py
 COPY --link modules /app/modules
 COPY --link remove_unresolvable_cars.py .
