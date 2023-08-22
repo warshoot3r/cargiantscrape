@@ -2,7 +2,7 @@
 
 # Stage 1: Install Python packages
 FROM python:3.9-slim-bookworm AS pythonpackages
-COPY requirements.txt .
+COPY --link requirements.txt .
 
 RUN python -m venv /app/venv
 ENV PATH="/app/venv/bin:$PATH"
@@ -12,7 +12,7 @@ RUN pip install --prefer-binary --extra-index-url https://www.piwheels.org/simpl
 
 
 from python:3.9-slim-bookworm as final
-COPY --from=pythonpackages /app/venv ./venv
+COPY --link --from=pythonpackages /app/venv ./venv
 ENV PATH="/app/venv/bin:$PATH"
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
@@ -27,10 +27,10 @@ ENV CHROME_DRIVER=/usr/bin/chromedriver
 
 workdir /app
 # Copy class files and main.py
-COPY modules /app/modules
-COPY remove_unresolvable_cars.py .
-COPY chatbot_autorun.py .
-COPY test.py .
+COPY --link modules /app/modules
+COPY --link remove_unresolvable_cars.py .
+COPY --link chatbot_autorun.py .
+COPY --link test.py .
 
 ENTRYPOINT ["python3"]
 CMD ["chatbot_autorun.py"] 
