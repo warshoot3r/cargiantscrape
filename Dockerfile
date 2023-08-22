@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4
 
 # Stage 1: Install Python packages
-FROM python:3.9-slim-bookworm AS pythonpackages
+FROM python:3.9.17-slim-bookworm AS pythonpackages
 COPY --link requirements.txt .
 
 RUN python -m venv /app/venv
@@ -11,7 +11,7 @@ RUN pip install --prefer-binary --extra-index-url https://www.piwheels.org/simpl
 
 
 
-from python:3.9-slim-bookworm as final
+from python:3.9.17-slim-bookworm as final
 workdir /app
 COPY --link --from=pythonpackages /app/venv ./venv
 ENV PATH="/app/venv/bin:$PATH"
