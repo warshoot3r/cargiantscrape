@@ -1,9 +1,7 @@
-name: "Build and push multi tag as branch name"
+name: "Automatic - Build and push multi tag as branch name"
 
 on:
   push:
-    branches:
-      - "master"
     paths-ignore: 
       - ".github"
 
