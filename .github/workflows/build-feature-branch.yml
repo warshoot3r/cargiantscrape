@@ -1,4 +1,4 @@
-name: "Manually build and test feature branch"
+name: "Automatically build and test feature branch (not master)"
 
 on:
   workflow_dispatch: 
