@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4
 
 # Stage 1: Install Python packages
-FROM python:3.11.4-slim-bullseye AS pythonpackages
+FROM python:3.11.4-slim-bullseye@sha256:40319d0a897896e746edf877783ef39685d44e90e1e6de8d964d0382df0d4952 AS pythonpackages
 COPY --link requirements.txt .
 
 RUN python -m venv /app/venv
