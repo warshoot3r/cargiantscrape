@@ -1,12 +1,11 @@
 # syntax=docker/dockerfile:1.4
 
 # Stage 1: Install Python packages
-FROM python:3.11.4-slim-bullseye AS pythonpackages
+FROM python:3.10.12-slim-bullseye AS pythonpackages
 COPY --link requirements.txt .
 
 RUN python -m venv /app/venv
 ENV PATH="/app/venv/bin:$PATH"
-RUN apt update && apt install libatlas3-base libgfortran5 -y
 RUN pip install --prefer-binary --extra-index-url https://www.piwheels.org/simple -r requirements.txt
 
 
