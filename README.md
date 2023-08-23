@@ -26,7 +26,7 @@ cd cargiantscrape
 ```
 Create a credentials.py
 ```
-echo 'api_token = "" \nchat_id = ""' >> credentials.py
+echo -e 'api_token = "" \nchat_id = ""' >> credentials.py
 ```
 
 create an empty used_cars.db file
