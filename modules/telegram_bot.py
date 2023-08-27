@@ -1,5 +1,6 @@
 import requests
 import socket
+import re
 class TelegramBot:
     def __init__(self, api_token):
         self.api_token = api_token
@@ -70,7 +71,8 @@ class TelegramBot:
 
     def send_message_servername(self, chat_id, message):
         try: 
-            computer_name = socket.gethostname()
+            get_computer_name = socket.gethostname()
+            computer_name = re.sub(r'[^w\w\s]', '', get_computer_name)        
         except socket.error as e:
             return None
         message = f"From server: {computer_name} {message}"
