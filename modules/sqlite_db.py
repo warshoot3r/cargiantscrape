@@ -446,19 +446,19 @@ class SQLiteDatabase:
                 if matching_car:
                     currentcarreg = matching_car[reg_col_index] 
                     self.cursor.execute(f"SELECT Price FROM used_cars where Reg = '{currentcarreg}'")
-                    car_DB_PRICE = (self.cursor.fetchall())[0][0]
+                    car_DB_PRICE = self.cursor.fetchone()[0]
                     Car_Current_price = self.Price
                     Car_Current_Status = self.CarStatus
                     self.cursor.execute(f"SELECT CarStatus FROM used_cars where Reg = '{currentcarreg}'")
-                    Car_DB_Status = (self.cursor.fetchall()[0][0])
+                    Car_DB_Status = self.cursor.fetchone()[0]
                     if Car_Current_price != car_DB_PRICE:
                         print(f"Car with Reg: {currentcarreg} is existing with the same price")
-                        self.DateUpdated = datetime.datetime.now()
+                        self.DateUpdated = datetime.datetime.now().strftime('%d/%m/%Y')
                         string_updated = f"Car Price Changed, updating DB. DatabasePrice={ car_DB_PRICE} CurrentPrice= {Car_Current_price}"
                         self.number_of_car_prices_changed += 1
                         self.number_of_car_prices_changed_list.append(currentcarreg) # Store the REG of price changed car in a list
                         print(string_updated)
-                        table = "used_cars"
+                        table = "used_cars"                    
                         car_properties = incoming_data[0]
                         car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])
 
@@ -471,7 +471,7 @@ class SQLiteDatabase:
                         self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated, currentcarreg))
                         self.conn.commit()
                         print("Imported updated entry", flush="True")
-                    if (Car_Current_Status != Car_DB_Status) and self.CarStatus:                    
+                    if (Car_Current_Status != Car_DB_Status) and self.CarStatus:  
                         self.number_of_car_status_changed_list.append(currentcarreg)
                         self.number_of_car_status_changed += 1
                         table = "used_cars"
