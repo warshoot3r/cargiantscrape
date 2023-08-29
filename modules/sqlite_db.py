@@ -274,10 +274,10 @@ class SQLiteDatabase:
                 combined_filters_reg.append(db["Reg"].map(lambda x : x == current_reg)) 
             filtered_and_reg_database = db[reduce(lambda x, y: x | y , combined_filters_reg)]
         
-            return filtered_and_reg_database.sort_values(by=["Price","Manufacturer"])
+            return filtered_and_reg_database.sort_values(by=["Price"])
 
         else:
-            return database.sort_values(by=["Price","Manufacturer"])
+            return database.sort_values(by=["Manufacturer"])
 
     def print_as_panda_dataframe(self, table, col_show=None, ):
         """
@@ -401,14 +401,14 @@ class SQLiteDatabase:
         """
         data = self.number_of_car_prices_changed_list
         self.number_of_car_prices_changed_list = []
-        return data.sort_values(by=["Price","Manufacturer"])
+        return data
     def get_car_new_changed(self):
         """
         Return list of new cars added.
         """
         data = self.number_of_car_new_changed_list
         self.number_of_car_new_changed_list = []
-        return data.sort_values(by=["Price","Manufacturer"])
+        return data
     def import_data(self):
             """
             Imports the car properties from the instance variables and adds them to the database.

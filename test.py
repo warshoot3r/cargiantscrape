@@ -39,10 +39,37 @@ print("Successful execution:")
 print("Operating System:", platform.system())
 print("Architecture:", platform.machine())
 if( platform.machine() == "x86_64"):
-    print("Testing a 3 page scrape for performance test")
+    print("Testing a 2 page scrape for performance test")
     start_time = time.time()
-    cars.search_for_manufacturer(manufacturer="BMW", numberofpages=3)
+    cars.search_for_manufacturer(manufacturer="BMW", numberofpages=1)
+    for i in range(cars.length):
+            current_car = cars.data.iloc[i]
+            DB.import_car_properties(
+                    Body_Type=current_car["Body Type"],
+                    Color=current_car["Color"],
+                    Doors=current_car["Doors"],
+                    Manufacturer=current_car["Manufacturer"],
+                    Year=current_car["Year"],
+                    Price=current_car["Price"],
+                    Transmission=current_car["Transmission"],
+                    Fuel=current_car["Fuel"],
+                    Reg=current_car["Reg"],
+                    URL=current_car["URL"],
+                    Model=current_car["Model"],
+                    Mileage=current_car["Mileage"],
+                    CarStatus=current_car["Car Status"]
+            )
     end_time = time.time()
+    start_time_test_1 = time.time()
+    print("Testing raw Database export")
+    exported_table = DB.print_raw_data_from_sqlite_db()
+    database = DB.return_as_panda_dataframe()
+    print("Printing a formated DB")
+    print(DB.print_as_panda_dataframe(database))
+    end_time_test_1 = time.time()
     elapsed_time = end_time - start_time
+    elapsed_time_test_1 = end_time_test_1 - start_time_test_1
     print(f"Execution time for test: web scrape: {elapsed_time:.6f} seconds")
+    print(f"Execution time for DB functions: web scrape: {elapsed_time:.6f} seconds")
+
 print("===============================")

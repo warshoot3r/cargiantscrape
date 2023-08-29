@@ -6,17 +6,19 @@ class TelegramBot:
         self.api_token = api_token
         self.base_url = f"https://api.telegram.org/bot{api_token}/"
 
-
     def send_dataframe(self, chat_id, dataframe, caption=""):
         # Format URLs using the provided code
-        hyperlink_column = dataframe.loc[:,'URL'].apply(lambda url: f'<a href="{url}">{url.split("/")[-1]}</a>')
+        hyperlink_column = dataframe['URL'].apply(lambda url: f'<a href="{url}">{url.split("/")[-1]}</a>')
 
+        # Create a copy of the DataFrame and sort it
+        sorted_dataframe = dataframe.copy()
+        sorted_dataframe.sort_values(by=["Price","Manufacturer"], inplace=True)
 
-        # Create the hyperlink column
-        dataframe.loc[:,'URL'] = hyperlink_column
+        # Update the 'URL' column with hyperlinks
+        sorted_dataframe['URL'] = hyperlink_column
 
         # Convert the DataFrame to a formatted string with adjusted spacing
-        header = dataframe.columns.to_list()
+        header = sorted_dataframe.columns.to_list()
         formatted_rows = []
 
         # Format header
@@ -24,12 +26,13 @@ class TelegramBot:
         formatted_rows.append(formatted_header)
 
         # Format data rows
-        for _, row in dataframe.iterrows():
+        for _, row in sorted_dataframe.iterrows():
             formatted_row = ' | '.join(row.astype(str).values)
             formatted_rows.append(formatted_row)
 
         # Combine the caption and formatted DataFrame
         message = caption + "\n" + '\n'.join(formatted_rows)
+
         # Send the message
         self.send_message(chat_id, message, ParserType="HTML")
 
