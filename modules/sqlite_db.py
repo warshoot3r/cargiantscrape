@@ -401,14 +401,14 @@ class SQLiteDatabase:
         """
         data = self.number_of_car_prices_changed_list
         self.number_of_car_prices_changed_list = []
-        return data
+        return data.sort_values(by=["Price","Manufacturer"])
     def get_car_new_changed(self):
         """
         Return list of new cars added.
         """
         data = self.number_of_car_new_changed_list
         self.number_of_car_new_changed_list = []
-        return data
+        return data.sort_values(by=["Price","Manufacturer"])
     def import_data(self):
             """
             Imports the car properties from the instance variables and adds them to the database.
@@ -491,11 +491,18 @@ class SQLiteDatabase:
                             self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
                             self.conn.commit()   
                             print("Car was reserved so incrementing the count Number Reserved", flush="True")
-                        else: #Car is not reserved so push the scraped status to the database as avaliable
+                        elif (Car_Current_Status == ""):
                             db_string = f'''
                             UPDATE {table} SET CarStatus = ? WHERE REG = ?
                             '''
                             self.cursor.execute(db_string, ("AVAILABLE", currentcarreg))
+                            self.conn.commit()   
+
+                        else: #Car is not reserved so push the scraped status to the database as avaliable
+                            db_string = f'''
+                            UPDATE {table} SET CarStatus = ? WHERE REG = ?
+                            '''
+                            self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
                             self.conn.commit()   
 
                 else:  # Add a new car into the database
