@@ -87,17 +87,17 @@ while(True):
         if new_cars:
             database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
             print(database_filtered_new_cars)
-            bot.send_dataframe(chat_id, database_filtered_new_cars[["URL","Manufacturer","Model", "Mileage", "Price"] ], "New cars were added:")
+            bot.send_dataframe(chat_id, database_filtered_new_cars[["URL","Manufacturer","Model", "Mileage", "Price"] ].sort_values, "New cars were added:")
         if status_changed:
             reg = DB.get_car_status_changed()
             database_filtered = DB.filter_table(filters, database, reg)
             print(database_filtered)
             bot.send_dataframe(chat_id, database_filtered[[ "URL","Manufacturer","Model", "CarStatus", "Price", "NumberReserved"]], "Some car status changed:")
-            bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=DB.get_car_sold_as_pd(), caption="Sold Cars")
+            bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=DB.get_car_sold_as_pd().sort_values(by=["Price","Manufacturer"]), caption="Sold Cars")
 
         #Send sold cars
         #Send rest of cars
-        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=DB.filter_table(filters, database),caption="Cars")
+        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=DB.filter_table(filters, database).sort_values(by=["Price","Manufacturer"]) ,caption="Cars")
         DB.close_db()
     else:
         bot.send_message_servername(chat_id, "Nothing to report")
