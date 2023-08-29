@@ -102,7 +102,7 @@ class WebScraperCargiant:
         self.manufacturer_search = manufacturer
         self.url = "https://www.cargiant.co.uk/search/" + manufacturer + "/all"
         print("Setting the search to", self.url)
-        self.pull_new_data()
+        self.pull_new_data(numberofpages)
 
     def import_sqldb_data(self, data_frame):
         """
@@ -153,7 +153,7 @@ class WebScraperCargiant:
         self.data = model_retrieved
         return self
 
-    def pull_new_data(self):
+    def pull_new_data(self, numberofpages):
         """
         Retrieves new car data from the Cargiant website and updates the DataFrame.
 
@@ -169,7 +169,7 @@ class WebScraperCargiant:
         self.extract_web_data(car_listing_items_page_1)
 
         
-        for page in range(1,self.numberofpages+1):
+        for page in range(1,numberofpages+1):
             pages = self.driver.find_elements(By.CSS_SELECTOR , '[data-paging-pages-template="page"]')
             print(f"Currently web scraping {self.manufacturer_search} cars on page {page+1}.")
             try:
