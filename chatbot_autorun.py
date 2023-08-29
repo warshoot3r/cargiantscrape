@@ -84,7 +84,6 @@ while(True):
             database_filtered = DB.filter_table(filters, database, DB.get_car_price_changed())
             database_filtered.loc[:,"PriceChange"] = database_filtered["Price"] - database_filtered["OldPrice"] # should be added to class . temporary here for now
             bot.send_dataframe(chat_id, database_filtered[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:")
-
         if new_cars:
             database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
             print(database_filtered_new_cars)

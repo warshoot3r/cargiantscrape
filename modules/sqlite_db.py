@@ -477,10 +477,10 @@ class SQLiteDatabase:
                         table = "used_cars"
                         string_updated = f"Car status changed for {currentcarreg}. Old status:{Car_DB_Status}. New Status: {self.CarStatus}"
                         print(string_updated)
-                        if Car_Current_Status == "Reserved":
+                        if (Car_Current_Status == "Reserved") and (Car_DB_Status != "Reserved"):
                             self.cursor.execute(f"SELECT NumberReserved FROM used_cars where Reg = '{currentcarreg}'")
-                            Car_DB_NumberReserved = self.cursor.fetchone()
-                            if Car_DB_NumberReserved[0] is None:
+                            Car_DB_NumberReserved = self.cursor.fetchone()[0]
+                            if Car_DB_NumberReserved is None:
                                 db_string = f'''
                              UPDATE {table} SET CarStatus = ?, NumberReserved = 1 WHERE REG = ?
                                '''
@@ -491,11 +491,11 @@ class SQLiteDatabase:
                             self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
                             self.conn.commit()   
                             print("Car was reserved so incrementing the count Number Reserved", flush="True")
-                        else: #Push the scraped status to the database
+                        else: #Car is not reserved so push the scraped status to the database as avaliable
                             db_string = f'''
                             UPDATE {table} SET CarStatus = ? WHERE REG = ?
                             '''
-                            self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
+                            self.cursor.execute(db_string, ("AVAILABLE", currentcarreg))
                             self.conn.commit()   
 
                 else:  # Add a new car into the database
