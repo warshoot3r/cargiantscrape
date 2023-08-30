@@ -274,10 +274,10 @@ class SQLiteDatabase:
                 combined_filters_reg.append(db["Reg"].map(lambda x : x == current_reg)) 
             filtered_and_reg_database = db[reduce(lambda x, y: x | y , combined_filters_reg)]
         
-            return filtered_and_reg_database.sort_values(by=["Price"])
+            return filtered_and_reg_database.sort_values(by=["Manufacturer","Price"])
 
         else:
-            return database.sort_values(by=["Manufacturer"])
+            return database.sort_values(by=["Manufacturer", "Price"])
 
     def print_as_panda_dataframe(self, table, col_show=None, ):
         """
@@ -351,7 +351,7 @@ class SQLiteDatabase:
         SELECT * FROM used_cars where CarStatus LIKE 'Sold';    
         """
         data = pd.read_sql_query(sqlstring, self.conn)
-        return data.sort_values(by=["Price","Manufacturer"])
+        return data.sort_values(by=["Manufacturer", "Price"])
 
 
     def car_status_changed(self):
