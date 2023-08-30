@@ -351,7 +351,7 @@ class SQLiteDatabase:
         SELECT * FROM used_cars where CarStatus LIKE 'Sold';    
         """
         data = pd.read_sql_query(sqlstring, self.conn)
-        return data.sort_values(by=["Manufacturer", "Price"])
+        return data.sort_values(by=["Manufacturer", "Price", "Model"])
 
 
     def car_status_changed(self):
