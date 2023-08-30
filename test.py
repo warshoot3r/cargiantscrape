@@ -70,6 +70,6 @@ if( platform.machine() == "x86_64"):
     elapsed_time = end_time - start_time
     elapsed_time_test_1 = end_time_test_1 - start_time_test_1
     print(f"Execution time for test: web scrape: {elapsed_time:.6f} seconds")
-    print(f"Execution time for DB functions: web scrape: {elapsed_time:.6f} seconds")
+    print(f"Execution time for DB functions: web scrape: {elapsed_time_test_1:.6f} seconds")
 
 print("===============================")
