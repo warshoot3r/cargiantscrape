@@ -29,3 +29,9 @@ jobs:
         run: |
           docker run --rm ${{ matrix.image_variant }}
 
+      - name: Save db data as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+            name: cargiantdbfile
+            path: used_cars.db
+
