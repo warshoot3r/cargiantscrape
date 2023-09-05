@@ -25,7 +25,7 @@ jobs:
         run: |
             printf 'api_token = "${{ secrets.api_token}}"\nchat_id="${{secrets.chat_id}}"' > /home/runner/work/cargiantscrape/cargiantscrape/credentials.py
 
-      - name: Save db data as an artifact
+      - name: Download db data as an artifact
         uses: actions/download-artifact@v2
         with:
             name: cargiantdbfile
@@ -34,7 +34,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py ${{ matrix.image_variant }} chatbot_autorun_onetime.py
+          docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} chatbot_autorun_onetime.py
 
       - name: Save db data as an artifact
         uses: actions/upload-artifact@v2
