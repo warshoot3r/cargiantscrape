@@ -27,11 +27,10 @@ jobs:
 
       - name: Run Tests
         run: |
-          docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py ${{ matrix.image_variant }} 
+          docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py ${{ matrix.image_variant }} chatbot_autorun_onetime.py
 
       - name: Save db data as an artifact
         uses: actions/upload-artifact@v2
         with:
             name: cargiantdbfile
-            path: /home/runner/work/cargiantscrape/cargiantscrape/credentials.py
-
+            path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
