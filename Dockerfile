@@ -31,6 +31,7 @@ COPY --link modules /app/modules
 COPY --link remove_unresolvable_cars.py .
 COPY --link chatbot_autorun.py .
 COPY --link test.py .
+COPY --link chatbot_autorun_onetime.py .
 
 ENTRYPOINT ["python3"]
 CMD ["chatbot_autorun.py"] 
