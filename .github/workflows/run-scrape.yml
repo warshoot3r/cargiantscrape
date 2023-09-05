@@ -27,6 +27,7 @@ jobs:
 
       - name: Download db data as an artifact
         uses: actions/download-artifact@v2
+        continue-on-error: true
         with:
             name: cargiantdbfile
             path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
