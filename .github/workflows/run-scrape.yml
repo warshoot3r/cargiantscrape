@@ -10,7 +10,7 @@ jobs:
       matrix:
         # Select the images from DockerHub here to test
         image_variant:
-          - jammyboi/cgwebscrape:linux-amd64-latest
+          - jammyboi/cgwebscrape:master
       fail-fast: false
       
     steps:
