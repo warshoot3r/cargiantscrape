@@ -19,11 +19,11 @@ jobs:
 
       - name: Docker pull image
         run: |
-            docker pull "${{ matrix.image_variant }}"
+            docker pull "${{ matrix.image_variant }}" .
 
       - name: Make Credentials.py
         run: |
-         printf "api_token = "${{ secrets.api_token}}""\nchat_id=${{secrets.chat_id}}" > credentials.py"
+            printf 'api_token = "${{ secrets.api_token}}"\nchat_id="${{secrets.chat_id}}"' > credentials.py
 
       - name: Run Tests
         run: |
