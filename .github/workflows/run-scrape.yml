@@ -32,15 +32,13 @@ jobs:
         with:
             name: cargiantdbfile
             path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
-
-
-      - name: Run Tests without a DB
+        
+      - name: create empty db file as no db file provided from artifact
         if: steps.download_db_step.outcome == 'failure'
         run: |
-          docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py ${{ matrix.image_variant }} chatbot_autorun_onetime.py
- 
-      - name: Run Tests with downloaded DB 
-        if: steps.download_db_step.outcome == 'success'
+         touch /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
+
+      - name: Run Tests
         run: |
           docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} chatbot_autorun_onetime.py
 
