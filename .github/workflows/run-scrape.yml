@@ -27,7 +27,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          docker run --rm ${{ matrix.image_variant }}
+          docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py ${{ matrix.image_variant }} 
 
       - name: Save db data as an artifact
         uses: actions/upload-artifact@v2
