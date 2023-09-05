@@ -25,14 +25,16 @@ jobs:
         run: |
             printf 'api_token = "${{ secrets.api_token}}"\nchat_id="${{secrets.chat_id}}"' > /home/runner/work/cargiantscrape/cargiantscrape/credentials.py
 
-      - name: Download db data as an artifact
-        uses: actions/download-artifact@v3
-        continue-on-error: true
+
+
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
         id: download_db_step
         with:
-            name: cargiantdbfile
-            path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
-        
+          name: cargiantdbfile
+          repo: ${{ github.repository }}
+          path: /home/runner/work/cargiantscrape/cargiantscrape/
+
       - name: create empty db file as no db file provided from artifact
         if: steps.download_db_step.outcome == 'failure'
         run: |
