@@ -23,7 +23,7 @@ jobs:
 
       - name: Make Credentials.py
         run: |
-            printf 'api_token = "${{ secrets.api_token}}"\nchat_id="${{secrets.chat_id}}"' > ./cargiantscrape/credentials.py
+            printf 'api_token = "${{ secrets.api_token}}"\nchat_id="${{secrets.chat_id}}"' > /home/runner/work/cargiantscrape/cargiantscrape/credentials.py
 
       - name: Run Tests
         run: |
@@ -33,5 +33,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
             name: cargiantdbfile
-            path: ./cargiantscrape/used_cars.db
+            path: /home/runner/work/cargiantscrape/cargiantscrape/credentials.py
 
