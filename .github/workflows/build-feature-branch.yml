@@ -1,7 +1,12 @@
 name: "Automatically build and test feature branch (not master)"
 
 on:
-  workflow_dispatch: 
+  push:
+    branches-ignore: 
+      - master
+    paths-ignore: 
+      - .github
+
     
 env:
   REGISTRY_IMAGE: jammyboi/cgwebscrape
