@@ -6,7 +6,7 @@ class TelegramBot:
         self.api_token = api_token
         self.base_url = f"https://api.telegram.org/bot{api_token}/"
 
-    def send_dataframe(self, chat_id, dataframe, caption=""):
+    def send_dataframe(self, chat_id, dataframe, caption="", show_header=False):
         # Format URLs using the provided code
         hyperlink_column = dataframe['URL'].apply(lambda url: f'<a href="{url}">{url.split("/")[-1]}</a>')
 
