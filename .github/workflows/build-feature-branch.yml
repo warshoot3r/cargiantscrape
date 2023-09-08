@@ -1,4 +1,4 @@
-name: "Automatically build and test feature branch (not master)"
+name: "Automatic - build and test feature branch"
 
 on:
   push:
@@ -141,4 +141,4 @@ jobs:
 
         - name: Run Tests on built docker image
           run: |
-            docker run --platform ${{ matrix.platform }} --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} test.py
+            docker run --platform ${{ matrix.platform }} --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} chatbot_autorun_onetime.py
