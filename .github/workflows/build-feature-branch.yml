@@ -1,4 +1,4 @@
-name: "Automatically build and test feature branch (not master)"
+name: "Automatic - build and test feature branch"
 
 on:
   push:
@@ -126,9 +126,9 @@ jobs:
         fail-fast: false
         matrix:
           platform:
-            - linux/arm/v8
-            - linux/arm/v7
-            - linux/arm64
+            # - linux/arm/v8
+            # - linux/arm/v7
+            # - linux/arm64
             - linux/amd64
       steps:
 
@@ -139,6 +139,12 @@ jobs:
           uses: docker/setup-qemu-action@v2
           if: startsWith(matrix.platform, 'linux/arm')
 
+        - name: Make Credentials.py
+          run: |
+              printf 'api_token = "${{ secrets.api_token}}"\nchat_id="${{secrets.chat_id}}"' > /home/runner/work/cargiantscrape/cargiantscrape/credentials.py
+  
+  
+
         - name: Run Tests on built docker image
           run: |
-            docker run --platform ${{ matrix.platform }} --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} test.py
+            docker run --platform ${{ matrix.platform }} -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} chatbot_autorun_onetime.py
