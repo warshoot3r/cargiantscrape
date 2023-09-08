@@ -22,7 +22,7 @@ class TelegramBot:
         formatted_rows = []
 
         # Format header
-        if not(show_header):
+        if (show_header):
             sorted_dataframe.columns = [None] * len(sorted_dataframe.columns) 
         else: #  show column names if show_header is true
             formatted_header = ' | '.join(header)
