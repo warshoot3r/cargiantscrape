@@ -14,9 +14,9 @@ jobs:
       matrix:
         # Select the images from DockerHub here to test
         image_variant:
-          - jammyboi/cgwebscrape:linux-armv7-latest
-          - jammyboi/cgwebscrape:linux-amd64-latest
-          - jammyboi/cgwebscrape:linux-arm64-v8-latest
+          - jammyboi/cgwebscrape:linux-armv7-testing
+          - jammyboi/cgwebscrape:linux-amd64-testing
+          - jammyboi/cgwebscrape:linux-arm64-v8-testing
       fail-fast: false
       
     steps:
