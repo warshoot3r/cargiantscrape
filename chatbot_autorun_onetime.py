@@ -83,7 +83,7 @@ if price_changed or new_cars or status_changed:
     if price_changed: #If car prices changed, only send a list of these cars
         database_filtered = DB.filter_table(filters, database, DB.get_car_price_changed())
         database_filtered.loc[:,"PriceChange"] = database_filtered["Price"] - database_filtered["OldPrice"] # should be added to class . temporary here for now
-        bot.send_dataframe(chat_id, database_filtered[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:")
+        bot.send_dataframe(chat_id, database_filtered[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:", True)
     if new_cars:
         database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
         print(database_filtered_new_cars)

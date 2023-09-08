@@ -22,9 +22,14 @@ class TelegramBot:
         formatted_rows = []
 
         # Format header
-        formatted_header = ' | '.join(header)
-        formatted_rows.append(formatted_header)
-
+        if not(show_header):
+            sorted_dataframe.columns = [None] * len(sorted_dataframe.columns) 
+        else: #  show column names if show_header is true
+            formatted_header = ' | '.join(header)
+            formatted_rows.append(formatted_header)
+        
+           
+        
         # Format data rows
         for _, row in sorted_dataframe.iterrows():
             formatted_row = ' | '.join(row.astype(str).values)
