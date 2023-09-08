@@ -60,20 +60,37 @@ class TelegramBot:
         except requests.exceptions.RequestException as e:
             print("Error getting updates:", e)
 
-    def send_message(self, chat_id, message, ParserType="Markdownv2"):
+    def send_message(self, chat_id, message, ParserType="Markdownv2", max_message_length=4096):
         send_message_url = f"{self.base_url}sendMessage"
-        data = {
-            "chat_id": chat_id,
-            "text": message,
-            "parse_mode": ParserType
-        }
         try:
-            response = requests.post(send_message_url, data=data)
-            response_json = response.json()
-            if response_json["ok"]:
-                print("Message sent successfully!", flush="True")
+            if len(message) <= max_message_length:
+                # Message is within the length limit, send it as is
+                data = {
+                    "chat_id": chat_id,
+                    "text": message,
+                    "parse_mode": ParserType
+                }
+                response = requests.post(send_message_url, data=data)
+                response_json = response.json()
+                if response_json["ok"]:
+                    print("Message sent successfully!", flush=True)
+                else:
+                    print("Failed to send message. Error:", response_json["description"])
             else:
-                print("Failed to send message. Error:", response_json["description"])
+                # Message is too long, split it into chunks and send each chunk
+                chunks = [message[i:i+max_message_length] for i in range(0, len(message), max_message_length)]
+                for i, chunk in enumerate(chunks, start=1):
+                    data = {
+                        "chat_id": chat_id,
+                        "text": chunk,
+                        "parse_mode": ParserType
+                    }
+                    response = requests.post(send_message_url, data=data)
+                    response_json = response.json()
+                    if response_json["ok"]:
+                        print(f"Chunk {i} sent successfully!", flush=True)
+                    else:
+                        print(f"Failed to send chunk {i}. Error:", response_json["description"])
         except requests.exceptions.RequestException as e:
             print("Error sending message:", e)
 
