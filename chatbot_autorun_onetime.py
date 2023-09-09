@@ -93,11 +93,11 @@ if price_changed or new_cars or status_changed:
         database_filtered = DB.filter_table(filters, database, reg)
         print(database_filtered)
         bot.send_dataframe(chat_id, database_filtered[[ "URL","Manufacturer","Model", "CarStatus", "Price"]], "Some car status changed:")
-        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars")
+        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", filename="sold")
 
     #Send sold cars
     #Send rest of cars
-    bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.filter_table(filters, database)))
+    bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.filter_table(filters, database), ), filename="data")
     DB.close_db()
 else:
     bot.send_message_servername(chat_id, "Nothing to report")

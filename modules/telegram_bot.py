@@ -102,11 +102,11 @@ class TelegramBot:
             return None
         message = f"From server: {computer_name} {message}"
         self.send_message(chat_id=chat_id, message=message)
-    def send_dataframe_as_file(self, chat_id, dataframe, file_format="csv", caption=""):
+    def send_dataframe_as_file(self, chat_id, dataframe, file_format="csv", caption="", filename="data"):
         if file_format not in ["csv", "xlsx"]:
             raise ValueError("Invalid file_format. Supported formats are 'csv' and 'xlsx'.")
 
-        filename = f"data.{file_format}"
+        filename = f"P{filename}.{file_format}"
         if file_format == "csv":
             dataframe.to_csv(filename, index=False)
         elif file_format == "xlsx":
