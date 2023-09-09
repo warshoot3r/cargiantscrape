@@ -92,15 +92,23 @@ if price_changed or new_cars or status_changed:
         reg = DB.get_car_status_changed()
         database_filtered = DB.filter_table(filters, database, reg)
         print(database_filtered)
-        bot.send_dataframe(chat_id, database_filtered[[ "URL","Manufacturer","Model", "CarStatus", "Price"]], "Some car status changed:")
-        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", file_name="sold")
+        #old way bot.send_dataframe(chat_id, database_filtered[[ "URL","Manufacturer","Model", "CarStatus", "Price"]], "Some car status changed:")
 
+        # new way send them seperatly
+        table_filters = ["URL","Manufacturer","Model", "Mileage", "Price"]
         sold = database_filtered.loc[database_filtered['CarStatus'] == "Sold"]
-        bot.send_dataframe(chat_id, sold)
+        if sold.shape[0] > 0:
+            bot.send_dataframe(chat_id, sold, caption="Sold Cars")
+
         reserved = database_filtered.loc[database_filtered['CarStatus'] == "Reserved"]
-        bot.send_dataframe(chat_id, reserved)
-        avaliable = database_filtered.loc[database_filtered['CarStatus'].str.contains(r'Reserved', case=False, regex=True)]
-        bot.send_dataframe(chat_id, avaliable)
+        if reserved.shape[0] > 0:
+            bot.send_dataframe(chat_id, reserved[table_filters], caption="Reserved Cars")
+        
+        available = database_filtered.loc[database_filtered['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)]
+        if available.shape[0] > 0:
+            bot.send_dataframe(chat_id, available[table_filters], "Available soon:")
+
+        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", file_name="sold")
 
     #Send sold cars
     #Send rest of cars
