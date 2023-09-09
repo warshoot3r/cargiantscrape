@@ -98,7 +98,7 @@ if price_changed or new_cars or status_changed:
         table_filters = ["URL","Manufacturer","Model", "Mileage", "Price"]
         sold = database_filtered.loc[database_filtered['CarStatus'] == "Sold"]
         if sold.shape[0] > 0:
-            bot.send_dataframe(chat_id, sold, caption="Sold Cars")
+            bot.send_dataframe(chat_id, sold[table_filters], caption="Sold Cars")
 
         reserved = database_filtered.loc[database_filtered['CarStatus'] == "Reserved"]
         if reserved.shape[0] > 0:
