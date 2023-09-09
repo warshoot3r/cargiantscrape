@@ -95,9 +95,14 @@ if price_changed or new_cars or status_changed:
         bot.send_dataframe(chat_id, database_filtered[[ "URL","Manufacturer","Model", "CarStatus", "Price"]], "Some car status changed:")
         bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", filename="sold")
 
+        sold = database_filtered.loc[database_filtered['CarStatus'] == "Sold"]
+        bot.send_dataframe(chat_id, sold, )
+        reserved = database_filtered.loc[database_filtered['CarStatus'] == "Reserved"]
+        avaliable = database_filtered.loc[database_filtered['CarStatus']].apply(lambda x: True if re.search("AVAILABLE.*", x) else False)
+
     #Send sold cars
     #Send rest of cars
-    bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.filter_table(filters, database), ), caption="Avaliable Cars", filename="data")
+    bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.filter_table(filters, database)), caption="Available Cars", filename="data")
     DB.close_db()
 else:
     bot.send_message_servername(chat_id, "Nothing to report")

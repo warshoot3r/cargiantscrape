@@ -106,7 +106,7 @@ class TelegramBot:
         if file_format not in ["csv", "xlsx"]:
             raise ValueError("Invalid file_format. Supported formats are 'csv' and 'xlsx'.")
 
-        filename = f"P{filename}.{file_format}"
+        filename = f"{filename}.{file_format}"
         if file_format == "csv":
             dataframe.to_csv(filename, index=False)
         elif file_format == "xlsx":
