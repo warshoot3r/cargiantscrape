@@ -106,7 +106,7 @@ if price_changed or new_cars or status_changed:
         
         available = database_filtered.loc[database_filtered['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)]
         if available.shape[0] > 0:
-            bot.send_dataframe(chat_id, available[table_filters.append("CarStatus")], "Available soon:")
+            bot.send_dataframe(chat_id, available[table_filters + "CarStatus"], "Available soon:")
 
         bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", file_name="sold")
 
