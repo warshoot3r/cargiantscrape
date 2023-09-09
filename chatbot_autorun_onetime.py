@@ -93,18 +93,18 @@ if price_changed or new_cars or status_changed:
         database_filtered = DB.filter_table(filters, database, reg)
         print(database_filtered)
         bot.send_dataframe(chat_id, database_filtered[[ "URL","Manufacturer","Model", "CarStatus", "Price"]], "Some car status changed:")
-        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", filename="sold")
+        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", file_name="sold")
 
         sold = database_filtered.loc[database_filtered['CarStatus'] == "Sold"]
         bot.send_dataframe(chat_id, sold)
         reserved = database_filtered.loc[database_filtered['CarStatus'] == "Reserved"]
         bot.send_dataframe(chat_id, reserved)
-        avaliable = database_filtered.loc[database_filtered['CarStatus']].apply(lambda x: True if re.search("AVAILABLE.*", x) else False)
+        avaliable = database_filtered.loc[database_filtered['CarStatus'].str.contains(r'Reserved', case=False, regex=True)]
         bot.send_dataframe(chat_id, avaliable)
 
     #Send sold cars
     #Send rest of cars
-    bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.filter_table(filters, database)), caption="Available Cars", filename="data")
+    bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.filter_table(filters, database)), caption="Available Cars", file_name="data")
     DB.close_db()
 else:
     bot.send_message_servername(chat_id, "Nothing to report")
