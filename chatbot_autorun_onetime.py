@@ -97,7 +97,7 @@ if price_changed or new_cars or status_changed:
 
     #Send sold cars
     #Send rest of cars
-    bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.filter_table(filters, database), ), filename="data")
+    bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.filter_table(filters, database), ), caption="Avaliable Cars", filename="data")
     DB.close_db()
 else:
     bot.send_message_servername(chat_id, "Nothing to report")
