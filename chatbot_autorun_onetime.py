@@ -112,7 +112,12 @@ if price_changed or new_cars or status_changed:
 
     #Send sold cars
     #Send rest of cars
-    bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.filter_table(filters, database)), caption="Available Cars", file_name="data")
+    csv_dataframe = DB.filter_table(filters, database) # every car
+    available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)] # The available cars
+    not_available_csv = csv_dataframe.loc[~csv_dataframe['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)] # The waiting cars
+    bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=available_csv, caption="Available Cars", file_name="available")
+    bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=not_available_csv, caption="Waiting Cars", file_name="waiting")
+
     DB.close_db()
 else:
     bot.send_message_servername(chat_id, "Nothing to report")
