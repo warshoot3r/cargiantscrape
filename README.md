@@ -1,10 +1,12 @@
 # cargiantscrape
 pythonised scraping car giant for models and prices. Sends a report via telegram.
 
-[![Automatic - Build and push multi tag as branch name](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-test-master.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-test-master.yml)
-[![Manual - Build as single tags and push as testing](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master-singletags.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-master-singletags.yml)
-[![Manually build and test feature branch](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-feature-branch.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-feature-branch.yml)
-[![Test pushed individual tagged images](https://github.com/warshoot3r/cargiantscrape/actions/workflows/test-master-singletags.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/test-master-singletags.yml)
+
+Production branch: [![Automatic - Build and push multi tag as branch name](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-test-master.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-test-master.yml)
+Development branch: [![Automatic - build and test feature branch](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-feature-branch.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-feature-branch.yml)
+Recent Run: [![Daily run and send messages via Telegram](https://github.com/warshoot3r/cargiantscrape/actions/workflows/run-scrape.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/run-scrape.yml)
+
+
 # Compatibility 
 Should run on anything. Run in a docker isolated env
 tested on:
