@@ -489,7 +489,14 @@ class SQLiteDatabase:
                              UPDATE {table} SET CarStatus = ?, NumberReserved = NumberReserved + 1 WHERE REG = ?
                             '''
                             self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
+                            self.conn.commit() 
+                        else: #Car is not reserved so push the scraped status to the database as "Avaliable as ..."
+                            db_string = f'''
+                            UPDATE {table} SET CarStatus = ? WHERE REG = ?
+                            '''
+                            self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
                             self.conn.commit()   
+
                             print("Car was reserved so incrementing the count Number Reserved", flush="True")
                     elif (Car_Current_Status is None):
                             db_string = f'''
@@ -499,13 +506,7 @@ class SQLiteDatabase:
                             self.cursor.execute(db_string, ("AVAILABLE", currentcarreg))
                             self.conn.commit()   
 
-                        else: #Car is not reserved so push the scraped status to the database as "Avaliable as ..."
-                            db_string = f'''
-                            UPDATE {table} SET CarStatus = ? WHERE REG = ?
-                            '''
-                            self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
-                            self.conn.commit()   
-
+                        
                 else:  # Add a new car into the database
                         print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
                         table = "used_cars"
