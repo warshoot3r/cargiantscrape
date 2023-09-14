@@ -10,7 +10,7 @@ from modules.sqlite_db import SQLiteDatabase
 from modules.webscrape_cargiant_class import WebScraperCargiant
 from modules.telegram_bot import TelegramBot
 from modules.background_pricecheck import car, car_background_information
-import credentials
+
 import re
 import time
 
