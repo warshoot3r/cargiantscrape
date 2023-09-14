@@ -1,0 +1,53 @@
+name: "Daily run and send messages via Telegram"
+on:
+  schedule:
+    - cron: '*/30 * * * *' # Schedule to run every half hour
+  workflow_dispatch: 
+
+jobs:
+  pull-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Select the images from DockerHub here to test
+        image_variant:
+          - jammyboi/cgwebscrape:master
+      fail-fast: false
+      
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Docker pull image
+        run: |
+            docker pull "${{ matrix.image_variant }}"
+
+      - name: Make Credentials.py
+        run: |
+            printf 'api_token = "${{ secrets.api_token}}"\nchat_id="${{secrets.chat_id}}"' > /home/runner/work/cargiantscrape/cargiantscrape/credentials.py
+
+
+
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        id: download_db_step
+        with:
+          name: cargiantdbfile
+          repo: ${{ github.repository }}
+          path: /home/runner/work/cargiantscrape/cargiantscrape/
+
+      - name: create empty db file as no db file provided from artifact
+        if: steps.download_db_step.outcome == 'failure'
+        run: |
+         touch /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
+
+      - name: Run Tests
+        run: |
+          docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} chatbot_autorun_onetime.py
+
+      - name: Save db data as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+            name: cargiantdbfile
+            path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db

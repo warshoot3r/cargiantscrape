@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  cargiantscrape:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    init: true
+    image: jammyboi/cgwebscrape:master
+    volumes:
+      - type: bind
+        source: ./used_cars.db
+        target: /app/used_cars.db
+      - type : bind
+        source: ./credentials.py
+        target: /app/credentials.py

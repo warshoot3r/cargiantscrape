@@ -1,0 +1,65 @@
+id,Manufacturer,Model,Year,Price,Body Type,Transmission,Fuel,Color,Mileage,Doors,Reg,URL,DateUpdated,OldPrice,OldDate,NumberOfPriceReductions,CarStatus,NumberReserved
+9,BMW,330e,2016,11999,Saloon,Auto,Hybrid,Blue,76447,N/A,AU66RZJ,https://www.cargiant.co.uk/car/BMW/330e/AU66RZJ,2023-09-09 12:19:50.808414,0,,0,,0
+16,BMW,318i,2017,12999,Saloon,Auto,Petrol,Blue,72396,N/A,YA67AOC,https://www.cargiant.co.uk/car/BMW/318i/YA67AOC,2023-09-09 12:19:50.825915,0,,0,AVAILABLE IN 5 DAYS,0
+19,BMW,330e,2017,13299,Saloon,Auto,Hybrid,Black,69386,N/A,AJ17XGH,https://www.cargiant.co.uk/car/BMW/330e/AJ17XGH,2023-09-09 12:19:50.837414,0,,0,Reserved,0
+28,BMW,420i,2017,14499,Coupe,Auto,Petrol,Met Grey,37147,N/A,YF17WNW,https://www.cargiant.co.uk/car/BMW/420i/YF17WNW,2023-09-09 12:19:50.863415,0,,0,AVAILABLE IN 5 DAYS,0
+35,BMW,530D,2016,14999,Saloon,Auto,Diesel,Met Grey,74518,N/A,YT66YDW,https://www.cargiant.co.uk/car/BMW/530D/YT66YDW,2023-09-09 12:19:50.881415,0,,0,,0
+36,BMW,218i,2019,14999,Coupe,Manual,Petrol,White,13869,N/A,SN19KLB,https://www.cargiant.co.uk/car/BMW/218i/SN19KLB,2023-09-09 12:19:50.884416,0,,0,,0
+44,BMW,X2,2018,15499,Hatch,Manual,Diesel,Black,60366,5,WP68UVA,https://www.cargiant.co.uk/car/BMW/X2/WP68UVA,2023-09-09 12:19:50.904916,0,,0,,0
+48,BMW,420D,2017,15799,Coupe,Auto,Diesel,Blue,71178,N/A,HN67LXH,https://www.cargiant.co.uk/car/BMW/420D/HN67LXH,2023-09-09 12:19:50.914913,0,,0,,0
+51,BMW,318D,2020,15999,Saloon,Manual,Diesel,Silver,79904,N/A,YB69VNR,https://www.cargiant.co.uk/car/BMW/318D/YB69VNR,2023-09-09 12:19:50.922414,0,,0,,0
+55,BMW,320i,2017,15999,Saloon,Auto,Petrol,Black,31629,N/A,MM17SSV,https://www.cargiant.co.uk/car/BMW/320i/MM17SSV,2023-09-09 12:19:50.932415,0,,0,,0
+52,BMW,330e,2018,15999,Saloon,Auto,Hybrid,Blue,53500,N/A,RX18OAB,https://www.cargiant.co.uk/car/BMW/330e/RX18OAB,2023-09-09 12:19:50.924416,0,,0,AVAILABLE IN 2 DAYS,0
+59,BMW,330D,2018,16299,Saloon,Auto,Diesel,Black,75886,N/A,ST67ZFF,https://www.cargiant.co.uk/car/BMW/330D/ST67ZFF,2023-09-09 12:19:50.942914,0,,0,,0
+60,BMW,330e,2017,16299,Saloon,Auto,Hybrid,Grey,69066,N/A,OE67CVY,https://www.cargiant.co.uk/car/BMW/330e/OE67CVY,2023-09-09 12:19:50.945415,0,,0,,0
+65,BMW,320i,2018,16499,Saloon,Auto,Petrol,Blue,52446,N/A,FG68MHO,https://www.cargiant.co.uk/car/BMW/320i/FG68MHO,2023-09-09 12:19:50.958415,0,,0,,0
+64,BMW,318D,2017,16499,Saloon,Auto,Diesel,White,30952,N/A,YB17LRN,https://www.cargiant.co.uk/car/BMW/318D/YB17LRN,2023-09-09 12:19:50.955413,0,,0,AVAILABLE IN 2 DAYS,0
+74,BMW,320D,2018,16799,Saloon,Auto,Diesel,Black Sapphire,55573,N/A,KU68TTO,https://www.cargiant.co.uk/car/BMW/320D/KU68TTO,2023-09-09 12:19:50.981415,0,,0,,0
+73,BMW,430D,2016,16799,Coupe,Auto,Diesel,White,48471,N/A,DE16UYF,https://www.cargiant.co.uk/car/BMW/430D/DE16UYF,2023-09-09 12:19:50.978916,0,,0,Reserved,0
+86,BMW,420D,2018,16999,Coupe,Auto,Diesel,Glacier Silver,49886,N/A,SN18YFZ,https://www.cargiant.co.uk/car/BMW/420D/SN18YFZ,2023-09-09 12:19:51.012914,0,,0,,0
+94,BMW,530e,2018,17499,Saloon,Auto,Hybrid,Met Blue,68337,N/A,RO18YRN,https://www.cargiant.co.uk/car/BMW/530e/RO18YRN,2023-09-09 12:19:51.033414,0,,0,Reserved,0
+96,BMW,320D,2017,17799,Saloon,Auto,Diesel,White,47649,N/A,YK67UYZ,https://www.cargiant.co.uk/car/BMW/320D/YK67UYZ,2023-09-09 12:19:51.038916,0,,0,,0
+97,BMW,330e,2018,17799,Saloon,Auto,Hybrid,White,54989,N/A,RO18UTU,https://www.cargiant.co.uk/car/BMW/330e/RO18UTU,2023-09-09 12:19:51.041414,0,,0,,0
+100,BMW,420i,2018,17799,Coupe,Auto,Petrol,Blue,52063,N/A,BL18MXA,https://www.cargiant.co.uk/car/BMW/420i/BL18MXA,2023-09-09 12:19:51.049415,0,,0,,0
+101,BMW,320D,2017,17999,Hatch,Auto,Diesel,Met Grey,37727,5,HN67LRU,https://www.cargiant.co.uk/car/BMW/320D/HN67LRU,2023-09-09 12:19:51.051916,0,,0,AVAILABLE IN 2 DAYS,0
+113,BMW,530e,2018,18499,Saloon,Auto,Hybrid,Met Blue,61478,N/A,RX68RLV,https://www.cargiant.co.uk/car/BMW/530e/RX68RLV,2023-09-09 12:19:51.082915,0,,0,,0
+117,BMW,420i,2019,18499,Hatch,Auto,Petrol,Black,48164,5,RA19EXE,https://www.cargiant.co.uk/car/BMW/420i/RA19EXE,2023-09-09 12:19:51.093913,0,,0,,0
+110,BMW,530e,2018,18499,Saloon,Auto,Hybrid,Black,78997,N/A,RE18ZFW,https://www.cargiant.co.uk/car/BMW/530e/RE18ZFW,2023-09-09 12:19:51.075413,0,,0,Reserved,0
+121,BMW,420i,2019,18799,Coupe,Auto,Petrol,White,35604,N/A,YH19KYT,https://www.cargiant.co.uk/car/BMW/420i/YH19KYT,2023-09-09 12:19:51.104915,0,,0,,0
+122,BMW,420i,2019,18799,Coupe,Auto,Petrol,Met Grey,36516,N/A,SB19TXS,https://www.cargiant.co.uk/car/BMW/420i/SB19TXS,2023-09-09 12:19:51.107413,0,,0,AVAILABLE IN 5 DAYS,0
+128,BMW,520D,2019,18999,Saloon,Auto,Diesel,Black,55979,N/A,AU19HCE,https://www.cargiant.co.uk/car/BMW/520D/AU19HCE,2023-09-09 12:19:51.123914,0,,0,Reserved,0
+137,BMW,330e,2020,19499,Saloon,Auto,Hybrid,Blue,73366,N/A,KW69XAN,https://www.cargiant.co.uk/car/BMW/330e/KW69XAN,2023-09-09 12:19:51.148915,0,,0,,0
+138,BMW,530e,2019,19499,Saloon,Auto,Hybrid,Blue,75447,N/A,PV19NWP,https://www.cargiant.co.uk/car/BMW/530e/PV19NWP,2023-09-09 12:19:51.151414,0,,0,,0
+142,BMW,530e,2018,19799,Saloon,Auto,Hybrid,White,43473,N/A,EU68XJB,https://www.cargiant.co.uk/car/BMW/530e/EU68XJB,2023-09-09 12:19:51.162916,0,,0,AVAILABLE IN 6 DAYS,0
+143,BMW,330e,2019,19999,Saloon,Auto,Hybrid,Estoril Blue,62816,N/A,AO69XMU,https://www.cargiant.co.uk/car/BMW/330e/AO69XMU,2023-09-09 12:19:51.165914,0,,0,,0
+145,BMW,330e,2019,19999,Saloon,Auto,Hybrid,Blue,66091,N/A,AO69JZD,https://www.cargiant.co.uk/car/BMW/330e/AO69JZD,2023-09-09 12:19:51.171414,0,,0,AVAILABLE IN 5 DAYS,0
+336,Lexus,CT 200h,2019,15499,Hatch,Auto,Hybrid,Silver,30282,5,WN69AVR,https://www.cargiant.co.uk/car/Lexus/CT-200h/WN69AVR,2023-09-09 12:19:51.758913,0,,0,AVAILABLE IN 4 DAYS,0
+337,Lexus,IS 300H,2019,16499,Saloon,Auto,Hybrid,Blue Pearl,56766,N/A,LP19WYF,https://www.cargiant.co.uk/car/Lexus/IS-300H/LP19WYF,2023-09-09 12:19:51.761915,0,,0,AVAILABLE IN 5 DAYS,0
+338,Lexus,IS 300H,2019,16799,Saloon,Auto,Hybrid,Silver,53539,N/A,LP19WYB,https://www.cargiant.co.uk/car/Lexus/IS-300H/LP19WYB,2023-09-09 12:19:51.764916,0,,0,,0
+339,Lexus,IS 300H,2020,16999,Saloon,Auto,Hybrid,Met Grey,63586,N/A,YG20HRN,https://www.cargiant.co.uk/car/Lexus/IS-300H/YG20HRN,2023-09-09 12:19:51.768416,0,,0,AVAILABLE IN 2 DAYS,0
+341,Lexus,CT 200h,2020,17499,Hatch,Auto,Hybrid,Black,20985,5,WN70ONL,https://www.cargiant.co.uk/car/Lexus/CT-200h/WN70ONL,2023-09-09 12:19:51.774414,0,,0,AVAILABLE IN 6 DAYS,0
+343,Lexus,CT 200h,2020,17499,Hatch,Auto,Hybrid,Black,20624,5,WN70OOH,https://www.cargiant.co.uk/car/Lexus/CT-200h/WN70OOH,2023-09-09 12:19:51.780916,0,,0,AVAILABLE IN 6 DAYS,0
+344,Lexus,CT 200h,2020,17799,Hatch,Auto,Hybrid,Black,25365,5,DA20CUC,https://www.cargiant.co.uk/car/Lexus/CT-200h/DA20CUC,2023-09-09 12:19:51.783916,0,,0,,0
+218,Mercedes,E220,2015,12999,Saloon,Auto,Diesel,White,64951,N/A,AV65HBO,https://www.cargiant.co.uk/car/Mercedes/E220/AV65HBO,2023-09-09 12:19:51.379414,0,,0,AVAILABLE IN 5 DAYS,0
+221,Mercedes,C200,2015,13999,Saloon,Auto,Diesel,Black,62276,N/A,YF65PFA,https://www.cargiant.co.uk/car/Mercedes/C200/YF65PFA,2023-09-09 12:19:51.387917,0,,0,AVAILABLE IN 6 DAYS,0
+223,Mercedes,C350e,2017,14499,Saloon,Auto,Hybrid,Blue,72786,N/A,WN67XGT,https://www.cargiant.co.uk/car/Mercedes/C350e/WN67XGT,2023-09-09 12:19:51.393916,0,,0,,0
+224,Mercedes,CLA,2016,14799,Saloon,Manual,Diesel,Met Grey,61039,N/A,PX66WPN,https://www.cargiant.co.uk/car/Mercedes/CLA/PX66WPN,2023-09-09 12:19:51.396915,0,,0,Reserved,0
+231,Mercedes,C350e,2018,15799,Saloon,Auto,Hybrid,Blue,65170,N/A,OW18LRN,https://www.cargiant.co.uk/car/Mercedes/C350e/OW18LRN,2023-09-09 12:19:51.416416,0,,0,,0
+238,Mercedes,C200,2018,16499,Saloon,Auto,Petrol,Black,63702,N/A,KR68NCZ,https://www.cargiant.co.uk/car/Mercedes/C200/KR68NCZ,2023-09-09 12:19:51.438413,0,,0,AVAILABLE IN 6 DAYS,0
+246,Mercedes,GLA,2018,16999,Hatch,Auto,Diesel,Red,33728,5,WR67XDP,https://www.cargiant.co.uk/car/Mercedes/GLA/WR67XDP,2023-09-09 12:19:51.462414,0,,0,,0
+248,Mercedes,GLA,2019,17499,Hatch,Manual,Petrol,Mountain Grey,73880,5,OU69PVW,https://www.cargiant.co.uk/car/Mercedes/GLA/OU69PVW,2023-09-09 12:19:51.467915,0,,0,,0
+247,Mercedes,C300e,2018,17499,Saloon,Auto,Hybrid,Black,42088,N/A,OV18ZDX,https://www.cargiant.co.uk/car/Mercedes/C300e/OV18ZDX,2023-09-09 12:19:51.465415,0,,0,Reserved,0
+250,Mercedes,CLA,2018,17999,Saloon,Manual,Petrol,Silver,28490,N/A,MJ68ABX,https://www.cargiant.co.uk/car/Mercedes/CLA/MJ68ABX,2023-09-09 12:19:51.473915,0,,0,AVAILABLE IN 5 DAYS,0
+259,Mercedes,C200,2019,18499,Saloon,Auto,Petrol,Blue,55228,N/A,KP69WYY,https://www.cargiant.co.uk/car/Mercedes/C200/KP69WYY,2023-09-09 12:19:51.501913,0,,0,,0
+262,Mercedes,C200,2019,18799,Saloon,Auto,Petrol,Blue,46770,N/A,KT69ODG,https://www.cargiant.co.uk/car/Mercedes/C200/KT69ODG,2023-09-09 12:19:51.510416,0,,0,,0
+263,Mercedes,C200,2019,18799,Saloon,Auto,Petrol,Silver,46153,N/A,KM69DXG,https://www.cargiant.co.uk/car/Mercedes/C200/KM69DXG,2023-09-09 12:19:51.513413,0,,0,,0
+264,Mercedes,C220,2019,18799,Saloon,Auto,Diesel,Black,76008,N/A,WX19NYS,https://www.cargiant.co.uk/car/Mercedes/C220/WX19NYS,2023-09-09 12:19:51.516414,0,,0,AVAILABLE IN 5 DAYS,0
+266,Mercedes,C200,2019,18999,Saloon,Auto,Petrol,Grey,46220,N/A,KP69WZY,https://www.cargiant.co.uk/car/Mercedes/C200/KP69WZY,2023-09-09 12:19:51.521913,0,,0,,0
+267,Mercedes,C220,2016,18999,Coupe,Auto,Diesel,Silver,48787,N/A,LJ66VUE,https://www.cargiant.co.uk/car/Mercedes/C220/LJ66VUE,2023-09-09 12:19:51.524915,0,,0,,0
+271,Mercedes,C200,2019,18999,Saloon,Auto,Petrol,Silver,40730,N/A,KP69LFJ,https://www.cargiant.co.uk/car/Mercedes/C200/KP69LFJ,2023-09-09 12:19:51.537414,0,,0,,0
+272,Mercedes,C180,2019,18999,Saloon,Auto,Petrol,White,39113,N/A,WN69DZZ,https://www.cargiant.co.uk/car/Mercedes/C180/WN69DZZ,2023-09-09 12:19:51.539915,0,,0,,0
+274,Mercedes,CLA,2017,18999,Saloon,Auto,Diesel,Silver,31424,N/A,LT67HGJ,https://www.cargiant.co.uk/car/Mercedes/CLA/LT67HGJ,2023-09-09 12:19:51.546415,0,,0,,0
+268,Mercedes,CLA,2018,18999,Saloon,Auto,Petrol,Met Grey,18024,N/A,HJ68JVH,https://www.cargiant.co.uk/car/Mercedes/CLA/HJ68JVH,2023-09-09 12:19:51.527915,0,,0,AVAILABLE IN 6 DAYS,0
+277,Mercedes,C200,2019,19499,Saloon,Auto,Petrol,Black,43711,N/A,KM69GPO,https://www.cargiant.co.uk/car/Mercedes/C200/KM69GPO,2023-09-09 12:19:51.555415,0,,0,AVAILABLE IN 6 DAYS,0
+279,Mercedes,C220,2020,19799,Saloon,Auto,Diesel,Met Grey,31738,N/A,MJ70OVC,https://www.cargiant.co.uk/car/Mercedes/C220/MJ70OVC,2023-09-09 12:19:51.561414,0,,0,,0
+280,Mercedes,C220,2019,19999,Saloon,Auto,Diesel,Polar White,55237,N/A,LR69OTA,https://www.cargiant.co.uk/car/Mercedes/C220/LR69OTA,2023-09-09 12:19:51.564414,0,,0,AVAILABLE IN 6 DAYS,0
