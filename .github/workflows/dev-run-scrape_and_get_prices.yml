@@ -30,7 +30,7 @@ jobs:
           id: download_db_step
           continue-on-error: true
           with:
-            name: cargiantdbfile
+            name: testcargiantdbfile
             repo: ${{ github.repository }}
             path: /home/runner/work/cargiantscrape/cargiantscrape/
 
@@ -46,7 +46,7 @@ jobs:
         - name: Save db data as an artifact
           uses: actions/upload-artifact@v3
           with:
-              name: cargiantdbfile
+              name: testcargiantdbfile
               path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
     background_data:
         runs-on: ubuntu-latest
@@ -66,8 +66,9 @@ jobs:
                   - name: Download artifact
             - uses: dawidd6/action-download-artifact@v2
               id: download_db_step
+              continue-on-error: True
               with:
-                name: cargiantdbfile
+                name: testcargiantdbfile
                 repo: ${{ github.repository }}
                 path: /home/runner/work/cargiantscrape/cargiantscrape/
 
@@ -77,10 +78,10 @@ jobs:
                 touch /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
             - name: Run Price scraping
               run: |
-                docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} chatbot_autorun_onetime_and_extract_valuations.py
+                docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} calculate_prices_on_db.py
     
             - name: Save db data as an artifact
               uses: actions/upload-artifact@v3
               with:
-                  name: cargiantdbfile
+                  name: testcargiantdbfile
                   path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
