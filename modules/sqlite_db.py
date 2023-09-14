@@ -451,7 +451,6 @@ class SQLiteDatabase:
                     Car_Current_Status = self.CarStatus
                     self.cursor.execute(f"SELECT CarStatus FROM used_cars where Reg = '{currentcarreg}'")
                     Car_DB_Status = self.cursor.fetchone()[0]
-                    print(f"VERBOSE: Working on {currentcarreg}: {matching_car}", flush=True)
                     if Car_Current_price != car_DB_PRICE:
                         print(f"Car with Reg: {currentcarreg} is existing with the same price")
                         self.DateUpdated = datetime.datetime.now().strftime('%d/%m/%Y')
@@ -499,12 +498,13 @@ class SQLiteDatabase:
                             self.conn.commit()   
 
                             print("Car was reserved so incrementing the count Number Reserved", flush="True")
-                    elif (Car_Current_Status is None):
+                    else:
+                            print(f"VERBOSE: Setting on {currentcarreg}: {matching_car}", flush=True)
                             db_string = f'''
                             UPDATE {table} SET CarStatus = ? WHERE REG = ?
                             '''
                             print(f"setting {currentcarreg} to available", flush=True)
-                            self.cursor.execute(db_string, ("AVAILABLE", currentcarreg))
+                            self.cursor.execute(db_string, (Car_Current_Status, currentcarreg))
                             self.conn.commit()   
 
                         
