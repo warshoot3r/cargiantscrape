@@ -443,6 +443,8 @@ class SQLiteDatabase:
 
             for data in incoming_data:
                 matching_car = next((car for car in existing_data if car[reg_col_index] == data["Reg"]), None)
+                table = "used_cars" #need to find code
+
                 if matching_car:
                     currentcarreg = matching_car[reg_col_index] 
                     self.cursor.execute(f"SELECT Price FROM used_cars where Reg = '{currentcarreg}'")
@@ -474,7 +476,6 @@ class SQLiteDatabase:
                     if (Car_Current_Status != Car_DB_Status) and self.CarStatus:  
                         self.number_of_car_status_changed_list.append(currentcarreg)
                         self.number_of_car_status_changed += 1
-                        table = "used_cars"
                         string_updated = f"Car status changed for {currentcarreg}. Old status:{Car_DB_Status}. New Status: {self.CarStatus}"
                         print(string_updated)
                         if (Car_Current_Status == "Reserved") and (Car_DB_Status != "Reserved"):
