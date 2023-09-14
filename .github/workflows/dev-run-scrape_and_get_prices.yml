@@ -28,6 +28,7 @@ jobs:
         - name: Download artifact
           uses: dawidd6/action-download-artifact@v2
           id: download_db_step
+          continue-on-error: true
           with:
             name: cargiantdbfile
             repo: ${{ github.repository }}
