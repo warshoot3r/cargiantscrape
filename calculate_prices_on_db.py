@@ -41,7 +41,7 @@ for import_car_to_scrape in cars_to_get_extra_information:
 
 
 print("Will start scraping prices now")
-autotrader_price_db.parallel_scrape_autotrader_price(worker_threads=4)
+autotrader_price_db.parallel_scrape_autotrader_price(worker_threads=8)
 
 
 for car_data in autotrader_price_db.get_all_cars():
