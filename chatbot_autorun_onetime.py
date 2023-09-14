@@ -114,8 +114,14 @@ if price_changed or new_cars or status_changed:
         csv_dataframe = DB.filter_table(filters, database) # every car
         not_available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)] # The available cars
         available_csv = csv_dataframe.loc[~csv_dataframe['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)] # The waiting cars
-        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=available_csv, caption="Available Cars", file_name="available")
-        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=not_available_csv, caption="Waiting Cars", file_name="waiting")
+        # bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=available_csv, caption="Available Cars", file_name="available")
+        # bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=not_available_csv, caption="Waiting Cars", file_name="waiting")
+       #New way send multiple in one go.
+        data_frames = [available_csv, not_available_csv]
+        file_formats = ["csv","csv"]
+        captions = ["Available Cars", "Waiting Cars"]
+        file_names = ["available.csv", "waiting.csv"]
+        bot.send_dataframe_as_multiple_files(captions=captions,chat_id=credentials.chat_id, file_formats=file_formats, dataframes=data_frames, file_names=file_names)
 
  
     DB.close_db()
