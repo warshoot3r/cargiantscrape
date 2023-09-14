@@ -49,7 +49,7 @@ jobs:
               name: cargiantdbfile
               path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
     background_data:
-        runs-on: ubuntu-test
+        runs-on: ubuntu-latest
         strategy:
           matrix:
             # Select the images from DockerHub here to test
