@@ -77,7 +77,7 @@ jobs:
                 touch /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
             - name: Run Price scraping
               run: |
-                docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }}chatbot_autorun_onetime_and_extract_valuations.py
+                docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} chatbot_autorun_onetime_and_extract_valuations.py
     
             - name: Save db data as an artifact
               uses: actions/upload-artifact@v3
