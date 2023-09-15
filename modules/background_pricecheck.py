@@ -10,6 +10,7 @@ from selenium.webdriver.chromium.options import ChromiumOptions as ChromiumOptio
 from selenium.webdriver.safari.options import Options as SafariOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 import concurrent.futures
+import time
 class car:
     def __init__(self, reg: str, car_make: str, car_model: str, mileage: int, year: int):
         self.reg = reg
@@ -118,10 +119,11 @@ class car_background_information:
         min_price = min(prices_as_int)
         return "£" + str(min_price)  + (" - ") + "£" +  str(max_price)
     
-    def parallel_scrape_autotrader_price(self, worker_threads=2):
+    def parallel_scrape_autotrader_price(self, worker_threads=2, timeout_time=30):
                 """
                 concurrently pull prices from autotrader
-                
+                args:
+                    timeout_time is in minutes
                 Returns:
                     Nothing
                 
@@ -143,7 +145,17 @@ class car_background_information:
                         
                         future = executor.submit(self.scrape_autotrader, car_make, car_model, mileage, year, reg)
                         futures.append(future)
-                    concurrent.futures.wait(futures)
+                    # concurrent.futures.wait(futures)
+                    start_time = time.time()
+                    #wait for tasks to finish or timeout time
+                    for future in concurrent.futures.as_completed(futures, timeout=timeout_time* 60):
+                        if time.time() - start_time >= timeout_time:
+                            print("Timeout reached. stopping.")
+                            break
+                    for future in futures:
+                        if not future.done():
+                            future.cancel()
+
 
     def scrape_autotrader(self, car_make, car_model, mileage, year, reg):
             # Navigate to the URL

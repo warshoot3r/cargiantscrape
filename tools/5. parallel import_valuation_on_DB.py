@@ -23,13 +23,15 @@ autotrader_price_db = car_background_information(driver="chrome",postal_code="TR
 #get the car database that we will calculate the prices on 
 car_filters = {
 
-    "Price": lambda x: x < 10000
+    "Price": lambda x: x < 11000,
+    "ValuationRange" : lambda x: x is None,
+    "CarStatus": lambda x: x != "Sold"
 }
 db = Car_database.return_as_panda_dataframe()
 sort_database = Car_database.filter_table(db=db, filters=car_filters)
 internal_db = sort_database
 print(internal_db)
-
+Car_database.close_db() # close db now incase another app needs to import
 
 cars_to_get_extra_information = []
 print(f"Number of cars {internal_db.count()['id']}")
@@ -50,15 +52,16 @@ for import_car_to_scrape in cars_to_get_extra_information:
     autotrader_price_db.add_car(import_car_to_scrape)
 
 
-print("Will start scraping prices now")
+print("Will start scraping prices now ")
 autotrader_price_db.parallel_scrape_autotrader_price(worker_threads=4)
+Car_database.open_db()  # open db now to import
+for  car_data in autotrader_price_db.get_all_cars():
+    reg = car_data[0]
+    current_price = Car_database.retrieve_db(column="Reg",input_data=reg)[0][4]
+    print(f"Working on {reg} with {current_price}")
 
-for car_data in autotrader_price_db.get_all_cars():
-    reg = (internal_db.Reg[1])
-    print(reg)
-    price = Car_database.retrieve_db(column="Reg",input_data=reg) 
     car_valuation = autotrader_price_db.get_car_range_price(reg=reg)
-    current_price = (price[0][4])
+
     values = autotrader_price_db.get_autotrader_prices(reg=reg)
     precentage_bound = autotrader_price_db.get_car_percentage_range(reg=reg, price_to_check=current_price)
 
@@ -67,9 +70,9 @@ for car_data in autotrader_price_db.get_all_cars():
     Car_database.import_car_properties(
         Reg=reg,
         ValuationPercentage= precentage_bound,
-        current_price=current_price,
         ValuationRange= car_valuation
     )
 print(f"Printing imported table")
-
+internal_db = Car_database.return_as_panda_dataframe()
+Car_database.close_db()
 print(internal_db)
