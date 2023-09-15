@@ -149,7 +149,7 @@ class car_background_information:
                     # concurrent.futures.wait(futures)
                     start_time = time.time()
                     #wait for tasks to finish or timeout time
-                    for future in concurrent.futures.as_completed(futures, timeout=timeout):
+                    for future in concurrent.futures.as_completed(futures):
                         if time.time() - start_time >= timeout:
                             print("Timeout reached. stopping.")
                             break
