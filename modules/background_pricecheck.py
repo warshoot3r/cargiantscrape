@@ -128,6 +128,7 @@ class car_background_information:
                     Nothing
                 
                 """
+                timeout = timeout_time * 60
                 #parallel processes
                 with concurrent.futures.ThreadPoolExecutor(max_workers=worker_threads) as executor:
                     futures = []
@@ -148,8 +149,8 @@ class car_background_information:
                     # concurrent.futures.wait(futures)
                     start_time = time.time()
                     #wait for tasks to finish or timeout time
-                    for future in concurrent.futures.as_completed(futures, timeout=timeout_time* 60):
-                        if time.time() - start_time >= timeout_time:
+                    for future in concurrent.futures.as_completed(futures, timeout=timeout):
+                        if time.time() - start_time >= timeout:
                             print("Timeout reached. stopping.")
                             break
                     for future in futures:
