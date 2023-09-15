@@ -173,7 +173,7 @@ class car_background_information:
                     print(f"DEBUG: url='{autotrader}'", flush=True)
                     driver.get(autotrader)
                     wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
-
+                    break
 
                 except exceptions.TimeoutException:
                     attempts +=1
