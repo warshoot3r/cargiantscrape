@@ -63,13 +63,13 @@ for car_data in autotrader_price_db.get_all_cars():
     precentage_bound = autotrader_price_db.get_car_percentage_range(reg=reg, price_to_check=current_price)
 
     print(f"For car {reg} £{current_price}. Estimate is {car_valuation}. Percent range is {precentage_bound}%")
-    # #import to db
-    # Car_database.import_car_properties(
-    #     Reg=reg,
-    #     car_valuation=car_valuation,
-    #     current_price=current_price,
-    #     ValuationRange= precentage_bound
-    # )
+    #import to db
+    Car_database.import_car_properties(
+        Reg=reg,
+        ValuationPercentage= precentage_bound,
+        current_price=current_price,
+        ValuationRange= car_valuation
+    )
 print(f"Printing imported table")
 
-print(Car_database.return_as_panda_dataframe())
+print(internal_db)
