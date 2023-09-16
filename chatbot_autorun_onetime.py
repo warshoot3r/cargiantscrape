@@ -39,7 +39,7 @@ def scrape_cars():
     CarSearch = WebScraperCargiant(driver="chrome", keepalive=True)
     CarSearch.search_for_manufacturer("BMW")
     CarSearch.search_for_manufacturer("Mercedes")
-    CarSearch.search_for_manufacturer("Lexus")
+    # CarSearch.search_for_manufacturer("Lexus")
     CarSearch.print_number_of_cars()
     return CarSearch
 
@@ -49,6 +49,7 @@ def import_cars(CarSearch):
     if(CarSearch):
         for i in range(CarSearch.length):
             current_car = CarSearch.data.iloc[i]
+            print(f"this car with {current_car['Manufacturer']}  {current_car['Reg']} {current_car['Car Status']}")
             DB.import_car_properties(
                     Body_Type=current_car["Body Type"],
                     Color=current_car["Color"],

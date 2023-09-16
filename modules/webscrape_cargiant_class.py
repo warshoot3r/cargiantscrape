@@ -86,7 +86,7 @@ class WebScraperCargiant:
         """
         Prints the number of cars scraped from cargiant
         """
-        print(f"\n\nNumber of cars to be scraped from cargiant -> {self.length}\n\n")
+        print(f"\n\nNumber of cars scraped from cargiant -> {self.length}\n\n")
 
     def search_for_manufacturer(self, manufacturer, numberofpages=5):
         """
@@ -123,7 +123,7 @@ class WebScraperCargiant:
             series = ["all-a-class", "all-b-class", "all-c-class", "all-e-class", "all-s-class"]
         
         self.parallel_pull_new_data(manufacturer=manufacturer, series_to_process=series, number_of_pages=numberofpages)
-
+        return self.data
     def import_sqldb_data(self, data_frame):
         """
         Imports past data from a DataFrame.
@@ -246,7 +246,7 @@ class WebScraperCargiant:
             mileage = re.sub("[^0-9.]", "" , mileage_get)
             try:
                 car_status_get =  item.find_element(By.CSS_SELECTOR, "span.caption-block").text
-                if(car_status_get == "SOLD TODAY"):
+                if(car_status_get == "Sold Today"):
                     car_status = "Sold"
                 elif(car_status_get == "RESERVED"):
                     car_status = "Reserved"
@@ -257,7 +257,7 @@ class WebScraperCargiant:
                 print(f"VERBOSE: {model_name} saved as {car_status}", flush=True)
             except NoSuchElementException:
                 car_status = ""
-            
+                print(f"VERBOSE: {model_name} status is empty. {car_status}", flush=True)
 
             DoorsAndType_split = re.split(r"\d\s(?=\s)", DoorsAndType)
 

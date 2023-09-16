@@ -464,8 +464,8 @@ class SQLiteDatabase:
             for data in incoming_data: # for existing data
                 table = "used_cars"
                 matching_car = next((car for car in existing_data if car[reg_col_index] == data["Reg"]), None)
-                if matching_car:
-                    currentcarreg = matching_car[reg_col_index] 
+                if matching_car:     
+                    currentcarreg = matching_car[reg_col_index]              
                     self.cursor.execute(f"SELECT Price FROM used_cars where Reg = '{currentcarreg}'")
                     car_DB_PRICE = self.cursor.fetchone()[0]
                     Car_Current_price = self.Price
@@ -473,7 +473,7 @@ class SQLiteDatabase:
                     self.cursor.execute(f"SELECT CarStatus FROM used_cars where Reg = '{currentcarreg}'")
                     Car_DB_Status = self.cursor.fetchone()[0]
                     #update the days car has been added
-
+                    print(f"DEBUG: {matching_car} {currentcarreg} >{self.CarStatus}< and >{Car_DB_Status}<" )
                     self.cursor.execute("UPDATE used_cars SET DaysAdded = julianday(CURRENT_DATE) - julianday(DateCarAdded) WHERE CarStatus != 'Sold'")
                     self.conn.commit()
 
@@ -498,7 +498,6 @@ class SQLiteDatabase:
                         self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated, currentcarreg))
                         self.conn.commit()
                         print("Imported updated entry", flush=True)
-
                     if self.CarStatus == "" and Car_DB_Status == "": # required fix for empty Availablity
                         print(f"VERBOSE: {currentcarreg}. DB status and value is empty. Setting to Available", flush=True)
                         db_string = f'''
