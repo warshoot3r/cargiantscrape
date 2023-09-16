@@ -154,7 +154,7 @@ class SQLiteDatabase:
                 "Year": "INTEGER",
                 "Price": "INTEGER",
                 "ValuationPercentage": "INTEGER",
-                "ValuationRange": "TEXT"
+                "ValuationRange": "TEXT",
                 "Mileage": "INTEGER",
                 "Body Type": 'TEXT',
                 "Transmission": "TEXT",
