@@ -567,7 +567,7 @@ class SQLiteDatabase:
                             self.conn.commit() 
 
                 else:  # Add a new car into the database
-                      #  print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
+                        print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
                         table = "used_cars"
                         self.number_of_car_new_changed += 1
                         self.number_of_car_new_changed_list.append(data['Reg']) # Store the REG of new car in a list

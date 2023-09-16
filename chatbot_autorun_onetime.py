@@ -39,7 +39,7 @@ def scrape_cars():
     CarSearch = WebScraperCargiant(driver="chrome", keepalive=True)
     CarSearch.search_for_manufacturer("BMW")
     CarSearch.search_for_manufacturer("Mercedes")
-    # CarSearch.search_for_manufacturer("Lexus")
+    CarSearch.search_for_manufacturer("Lexus")
     CarSearch.print_number_of_cars()
     return CarSearch
 

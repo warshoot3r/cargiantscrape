@@ -187,20 +187,25 @@ class WebScraperCargiant:
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
         car_listing_items_page_1 = driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
         self.extract_web_data(car_listing_items_page_1)
+        # check if only 1 page here. we must stop if is only one. otherwise code below will scrape same page.
+        page_count = driver.find_element(By.CSS_SELECTOR, "#TotalPages").get_attribute("value")#
 
+        if page_count == "1":
+            print(f"Stopping scraping as only 1 page")
         
-        for page in range(1,numberofpages+1):
-            pages = driver.find_elements(By.CSS_SELECTOR , '[data-paging-pages-template="page"]')
-            print(f"Currently web scraping {self.manufacturer_search} cars on page {page+1}.")
-            try:
-                driver.execute_script("arguments[0].click()", pages[page]) # click page
-                wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
-                current_page = driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
-                self.extract_web_data(current_page)
-                print("Page successfully scraped", flush=True)
-            except IndexError:
-                print("No more pages to scrape", flush=True)
-                return
+        else:
+            for page in range(1,numberofpages+1):
+                pages = driver.find_elements(By.CSS_SELECTOR , '[data-paging-pages-template="page"]')
+                print(f"Currently web scraping {self.manufacturer_search} cars on page {page+1}.")
+                try:
+                    driver.execute_script("arguments[0].click()", pages[page]) # click page
+                    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
+                    current_page = driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
+                    self.extract_web_data(current_page)
+                    print("Page successfully scraped", flush=True)
+                except IndexError:
+                    print("No more pages to scrape", flush=True)
+                    return
         self.stopwebdriver(driver)
    
     def extract_web_data(self, scraped_data):
