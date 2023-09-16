@@ -20,7 +20,7 @@ autotrader_price_db = car_background_information(driver="chrome",postal_code="TR
 car_filters = {
     "ValuationRange" : lambda x: x is None,
     # "CarStatus": lambda x: x != "Sold"
-    "Price": lambda x: x < 10000
+    # "Price": lambda x: x < 10000
 }
 db = Car_database.return_as_panda_dataframe()
 sort_database = Car_database.filter_table(db=db, filters=car_filters)
