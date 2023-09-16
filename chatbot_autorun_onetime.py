@@ -111,7 +111,7 @@ if price_changed or new_cars or status_changed:
 
         bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", file_name="sold")
           #Send rest of cars
-        csv_dataframe = DB.filter_table(filters, database) # every car
+        csv_dataframe = DB.filter_table(filters, database, reg) # every car
 
         csv_dataframe['CarStatus'].fillna('NA', inplace=True) # fix for NA otherwise we can not use str.contains below
 
