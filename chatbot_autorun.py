@@ -32,7 +32,11 @@ filters = {
 #scrape cars
 def scrape_cars():
     if(DB.is_db_recently_written() and not force_scrape):
+<<<<<<< HEAD
         print("Not scraping as DB written in last 10 minutes", flush="True")
+=======
+        print("Not scraping as DB written in last 10 minutes", flush=True)
+>>>>>>> v2_with_price_valuation_nohistory
         time.sleep(2)
         return(False)
     print("Starting", flush=True)

@@ -147,4 +147,8 @@ jobs:
 
         - name: Run Tests on built docker image
           run: |
+<<<<<<< HEAD
             docker run --platform ${{ matrix.platform }} -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} chatbot_autorun_onetime.py
+=======
+            docker run --platform ${{ matrix.platform }} -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} scrape_only.py
+>>>>>>> v2_with_price_valuation_nohistory

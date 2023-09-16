@@ -1,10 +1,16 @@
 name: "Manual - Build as single tags and push as testing"
+<<<<<<< HEAD
 on:
   push:
     branches-ignore: 
       - master
     paths-ignore: 
       - .github
+=======
+
+on: 
+  workflow_dispatch: 
+>>>>>>> v2_with_price_valuation_nohistory
 
 jobs:
   build_arm_v7:

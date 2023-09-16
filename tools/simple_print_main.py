@@ -27,7 +27,11 @@ for item in car_listing_items:
    print("Car = " + model.text)
    print("Price = " + price.text)
    print("Year = " + year.text.replace(",", ""))
+<<<<<<< HEAD
    print("Details = " + details.text.strip() + "\n", flush="True")
+=======
+   print("Details = " + details.text.strip() + "\n", flush=True)
+>>>>>>> v2_with_price_valuation_nohistory
 
 
 driver.quit()
