@@ -12,7 +12,7 @@ from modules.background_pricecheck import car, car_background_information
 
 #set up db
 Car_database = SQLiteDatabase(db_path="used_cars.db")
-
+Car_database.update_table()
 #set up autotrader price scraping
 autotrader_price_db = car_background_information(driver="chrome",postal_code="TR17%200BJ")
 
