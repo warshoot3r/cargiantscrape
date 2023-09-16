@@ -145,28 +145,30 @@ class SQLiteDatabase:
         Creates the 'used_cars' table if it doesn't exist.
         The table has columns: id, make, model, and price.
         """
-        incoming_data = [
+        incoming_data = [ # change the ordering here to change the DB tables order. it changes it regardless of existing table
             {
-                "Manufacturer": "TEXT",
-                "URL": "TEXT",
-                "Model": "TEXT",
-                "CarStatus": "TEXT",
-                "Year": "INTEGER",
-                "Price": "INTEGER",
-                "ValuationPercentage": "INTEGER",
-                "ValuationRange": "TEXT",
-                "Mileage": "INTEGER",
-                "Body Type": 'TEXT',
-                "Transmission": "TEXT",
-                "Fuel": "TEXT",
-                "Color": "TEXT",
-                "Doors": "INTEGER",
-                "Reg": "TEXT",
-                "DateUpdated": "TEXT",
-                "OldPrice": "INTEGER",
-                "OldDate": "TEXT",
-                "NumberOfPriceReductions": "INTEGER",
-                "NumberReserved": "INTEGER"
+                    "Manufacturer": "TEXT",
+                    "URL": "TEXT",
+                    "Model": "TEXT",
+                    "CarStatus": "TEXT",
+                    "Year": "INTEGER",
+                    "Price": "INTEGER",
+                    "ValuationPercentage": "INTEGER",
+                    "ValuationRange": "TEXT",
+                    "Mileage": "INTEGER",
+                    "Body Type": 'TEXT',
+                    "Transmission": "TEXT",
+                    "Fuel": "TEXT",
+                    "Color": "TEXT",
+                    "Doors": "INTEGER",
+                    "Reg": "TEXT",
+                    "DateUpdated": "DATE",
+                    "OldPrice": "INTEGER",
+                    "OldDate": "TEXT",
+                    "NumberOfPriceReductions": "INTEGER",
+                    "NumberReserved": "INTEGER",
+                    "DateCarAdded": "DATE",
+                    "DaysAdded": "INTEGER"
 
             }
         ]
@@ -184,26 +186,28 @@ class SQLiteDatabase:
         Update tables if the schema is changed
         """
         schema =      {
-                "Manufacturer": "TEXT",
-                "Model": "TEXT",
-                "Year": "INTEGER",
-                "Price": "INTEGER",
-                "Body Type": 'TEXT',
-                "Transmission": "TEXT",
-                "Fuel": "TEXT",
-                "Color": "TEXT",
-                "Mileage": "INTEGER",
-                "Doors": "INTEGER",
-                "Reg": "TEXT",
-                "URL": "TEXT",
-                "DateUpdated": "TEXT",
-                "OldPrice": "INTEGER",
-                "OldDate": "TEXT",
-                "NumberOfPriceReductions": "INTEGER",
-                "CarStatus": "TEXT",
-                "NumberReserved": "INTEGER",
-                "ValuationPercentage": "INTEGER",
-                "ValuationRange": "TEXT"
+                    "Manufacturer": "TEXT",
+                    "URL": "TEXT",
+                    "Model": "TEXT",
+                    "CarStatus": "TEXT",
+                    "Year": "INTEGER",
+                    "Price": "INTEGER",
+                    "ValuationPercentage": "INTEGER",
+                    "ValuationRange": "TEXT",
+                    "Mileage": "INTEGER",
+                    "Body Type": 'TEXT',
+                    "Transmission": "TEXT",
+                    "Fuel": "TEXT",
+                    "Color": "TEXT",
+                    "Doors": "INTEGER",
+                    "Reg": "TEXT",
+                    "DateUpdated": "TEXT",
+                    "OldPrice": "INTEGER",
+                    "OldDate": "TEXT",
+                    "NumberOfPriceReductions": "INTEGER",
+                    "NumberReserved": "INTEGER",
+                    "DateCarAdded": "DATE",
+                    "DaysAdded": "INTEGER"
             }
         # Get current tables column
         table_name = "used_cars"
@@ -445,7 +449,9 @@ class SQLiteDatabase:
                     "NumberOfPriceReductions": 0,
                     "NumberReserved": 0,
                     "ValuationPercentage": self.ValuationPercentage,
-                    "ValuationRange": self.ValuationRange
+                    "ValuationRange": self.ValuationRange,
+                    "DateCarAdded": datetime.date.today(),
+                    "DaysAdded": 0
                 },
             ]
             incoming_data =  [{k: v for k, v in data.items() if v is not None} for data in to_imported_incoming_data]
@@ -455,7 +461,7 @@ class SQLiteDatabase:
             column_names = [description[0] for description in self.cursor.description]
             reg_col_index = column_names.index('Reg')
 
-            for data in incoming_data:
+            for data in incoming_data: # for existing data
                 table = "used_cars"
                 matching_car = next((car for car in existing_data if car[reg_col_index] == data["Reg"]), None)
                 if matching_car:
@@ -466,6 +472,12 @@ class SQLiteDatabase:
                     Car_Current_Status = self.CarStatus
                     self.cursor.execute(f"SELECT CarStatus FROM used_cars where Reg = '{currentcarreg}'")
                     Car_DB_Status = self.cursor.fetchone()[0]
+                    #update the days car has been added
+
+                    self.cursor.execute("UPDATE used_cars SET DaysAdded = julianday(CURRENT_DATE) - julianday(DateCarAdded) WHERE CarStatus != 'Sold'")
+                    self.conn.commit()
+
+
                     if (Car_Current_price != car_DB_PRICE) and (Car_Current_price): #  dont run because line 427 which will set car_current_price to None. DB will have price. this will cause it to replace with None
                         print(f"Car with Reg: {currentcarreg} is existing with the same price")
                         self.DateUpdated = datetime.datetime.now().strftime('%d/%m/%Y')
