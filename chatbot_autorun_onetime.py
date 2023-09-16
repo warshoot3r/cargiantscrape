@@ -37,8 +37,8 @@ def scrape_cars():
         return(False)
     print("Starting", flush=True)
     CarSearch = WebScraperCargiant(driver="chrome", keepalive=True)
-    CarSearch.search_for_manufacturer("BMW",7)
-    CarSearch.search_for_manufacturer("Mercedes",5)
+    CarSearch.search_for_manufacturer("BMW")
+    CarSearch.search_for_manufacturer("Mercedes")
     CarSearch.search_for_manufacturer("Lexus")
     CarSearch.print_number_of_cars()
     return CarSearch
@@ -113,7 +113,7 @@ if price_changed or new_cars or status_changed:
           #Send rest of cars
         csv_dataframe = DB.filter_table(filters, database, reg) # every car
 
-        csv_dataframe['CarStatus'].fillna('NA', inplace=True) # fix for NA otherwise we can not use str.contains below
+        # csv_dataframe['CarStatus'].fillna('NA', inplace=True) # fix for NA otherwise we can not use str.contains below
 
         not_available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'].str.contains(r'AVAILABLE IN', case=True, regex=True)] # The available cars
         available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'] == "Available"] # The available cars

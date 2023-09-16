@@ -74,5 +74,7 @@ for  car_data in autotrader_price_db.get_all_cars():
     )
 print(f"Printing imported table")
 internal_db = Car_database.return_as_panda_dataframe()
+sort_database = Car_database.filter_table(db=db, filters=car_filters)
+print(sort_database)
 Car_database.close_db()
-print(internal_db)
+

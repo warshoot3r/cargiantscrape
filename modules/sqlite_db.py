@@ -486,7 +486,7 @@ class SQLiteDatabase:
                         self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated, currentcarreg))
                         self.conn.commit()
                         print("Imported updated entry", flush=True)
-                    if (Car_Current_Status != Car_DB_Status) and self.CarStatus:  
+                    if (Car_Current_Status != Car_DB_Status):  
                         self.number_of_car_status_changed_list.append(currentcarreg)
                         self.number_of_car_status_changed += 1
                 # Handle all different status 
@@ -514,6 +514,7 @@ class SQLiteDatabase:
                                 '''
                                 self.cursor.execute(db_string, ("Available", currentcarreg))
                                 self.conn.commit()  
+
                     
                         elif self.CarStatus == "Sold": 
                                 print(f"VERBOSE: {currentcarreg} is {self.CarStatus}.")
