@@ -4,6 +4,8 @@ from functools import reduce
 import pandas as pd
 import os
 
+
+
 class SQLiteDatabase:
     """
     A class for managing a SQLite database for used car information.
@@ -74,7 +76,7 @@ class SQLiteDatabase:
 
 
 
-    def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None, CarStatus=None):
+    def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None, CarStatus=None, ValuationPercentage=None, ValuationRange=None):
         """
         Imports car properties and adds them to the database.
         
@@ -92,24 +94,26 @@ class SQLiteDatabase:
             Reg (str): The registration number of the car.
             URL (str): The URL of the car's listing.
         """
-        self.Manufacturer = str(Manufacturer)
-        self.Model = str(Model)
-        self.Year = int(Year)
-        self.Price = int(Price)
-        self.Body_Type = str(Body_Type)
-        self.Transmission = str(Transmission)
-        self.Fuel = str(Fuel)
-        self.Color = str(Color)
-        self.Mileage = int(Mileage)
-        self.OldPrice = 0
+        self.Manufacturer = str(Manufacturer) if Manufacturer is not None else None
+        self.Model = str(Model) if Model is not None else None
+        self.Year = int(Year) if Year is not None else None
+        self.Price = int(Price) if Price is not None else None
+        self.Body_Type = str(Body_Type) if Body_Type is not None else None
+        self.Transmission = str(Transmission) if Transmission is not None else None
+        self.Fuel = str(Fuel) if Fuel is not None else None
+        self.Color = str(Color) if Color is not None else None
+        self.Mileage = int(Mileage) if Mileage is not None else None
+        self.OldPrice = 0 
         try:
-            self.Doors = int(Doors)
+            self.Doors = int(Doors) if Doors is not None else None
         except ValueError:
             self.Doors = "N/A"
         self.Reg = str(Reg)
-        self.URL = str(URL)
+        self.URL = str(URL) if URL is not None else None
         self.DateUpdated = datetime.datetime.now()
-        self.CarStatus = str(CarStatus)
+        self.CarStatus = str(CarStatus) if CarStatus is not None else None
+        self.ValuationPercentage = int(ValuationPercentage) if ValuationPercentage is not None else None
+        self.ValuationRange = str(ValuationRange) if ValuationRange is not None else None
         self.import_data()
 
 
@@ -160,7 +164,9 @@ class SQLiteDatabase:
                 "OldDate": "TEXT",
                 "NumberOfPriceReductions": "INTEGER",
                 "CarStatus": "TEXT",
-                "NumberReserved": "INTEGER"
+                "NumberReserved": "INTEGER",
+                "ValuationPercentage": "INTEGER",
+                "ValuationRange": "TEXT"
             }
         ]
         sql_table = "used_cars"
@@ -194,7 +200,9 @@ class SQLiteDatabase:
                 "OldDate": "TEXT",
                 "NumberOfPriceReductions": "INTEGER",
                 "CarStatus": "TEXT",
-                "NumberReserved": "INTEGER"
+                "NumberReserved": "INTEGER",
+                "ValuationPercentage": "INTEGER",
+                "ValuationRange": "TEXT"
             }
         # Get current tables column
         table_name = "used_cars"
@@ -210,9 +218,9 @@ class SQLiteDatabase:
                 ADD {}
                 '''
                 self.cursor.execute(db_string.format(table_name, missingcolumn))
-                print("DB updated", flush="True")
+                print("DB updated", flush=True)
         else:
-            print("No changes needed", flush="True")
+            print("No changes needed", flush=True)
         
 
     def delete_car_from_table(self, REG, table=None):
@@ -298,7 +306,7 @@ class SQLiteDatabase:
         """
         Prints all the data in the 'used_cars' table.
         """
-        print("Printing table information:", flush="True")
+        print("Printing table information:", flush=True)
         self.cursor.execute("SELECT * from used_cars")
         self.conn.commit()
         for item in self.cursor.fetchall():
@@ -331,13 +339,14 @@ class SQLiteDatabase:
             command = f"SELECT * from used_cars where {column} = {input_data} "
         else:  # For strings
             command = f"SELECT * from used_cars where {column} LIKE '{input_data}' ORDER BY DateUpdated ASC"
-        print(command)
+        # print(command)
         self.cursor.execute(command)
         data = self.cursor.fetchall()
 
-        print(f"\nPrinting data from query: {column} -> {input_data}")
-        for item in data:
-            print(item)
+        # print(f"\nPrinting data from query: {column} -> {input_data}")
+        # for item in data:
+        #     print(item)
+        return data
 
     def close_db(self):
         """
@@ -361,7 +370,7 @@ class SQLiteDatabase:
         if(self.number_of_car_status_changed == 0):
             return False
         else: 
-            print("Car Status Changed", flush="True")
+            print("Car Status Changed", flush=True)
             value = self.number_of_car_status_changed
             self.number_of_car_status_changed = 0
             return value
@@ -379,7 +388,7 @@ class SQLiteDatabase:
         if(self.number_of_car_prices_changed == 0):
             return False
         else:
-            print("Car Prices Changed", flush="True")
+            print("Car Prices Changed", flush=True)
             value = self.number_of_car_prices_changed
             self.number_of_car_prices_changed = 0
             return value
@@ -415,7 +424,7 @@ class SQLiteDatabase:
             """
             #Variable to hold the price changes for reports
   
-            incoming_data = [
+            to_imported_incoming_data = [
                 {
                     "Manufacturer": self.Manufacturer,
                     "Model": self.Model,
@@ -433,18 +442,21 @@ class SQLiteDatabase:
                     "DateUpdated": self.DateUpdated,
                     "CarStatus": self.CarStatus,
                     "NumberOfPriceReductions": 0,
-                    "NumberReserved": 0
+                    "NumberReserved": 0,
+                    "ValuationPercentage": self.ValuationPercentage,
+                    "ValuationRange": self.ValuationRange
                 },
             ]
+            incoming_data =  [{k: v for k, v in data.items() if v is not None} for data in to_imported_incoming_data]
+            #remove debug print(f"Will import: {incoming_data}")
             self.cursor.execute("SELECT * from used_cars")
             existing_data = self.cursor.fetchall()
             column_names = [description[0] for description in self.cursor.description]
             reg_col_index = column_names.index('Reg')
 
             for data in incoming_data:
+                table = "used_cars"
                 matching_car = next((car for car in existing_data if car[reg_col_index] == data["Reg"]), None)
-                table = "used_cars" #need to find code
-
                 if matching_car:
                     currentcarreg = matching_car[reg_col_index] 
                     self.cursor.execute(f"SELECT Price FROM used_cars where Reg = '{currentcarreg}'")
@@ -453,7 +465,7 @@ class SQLiteDatabase:
                     Car_Current_Status = self.CarStatus
                     self.cursor.execute(f"SELECT CarStatus FROM used_cars where Reg = '{currentcarreg}'")
                     Car_DB_Status = self.cursor.fetchone()[0]
-                    if Car_Current_price != car_DB_PRICE:
+                    if (Car_Current_price != car_DB_PRICE) and (Car_Current_price): #  dont run because line 427 which will set car_current_price to None. DB will have price. this will cause it to replace with None
                         print(f"Car with Reg: {currentcarreg} is existing with the same price")
                         self.DateUpdated = datetime.datetime.now().strftime('%d/%m/%Y')
                         string_updated = f"Car Price Changed, updating DB. DatabasePrice={ car_DB_PRICE} CurrentPrice= {Car_Current_price}"
@@ -472,10 +484,11 @@ class SQLiteDatabase:
                         print(self.DateUpdated)
                         self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated, currentcarreg))
                         self.conn.commit()
-                        print("Imported updated entry", flush="True")
+                        print("Imported updated entry", flush=True)
                     if (Car_Current_Status != Car_DB_Status) and self.CarStatus:  
                         self.number_of_car_status_changed_list.append(currentcarreg)
                         self.number_of_car_status_changed += 1
+                        
                         string_updated = f"Car status changed for {currentcarreg}. Old status:{Car_DB_Status}. New Status: {self.CarStatus}"
                         print(string_updated)
                         if (Car_Current_Status == "Reserved") and (Car_DB_Status != "Reserved"):
@@ -490,17 +503,30 @@ class SQLiteDatabase:
                              UPDATE {table} SET CarStatus = ?, NumberReserved = NumberReserved + 1 WHERE REG = ?
                             '''
                             self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
-                            self.conn.commit() 
+                            self.conn.commit()   
+                            print("Car was reserved so incrementing the count Number Reserved", flush=True) 
+
                         else: #Car is not reserved so push the scraped status to the database as "Avaliable as ..."
+                 
                             db_string = f'''
                             UPDATE {table} SET CarStatus = ? WHERE REG = ?
                             '''
                             self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
-                            self.conn.commit()   
-
-                            print("Car was reserved so incrementing the count Number Reserved", flush="True")
+                            self.conn.commit()  
+                    if self.ValuationPercentage:
+                            db_string = f'''
+                            UPDATE {table} SET ValuationPercentage = ? WHERE REG = ?
+                            '''
+                            self.cursor.execute(db_string, (self.ValuationPercentage, currentcarreg))
+                            self.conn.commit()
+                    if self.ValuationRange:
+                            db_string = f'''
+                            UPDATE {table} SET ValuationRange = ? WHERE REG = ?
+                            '''
+                            self.cursor.execute(db_string, (self.ValuationRange, currentcarreg))
+                            self.conn.commit() 
                     else:
-                            print(f"VERBOSE: Setting on {currentcarreg}: {matching_car}", flush=True)
+                            #debug print(f"VERBOSE: Setting on {currentcarreg}: {matching_car}", flush=True)
                             db_string = f'''
                             UPDATE {table} SET CarStatus = ? WHERE REG = ?
                             '''
@@ -508,9 +534,8 @@ class SQLiteDatabase:
                             self.cursor.execute(db_string, (Car_Current_Status, currentcarreg))
                             self.conn.commit()   
 
-                        
                 else:  # Add a new car into the database
-                        print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
+                      #  print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
                         table = "used_cars"
                         self.number_of_car_new_changed += 1
                         self.number_of_car_new_changed_list.append(data['Reg']) # Store the REG of new car in a list

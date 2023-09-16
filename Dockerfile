@@ -32,6 +32,7 @@ COPY --link remove_unresolvable_cars.py .
 COPY --link chatbot_autorun.py .
 COPY --link test.py .
 COPY --link chatbot_autorun_onetime.py .
-
+COPY --link calculate_prices_on_db.py .
+COPY --link scrape_only.py .
 ENTRYPOINT ["python3"]
 CMD ["chatbot_autorun.py"] 

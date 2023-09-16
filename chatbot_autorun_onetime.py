@@ -41,7 +41,6 @@ def scrape_cars():
     CarSearch.search_for_manufacturer("Mercedes",5)
     CarSearch.search_for_manufacturer("Lexus")
     CarSearch.print_number_of_cars()
-    CarSearch.stopwebdriver()
     return CarSearch
 
 #Get new data and import it into DB
@@ -113,10 +112,19 @@ if price_changed or new_cars or status_changed:
         bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", file_name="sold")
           #Send rest of cars
         csv_dataframe = DB.filter_table(filters, database) # every car
+
+        csv_dataframe['CarStatus'].fillna('NA', inplace=True) # fix for NA otherwise we can not use str.contains below
+
         not_available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)] # The available cars
         available_csv = csv_dataframe.loc[~csv_dataframe['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)] # The waiting cars
-        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=available_csv, caption="Available Cars", file_name="available")
-        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=not_available_csv, caption="Waiting Cars", file_name="waiting")
+        # bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=available_csv, caption="Available Cars", file_name="available")
+        # bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=not_available_csv, caption="Waiting Cars", file_name="waiting")
+       #New way send multiple in one go.
+        data_frames = [available_csv, not_available_csv]
+        file_formats = ["csv","csv"]
+        captions = ["Available Cars", "Waiting Cars"]
+        file_names = ["available", "waiting"]
+        bot.send_dataframe_as_csv_files(captions=captions,chat_id=credentials.chat_id, dataframes=data_frames, file_names=file_names)
 
  
     DB.close_db()

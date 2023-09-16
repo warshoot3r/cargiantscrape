@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 import requests
-
+import concurrent.futures
 class WebScraperCargiant:
     """
     A web scraper for collecting used car information from the Cargiant website.
@@ -47,7 +47,7 @@ class WebScraperCargiant:
         if self.driver == "safari":
             safari_options = SafariOptions()
             safari_options.headless = True  # Safari doesn't support the "--headless" argument, so we use the headless property
-            self.driver = webdriver.Safari(safari_options)
+            return webdriver.Safari(options=safari_options)
         
         elif self.driver == "chrome":
             chrome_options = ChromeOptions()
@@ -60,7 +60,7 @@ class WebScraperCargiant:
             chrome_options.add_argument("--ignore-certificate-errors")
             chrome_options.add_argument("--disable-extensions")
             chrome_options.add_argument("--start-minimized")
-            self.driver = webdriver.Chrome(options=chrome_options)
+            return webdriver.Chrome(options=chrome_options)
         elif self.driver == "chromium":
             chromium_options = ChromiumOptions()
             chromium_options.add_argument("--no-sandbox")
@@ -72,7 +72,7 @@ class WebScraperCargiant:
             chromium_options.add_argument("--ignore-certificate-errors")
             chromium_options.add_argument("--disable-extensions")
             chromium_options.add_argument("--start-minimized")
-            self.driver = webdriver.Chrome(options=chromium_options)
+            return webdriver.Chrome(options=chromium_options)
        
         elif self.driver == "firefox":
             firefox_options = FirefoxOptions()
@@ -80,7 +80,7 @@ class WebScraperCargiant:
             firefox_options.add_argument("--window-size=1920,1200")
             firefox_options.add_argument("--ignore-certificate-errors")
             firefox_options.add_argument("--start-minimized")
-            self.driver = webdriver.Firefox(options=firefox_options)
+            return webdriver.Firefox(options=firefox_options)
 
     def print_number_of_cars(self):
         """
@@ -90,7 +90,7 @@ class WebScraperCargiant:
 
     def search_for_manufacturer(self, manufacturer, numberofpages=5):
         """
-        Sets the search to a specific manufacturer.
+        Sets the search to a specific manufacturer. This does not save the generic model eg, 3 series
         Args:
                 manufacturer (str): The manufacturer to search for.
                 NumberOfPages(int): Defines how many pages to scrape
@@ -100,9 +100,29 @@ class WebScraperCargiant:
         """
         self.numberofpages = numberofpages
         self.manufacturer_search = manufacturer
-        self.url = "https://www.cargiant.co.uk/search/" + manufacturer + "/all"
-        print("Setting the search to", self.url)
-        self.pull_new_data(numberofpages)
+        url = "https://www.cargiant.co.uk/search/" + manufacturer + "/all"
+        print("Setting the search to", url)
+        self.pull_new_data(numberofpages=numberofpages, url=url)
+
+    def search_for_manufacturer_with_bmw_or_mercedes(self, manufacturer, numberofpages=10 ):
+        """
+        Parallel pull. Sets the search to a specific manufacturer. This will save the generic model as "https://www.cargiant.co.uk/search/" + manufacturer "HERE" the  eg, 3 series
+        Args:
+                manufacturer (str): The manufacturer to search for.
+                NumberOfPages(int): Defines how many pages to scrape
+        Return:
+                pull_new_data returns a panda table`
+
+        """
+        self.manufacturer_search = manufacturer
+        if not(manufacturer == "BMW") and not(manufacturer == "Mercedes"):
+            raise TypeError("Must be BMW or Mercedes")
+        if manufacturer == "BMW":
+            series = ["all-1-series", "all-2-series", "all-3-series", "all-4-series", "all-5-series", "all-6-series", "all-7-series"]
+        elif manufacturer == "Mercedes":
+            series = ["all-a-class", "all-b-class", "all-c-class", "all-e-class", "all-s-class"]
+        
+        self.parallel_pull_new_data(manufacturer=manufacturer, series_to_process=series, number_of_pages=numberofpages)
 
     def import_sqldb_data(self, data_frame):
         """
@@ -111,7 +131,7 @@ class WebScraperCargiant:
         Args:
             data_frame (pd.DataFrame): The DataFrame containing past data to be imported.
         """
-        print("Importing past data", flush="True")
+        print("Importing past data", flush=True)
         self.data = data_frame
 
     def get_car_makes(self):
@@ -122,7 +142,7 @@ class WebScraperCargiant:
         content = driver.content
         soup = BeautifulSoup(content, 'html.parser')
         makes = soup.find_all(id="Makes")
-        print("Listing Car makes", flush="True")
+        print("Listing Car makes", flush=True)
         for item in makes:
             print(item.text)
 
@@ -153,38 +173,39 @@ class WebScraperCargiant:
         self.data = model_retrieved
         return self
 
-    def pull_new_data(self, numberofpages):
+    def pull_new_data(self, url, numberofpages=10):
+    
         """
         Retrieves new car data from the Cargiant website and updates the DataFrame.
 
         """
-
-        print("Pulling new data", flush="True")
-        self.initialize_driver()
-        wait = WebDriverWait(self.driver, 20)
-        self.driver.get(self.url)
+        print(f"Pulling new data: {url}", flush=True)
+        driver = self.initialize_driver()
+        wait = WebDriverWait(driver, 20)
+        driver.get(url)
         
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
-        car_listing_items_page_1 = self.driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
+        car_listing_items_page_1 = driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
         self.extract_web_data(car_listing_items_page_1)
 
         
         for page in range(1,numberofpages+1):
-            pages = self.driver.find_elements(By.CSS_SELECTOR , '[data-paging-pages-template="page"]')
+            pages = driver.find_elements(By.CSS_SELECTOR , '[data-paging-pages-template="page"]')
             print(f"Currently web scraping {self.manufacturer_search} cars on page {page+1}.")
             try:
-                self.driver.execute_script("arguments[0].click()", pages[page]) # click page
+                driver.execute_script("arguments[0].click()", pages[page]) # click page
                 wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
-                current_page = self.driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
+                current_page = driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
                 self.extract_web_data(current_page)
-                print("Page successfully scraped", flush="True")
+                print("Page successfully scraped", flush=True)
             except IndexError:
-                print("No more pages to scrape", flush="True")
+                print("No more pages to scrape", flush=True)
                 return
+        self.stopwebdriver(driver)
    
     def extract_web_data(self, scraped_data):
         
-        
+       
         table_template = {
             "Manufacturer": [],
             "Car Status": [],
@@ -233,7 +254,7 @@ class WebScraperCargiant:
                     car_status = "Available"
                 else: 
                     car_status = car_status_get
-                print(f"VERBOSE: {car_reg} is {car_status_get}. Have saved as {car_status}", flush=True)
+                print(f"VERBOSE: {model_name} is {car_status_get}. Have saved as {car_status}", flush=True)
             except NoSuchElementException:
                 car_status = ""
             
@@ -272,23 +293,61 @@ class WebScraperCargiant:
 
             i = len(tf) + 1
             tf.loc[i] = new_row
-
+        
         if self.data.empty:
+            print("VERBOSE: No existing data. Scraped data is database ")
             self.data = tf
+            self.length = tf.shape[0]
         else:
             self.data = pd.concat([self.data.reset_index(drop=True), tf.reset_index(drop=True)])
-        self.length = self.data.shape[0]
+            print("VERBOSE: Appended to self.data ")
+            self.length = self.data.shape[0]
+            print("Saved to database and returning this scrape as pd.")
+           
         # if not self.keepalive:
-        #     self.driver.quit()
+        #     driver.quit()
+        
+        print(f"Data successfully pulled {tf.shape[0] } cars")
+    def parallel_pull_new_data(self, series_to_process, manufacturer=None, number_of_pages=7, worker_threads=4):
+            """
+            concurrently pull cargiant cars with multiple urls. 
+            "https://www.cargiant.co.uk/search/"+  manufacturer + "/" + series_name
+            
+            Inputs:
+                - manufactuere type(str) eg. BMW
+                - series name  type(array) eg. all-1-series
+                - worker threads = number of parallel workers scraping at same time
+            URL is created to be an array like https://www.cargiant.co.uk/search/BMW/all-6-series
 
-        print(f"Data successfully pulled {(tf.count())[0]} cars")
+            Returns:
+                database
+            
+            """
+            
+            with concurrent.futures.ThreadPoolExecutor(worker_threads) as executor:
+                futures = []
 
-    def stopwebdriver(self):
+                for series_name in series_to_process:
+                    url = "https://www.cargiant.co.uk/search/"+  manufacturer + "/" + series_name
+                    future = executor.submit(self.pull_new_data, url, number_of_pages)
+                    futures.append(future)
+
+                # Wait for all futures to complete
+                concurrent.futures.wait(futures)
+
+                # If you want to access the results from the futures, you can iterate through futures and retrieve results
+                for future in futures:
+                    result = future.result()
+                    print(f"Finished a {result} scrape")
+                    print(result)
+                    # Process the result as needed
+        
+    def stopwebdriver(self, driver):
         """
         Closes the browser and Kills the web driver.
         """
-        self.driver.close()
-        self.driver.quit()
+        driver.close()
+        driver.quit()
         #Force killing the processes
     def check_reg_url_alive(self, Registration):
         """
