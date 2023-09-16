@@ -148,25 +148,26 @@ class SQLiteDatabase:
         incoming_data = [
             {
                 "Manufacturer": "TEXT",
+                "URL": "TEXT",
                 "Model": "TEXT",
+                "CarStatus": "TEXT",
                 "Year": "INTEGER",
                 "Price": "INTEGER",
+                "ValuationPercentage": "INTEGER",
+                "ValuationRange": "TEXT"
+                "Mileage": "INTEGER",
                 "Body Type": 'TEXT',
                 "Transmission": "TEXT",
                 "Fuel": "TEXT",
                 "Color": "TEXT",
-                "Mileage": "INTEGER",
                 "Doors": "INTEGER",
                 "Reg": "TEXT",
-                "URL": "TEXT",
                 "DateUpdated": "TEXT",
                 "OldPrice": "INTEGER",
                 "OldDate": "TEXT",
                 "NumberOfPriceReductions": "INTEGER",
-                "CarStatus": "TEXT",
-                "NumberReserved": "INTEGER",
-                "ValuationPercentage": "INTEGER",
-                "ValuationRange": "TEXT"
+                "NumberReserved": "INTEGER"
+
             }
         ]
         sql_table = "used_cars"
