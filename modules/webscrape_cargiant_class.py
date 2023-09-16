@@ -84,9 +84,9 @@ class WebScraperCargiant:
 
     def print_number_of_cars(self):
         """
-        Prints the number of cars to be imported.
+        Prints the number of cars scraped from cargiant
         """
-        print(f"\n\nNumber of cars to be imported -> {self.length}\n\n")
+        print(f"\n\nNumber of cars to be scraped from cargiant -> {self.length}\n\n")
 
     def search_for_manufacturer(self, manufacturer, numberofpages=5):
         """
@@ -254,7 +254,7 @@ class WebScraperCargiant:
                     car_status = "Available"
                 else: 
                     car_status = car_status_get
-                print(f"VERBOSE: {model_name} is {car_status_get}. Have saved as {car_status}", flush=True)
+                print(f"VERBOSE: {model_name} saved as {car_status}", flush=True)
             except NoSuchElementException:
                 car_status = ""
             
