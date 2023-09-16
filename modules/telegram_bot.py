@@ -131,7 +131,44 @@ class TelegramBot:
             # Remove the temporary file
             import os
             os.remove(filename)
-    def send_dataframe_as_multiple_files(self, chat_id, dataframes, file_formats=None, captions=None, file_names=None):
+    def send_dataframe_as_csv_files(self, chat_id, dataframes, captions=None, file_names=None):
+        if not captions:
+            captions = [""] * len(dataframes)
+        if not file_names:
+            file_names = ["data"] * len(dataframes)
+
+        if len(dataframes) != len(captions) or len(dataframes) != len(file_names):
+            raise ValueError("Length of dataframes, captions, and file_names should be the same.")
+
+        try:
+            for i, dataframe in enumerate(dataframes):
+                file_name = f"{file_names[i]}.csv"
+                file_path = os.path.join(tempfile.gettempdir(), file_name)
+
+                dataframe.to_csv(file_path, index=False)
+
+                send_document_url = f"{self.base_url}sendDocument"
+                files = {"document": (file_name, open(file_path, "rb"))}
+                caption = captions[i]
+
+                try:
+                    response = requests.post(send_document_url, data={"chat_id": chat_id, "caption": caption}, files=files)
+                    response_json = response.json()
+                    if response_json["ok"]:
+                        print(f"File '{file_name}' sent successfully!", flush=True)
+                    else:
+                        print(f"Failed to send file '{file_name}'. Error:", response_json["description"])
+                except requests.exceptions.RequestException as e:
+                    print(f"Error sending file '{file_name}':", e)
+        finally:
+            # Remove the temporary CSV files
+            for i in range(len(dataframes)):
+                file_name = f"{file_names[i]}.csv"
+                file_path = os.path.join(tempfile.gettempdir(), file_name)
+                os.remove(file_path)
+
+    
+    def send_dataframe_as_multiple_files_as_zip(self, chat_id, dataframes, file_formats=None, captions=None, file_names=None):
         """
                 # Example usage:
         # dataframes = [df1, df2]  # List of dataframes to send
