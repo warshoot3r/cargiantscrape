@@ -52,6 +52,7 @@ jobs:
             name: cargiantdbfile
             path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
   background_data:
+              needs: pull-and-test
               runs-on: ubuntu-latest
               strategy:
                 matrix:
