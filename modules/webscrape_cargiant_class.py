@@ -251,7 +251,7 @@ class WebScraperCargiant:
             mileage = re.sub("[^0-9.]", "" , mileage_get)
             try:
                 car_status_get =  item.find_element(By.CSS_SELECTOR, "span.caption-block").text
-                if(car_status_get == "Sold Today"):
+                if(car_status_get == "SOLD TODAY"):
                     car_status = "Sold"
                 elif(car_status_get == "RESERVED"):
                     car_status = "Reserved"
