@@ -336,6 +336,7 @@ class car_background_information:
             # Find all individual car listings
             try:
                 number_of_cars = table_data.find_all('li')
+                
             except:
                 print("No data")
                 break
@@ -351,11 +352,12 @@ class car_background_information:
                 matches = pattern.findall(text)
                 # Print the matching prices
                 for match in matches: # ignoring last two as they are adverts
+                    
                     price = ''.join(match)
                     if price:
                         cars_list.append(price)
+                        print(f"Successfully got prices for {reg} -> {price}", flush=True)
                         break
-            print(f"Successfully got prices for {reg}", flush=True)
             self.cars[reg].autotrader_price_valuation = cars_list[:-2]
 
 
