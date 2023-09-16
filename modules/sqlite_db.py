@@ -506,7 +506,7 @@ class SQLiteDatabase:
                             self.conn.commit()   
                             print("Car was reserved so incrementing the count Number Reserved", flush=True) 
 
-                    else: #Car is not reserved so push the scraped status to the database as "Avaliable as ..."
+                        else: #Car is not reserved so push the scraped status to the database as "Avaliable as ..."
                  
                             db_string = f'''
                             UPDATE {table} SET CarStatus = ? WHERE REG = ?
