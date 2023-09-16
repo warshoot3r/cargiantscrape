@@ -124,7 +124,7 @@ if price_changed or new_cars or status_changed:
         file_formats = ["csv","csv"]
         captions = ["Available Cars", "Waiting Cars"]
         file_names = ["available", "waiting"]
-        bot.send_dataframe_as_multiple_files(captions=captions,chat_id=credentials.chat_id, file_formats=file_formats, dataframes=data_frames, file_names=file_names)
+        bot.send_dataframe_as_csv_files(captions=captions,chat_id=credentials.chat_id, file_formats=file_formats, dataframes=data_frames, file_names=file_names)
 
  
     DB.close_db()
