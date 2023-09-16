@@ -486,6 +486,16 @@ class SQLiteDatabase:
                         self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated, currentcarreg))
                         self.conn.commit()
                         print("Imported updated entry", flush=True)
+
+                    if self.CarStatus == "" and Car_DB_Status == "": # required fix for empty Availablity
+                        print(f"VERBOSE: {currentcarreg}. DB status and value is empty. Setting to Available", flush=True)
+                        db_string = f'''
+                        UPDATE {table} SET CarStatus = ? WHERE REG = ?
+                        '''
+                        self.cursor.execute(db_string, ("Available", currentcarreg))
+                        self.conn.commit()  
+
+
                     if (Car_Current_Status != Car_DB_Status):  
                         self.number_of_car_status_changed_list.append(currentcarreg)
                         self.number_of_car_status_changed += 1
