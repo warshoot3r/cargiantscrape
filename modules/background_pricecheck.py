@@ -100,7 +100,7 @@ class car_background_information:
         lower_bound = min(prices_as_int)
         if upper_bound == lower_bound:
             return None
-        percentage_range = (price_to_check - lower_bound)/ (upper_bound - lower_bound ) * 100
+        percentage_range = (int(price_to_check) - lower_bound)/ (upper_bound - lower_bound ) * 100
     
         return int(percentage_range)
 
