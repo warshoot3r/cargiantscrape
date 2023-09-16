@@ -93,11 +93,13 @@ class car_background_information:
         """
         prices = self.cars.get(reg, None).autotrader_price_valuation
         if prices is None or (len(prices) < 2) :
-            return
+            return None
         prices_as_int = [int(value.replace(',', '' )) for value in prices]
 
         upper_bound  = max(prices_as_int)
         lower_bound = min(prices_as_int)
+        if upper_bound == lower_bound:
+            return None
         percentage_range = (price_to_check - lower_bound)/ (upper_bound - lower_bound ) * 100
     
         return int(percentage_range)
@@ -112,7 +114,7 @@ class car_background_information:
         
         prices = self.cars.get(reg, None).autotrader_price_valuation
         if (prices is None) or (len(prices) < 2):
-            return
+            return None
         prices_as_int = [int(value.replace(',', '' )) for value in prices]
 
         max_price = max(prices_as_int)
