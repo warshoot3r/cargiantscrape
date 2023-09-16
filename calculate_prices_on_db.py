@@ -18,9 +18,9 @@ autotrader_price_db = car_background_information(driver="chrome",postal_code="TR
 
 #get the car database that we will calculate the prices on 
 car_filters = {
-     "ValuationRange" : lambda x: x is None,
-   # "Price": lambda x: x < 10000
+    "ValuationRange" : lambda x: x is None,
     # "CarStatus": lambda x: x != "Sold"
+    "Price": lambda x: x < 10000
 }
 db = Car_database.return_as_panda_dataframe()
 sort_database = Car_database.filter_table(db=db, filters=car_filters)
@@ -56,8 +56,10 @@ autotrader_price_db.parallel_scrape_autotrader_price(worker_threads=4, timeout_t
 
 Car_database.open_db()  # open db now to import
 for  car_data in autotrader_price_db.get_all_cars():
+
+    price_column_index = internal_db.columns.get_loc("Price")
     reg = car_data[0]
-    current_price = Car_database.retrieve_db(column="Reg",input_data=reg)[0][4]
+    current_price = Car_database.retrieve_db(column="Reg",input_data=reg)[0][price_column_index]
     print(f"Working on {reg} with {current_price}")
 
     car_valuation = autotrader_price_db.get_car_range_price(reg=reg)
@@ -74,7 +76,5 @@ for  car_data in autotrader_price_db.get_all_cars():
     )
 print(f"Printing imported table")
 internal_db = Car_database.return_as_panda_dataframe()
-sort_database = Car_database.filter_table(db=db, filters=car_filters)
-print(sort_database)
 Car_database.close_db()
-
+print(internal_db)

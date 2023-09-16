@@ -1,0 +1,245 @@
+1694905530551	geckodriver	INFO	Listening on 127.0.0.1:64888
+1694905533612	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--window-size=1920,1200" "--ig ... 2" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\james\\AppData\\Local\\Temp\\rust_mozprofileqnolhM"
+*** You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1694905533806	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+console.error: "Warning: unrecognized command line flag" "-window-size"
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+1694905533847	Marionette	INFO	Listening on port 64936
+WebDriver BiDi listening on ws://127.0.0.1:64892
+Read port: 64936
+1694905533981	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+DevTools listening on ws://127.0.0.1:64892/devtools/browser/42c9ca04-0257-42a8-9c7b-a6ca11653458
+1694905551307	Marionette	INFO	Stopped listening on port 64933
+JavaScript warning: https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js, line 2: Script terminated by timeout at:
+m/</v<@https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js:2:1117954
+
+Dynamically enable window occlusion 1
+1694905548429	geckodriver	INFO	Listening on 127.0.0.1:65146
+1694905551484	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--window-size=1920,1200" "--ig ... 7" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\james\\AppData\\Local\\Temp\\rust_mozprofile41ERbP"
+*** You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1694905551680	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+console.error: "Warning: unrecognized command line flag" "-window-size"
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+1694905551721	Marionette	INFO	Listening on port 65172
+WebDriver BiDi listening on ws://127.0.0.1:65148
+Read port: 65172
+1694905551878	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+DevTools listening on ws://127.0.0.1:65148/devtools/browser/0a360a27-7b6d-41dd-b00e-267ac4f71d36
+1694905564635	Marionette	INFO	Stopped listening on port 65171
+Dynamically enable window occlusion 1
+der.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js, line 2: Script terminated by timeout at:
+m/</v<@https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js:2:1118187
+
+Dynamically enable window occlusion 1
+You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1694905561405	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+console.error: "Warning: unrecognized command line flag" "-window-size"
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+1694905561441	Marionette	INFO	Listening on port 61632
+WebDriver BiDi listening on ws://127.0.0.1:65305
+Read port: 61632
+1694905561522	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+DevTools listening on ws://127.0.0.1:65305/devtools/browser/05ae21f6-7a8b-4e7f-9a5e-9380dfb6f020
+1694905571480	geckodriver	INFO	Listening on 127.0.0.1:61699
+1694905571641	geckodriver	INFO	Listening on 127.0.0.1:61702
+1694905605262	geckodriver	INFO	Listening on 127.0.0.1:61771
+1694905608337	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--window-size=1920,1200" "--ig ... 8" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\james\\AppData\\Local\\Temp\\rust_mozprofilevdNc5f"
+*** You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1694905608531	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+console.error: "Warning: unrecognized command line flag" "-window-size"
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+1694905608572	Marionette	INFO	Listening on port 61810
+WebDriver BiDi listening on ws://127.0.0.1:61778
+Read port: 61807
+1694905608712	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+DevTools listening on ws://127.0.0.1:61776/devtools/browser/b6e6c9ad-190b-4fd9-952a-180acc87e136
+1694905626124	Marionette	INFO	Stopped listening on port 61809
+JavaScript warning: https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js, line 2: Script terminated by timeout at:
+m/</v<@https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js:2:1117954
+
+Dynamically enable window occlusion 1
+1694905623286	geckodriver	INFO	Listening on 127.0.0.1:60290
+1694905626333	mozrunner::runner	INFO	Running command: "C:\\P1694905626410	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--window-size=1920,1200" "--ig ... 4" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\james\\AppData\\Local\\Temp\\rust_mozprofileJ3rKqP"
+*** You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by1694905626548	Marionette	INFO	Marionette enabled
+Dynamicall1694905626618	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+console.error: "Warning: unrecognized command line flag" "-window-size"
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+1694905626663	Marionette	INFO	Listening on port 60322
+WebDriv1694905626735	RemoteAgent	WARN	TLS certificRead port: 60322
+1694905626834	RemoteAgent	WA[GFX1-]: RenderCompositorSWGL failed mapping default framebu[GFX1-]: Rendconsole.error: ({})
+DevTools listening on ws://127.0.0.1:60console.error: ({})
+DevTools listening on ws://127.0.0.1:60294/devtools/browser/e2c0fec8-6f64-48df-8840-d27cc1cfa2ff
+1694905627636	geckodriver	INFO	Listening on 127.0.0.1:60360
+1694905630368	geckodriver	INFO	Listening on 127.0.0.1:60372
+1694905633425	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--window-size=1920,1200" "--ig ... 5" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\james\\AppData\\Local\\Temp\\rust_mozprofileCJ5RnM"
+*** You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1694905633624	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+console.error: "Warning: unrecognized command line flag" "-window-size"
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+1694905633663	Marionette	INFO	Listening on port 60413
+WebDriver BiDi listening on ws://127.0.0.1:60376
+Read port: 60412
+1694905633829	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+DevTools listening on ws://127.0.0.1:60377/devtools/browser/37c10e30-25be-4e2e-ba02-6424022489d6
+1694905635140	geckodriver	INFO	Listening on 127.0.0.1:50451
+1694905638206	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--window-size=1920,1200" "--ig ... 2" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\james\\AppData\\Local\\Temp\\rust_mozprofileLVbUNP"
+1694905678319	geckodriver	INFO	Listening on 127.0.0.1:50591
+1694905681384	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--window-size=1920,1200" "--ig ... 3" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\james\\AppData\\Local\\Temp\\rust_mozprofileF8VKLF"
+*** You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1694905681596	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+console.error: "Warning: unrecognized command line flag" "-window-size"
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+1694905681636	Marionette	INFO	Listening on port 50627
+WebDriver BiDi listening on ws://127.0.0.1:50595
+Read port: 50626
+1694905681781	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+DevTools listening on ws://127.0.0.1:50595/devtools/browser/ec38a971-6682-4d45-a64b-f6a66b7cfb12
+1694905699222	Marionette	INFO	Stopped listening on port 50625
+JavaScript warning: https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js, line 2: Script terminated by timeout at:
+m/</v<@https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js:2:1118187
+
+Dynamically enable window occlusion 1
+1694905696450	geckodriver	INFO	Listening on 127.0.0.1:53547
+1694905699508	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--window-size=1920,1200" "--ig ... 8" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\james\\AppData\\Local\\Temp\\rust_mozprofileazyvYw"
+*** You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1694905699730	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+console.error: "Warning: unrecognized command line flag" "-window-size"
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+1694905699779	Marionette	INFO	Listening on port 53575
+WebDriver BiDi listening on ws://127.0.0.1:53548
+Read port: 53575
+1694905699927	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+DevTools listening on ws://127.0.0.1:53548/devtools/browser/2dc21b17-1374-40c9-a8e5-06c91895e537
+1694905701221	geckodriver	INFO	Listening on 127.0.0.1:53643
+1694905704274	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--window-size=1920,1200" "--ig ... 5" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\james\\AppData\\Local\\Temp\\rust_mozprofilew4o89f"
+*** You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1694905704474	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+console.error: "Warning: unrecognized command line flag" "-window-size"
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+1694905704511	Marionette	INFO	Listening on port 53666
+WebDriver BiDi listening on ws://127.0.0.1:53645
+Read port: 53665
+1694905704634	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+DevTools listening on ws://127.0.0.1:53645/devtools/browser/73a7e089-c4f1-48ea-a118-8369c8fd8873
+1694905717140	Marionette	INFO	Stopped listening on port 53665
+JavaScript warning: https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js, line 2: Script terminated by timeout at:
+m/</v<@https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js:2:1118187
+
+Dynamically enable window occlusion 1
+You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1694905711510	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+console.error: "Warning: unrecognized command line flag" "-window-size"
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+1694905711551	Marionette	INFO	Listening on port 55977
+WebDriver BiDi listening on ws://127.0.0.1:55941
+Read port: 55977
+1694905711676	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+DevTools listening on ws://127.0.0.1:55941/devtools/browser/401367e7-2959-4fe1-8b89-5a32955bd603
+1694905724087	Marionette	INFO	Stopped listening on port 55977
+JavaScript warning: https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js, line 2: Script terminated by timeout at:
+m/</v<@https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js:2:1118187
+
+Dynamically enable window occlusion 1
+You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1694905721378	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+console.error: "Warning: unrecognized command line flag" "-window-size"
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+1694905721414	Marionette	INFO	Listening on port 56045
+WebDriver BiDi listening on ws://127.0.0.1:56033
+Read port: 56045
+1694905721495	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+DevTools listening on ws://127.0.0.1:56033/devtools/browser/74a2b12e-315e-427c-898c-cc0cdc4cabc7
+1694905724130	geckodriver	INFO	Listening on 127.0.0.1:56091
+1694906067775	geckodriver	INFO	Listening on 127.0.0.1:62479
+1694906070833	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--window-size=1920,1200" "--ig ... 1" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\james\\AppData\\Local\\Temp\\rust_mozprofile8XYVrQ"
+*** You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1694906071053	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+console.error: "Warning: unrecognized command line flag" "-window-size"
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+1694906071092	Marionette	INFO	Listening on port 62512
+WebDriver BiDi listening on ws://127.0.0.1:62482
+Read port: 62510
+1694906071240	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+DevTools listening on ws://127.0.0.1:62480/devtools/browser/60f094c3-be28-42d7-8f21-76d0aad5cc36
+1694906078870	Marionette	INFO	Stopped listening on port 62510
+JavaScript warning: https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js, line 2: Script terminated by timeout at:
+m/</v<@https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js:2:1118187DynaDynamically enable window occlusion 1
+1694906086673	geckodriver	INFO	Listening on 127.0.0.1:62718
+1694906089743	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "--window-size=1920,1200" "--ig ... 3" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\james\\AppData\\Local\\Temp\\rust_mozprofile1DvuZL"
+*** You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1694906089975	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+console.error: "Warning: unrecognized command line flag" "-window-size"
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+1694906090017	Marionette	INFO	Listening on port 62756
+WebDriver BiDi listening on ws://127.0.0.1:62725
+Read port: 62755
+1694906090172	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+DevTools listening on ws://127.0.0.1:62722/devtools/browser/71ccf463-f0f9-46aa-a58a-f088cc4398a4
+1694906097818	Marionette	INFO	Stopped listening on port 62755
+JavaScript warning: https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js, line 2: Script terminated by timeout at:
+m/</v<@https://www.autotrader.co.uk/search-results-app/bundles/static/js/5.f3153480.chunk.js:2:1118187
+
+Dynamically enable window occlusion 1

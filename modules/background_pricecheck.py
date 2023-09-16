@@ -36,7 +36,7 @@ class car_background_information:
         
         elif self.driver == "chrome":
             chrome_options = ChromeOptions()
-            chrome_options.add_argument("--headless=new")
+            # chrome_options.add_argument("--headless=new")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-gpu")
             chrome_options.add_argument("--disable-dev-shm-usage")

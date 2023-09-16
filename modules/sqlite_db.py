@@ -507,7 +507,7 @@ class SQLiteDatabase:
                         self.conn.commit()  
 
 
-                    if (Car_Current_Status != Car_DB_Status):  
+                    if (Car_Current_Status != Car_DB_Status) and Car_Current_Status:  
                         self.number_of_car_status_changed_list.append(currentcarreg)
                         self.number_of_car_status_changed += 1
                 # Handle all different status 
@@ -545,7 +545,7 @@ class SQLiteDatabase:
                                 self.cursor.execute(db_string, (Car_Current_Status, currentcarreg))
                                 self.conn.commit()  
                     
-                        elif re.search(r"AVAILABLE IN.*",self.CarStatus):
+                        elif re.search(r"AVAILABLE.*",self.CarStatus):
                                 print(f"VERBOSE: {currentcarreg} is not ready yet. Setting status to {self.CarStatus}")
                                 db_string = f'''
                                 UPDATE {table} SET CarStatus = ? WHERE REG = ?
