@@ -1,16 +1,16 @@
 id,Manufacturer,Model,Year,Price,Body Type,Transmission,Fuel,Color,Mileage,Doors,Reg,URL,DateUpdated,OldPrice,OldDate,NumberOfPriceReductions,CarStatus,NumberReserved,ValuationPercentage,ValuationRange
-362,BMW,116D,2018,12999,Hatch,Auto,Diesel,Met Grey,68731,5,GU68ULB,https://www.cargiant.co.uk/car/BMW/116D/GU68ULB,2023-09-16 15:29:07.010588,0,,0,Sold,0,,
-15,BMW,320i,2017,12999,Saloon,Auto,Petrol,White,75041,N/A,FY17VSG,https://www.cargiant.co.uk/car/BMW/320i/FY17VSG,2023-09-09 12:19:50.822916,0,,0,Sold,0,,
-23,BMW,2 Series Tourer,2018,13799,MPV,Auto,Hybrid,Blue,73614,N/A,FM18VMR,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/FM18VMR,2023-09-09 12:19:50.850914,0,,0,Sold,0,,
-39,BMW,118i,2019,14999,Hatch,Manual,Petrol,Black,39446,5,YC19VGY,https://www.cargiant.co.uk/car/BMW/118i/YC19VGY,2023-09-09 12:19:50.891914,0,,0,Sold,0,,
-377,BMW,2 Series Tourer,2018,14999,MPV,Auto,Hybrid,Met Blue,56740,N/A,SJ68KGN,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/SJ68KGN,2023-09-16 15:29:07.115090,0,,0,Sold,0,,
-81,BMW,118i,2019,16999,Hatch,Auto,Petrol,Blue,43560,5,FE69XST,https://www.cargiant.co.uk/car/BMW/118i/FE69XST,2023-09-09 12:19:50.999913,0,,0,Sold,0,,
-83,BMW,2 Series Tourer,2019,16999,MPV,Manual,Petrol,Met Grey,30834,N/A,KW69COJ,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/KW69COJ,2023-09-09 12:19:51.004917,0,,0,Sold,0,,
-92,BMW,X1,2018,17499,SUV,Auto,Diesel,Grey,47093,N/A,HX18SVG,https://www.cargiant.co.uk/car/BMW/X1/HX18SVG,2023-09-09 12:19:51.027914,0,,0,Sold,0,,
-93,BMW,X2,2019,17499,SUV,Auto,Petrol,White,66435,N/A,AX19FHN,https://www.cargiant.co.uk/car/BMW/X2/AX19FHN,2023-09-09 12:19:51.030416,0,,0,Sold,0,,
-126,BMW,520D,2019,18999,Estate,Auto,Diesel,Blue,77242,N/A,VO69MTU,https://www.cargiant.co.uk/car/BMW/520D/VO69MTU,2023-09-09 12:19:51.118413,0,,0,Sold,0,,
-184,BMW,520D,2019,22999,Saloon,Auto,Diesel,Blue,32290,N/A,GR19GJU,https://www.cargiant.co.uk/car/BMW/520D/GR19GJU,2023-09-09 12:19:51.279915,0,,0,Sold,0,,
-347,Lexus,UX,2019,20999,SUV,Auto,Hybrid,Black,21973,N/A,BN69UWF,https://www.cargiant.co.uk/car/Lexus/UX/BN69UWF,16/09/2023,21499,2023-09-09 12:19:51.792913,1,Sold,0,,
-297,Mercedes,A200,2021,21799,Hatch,Auto,Diesel,Silver,24909,5,KK21GKO,https://www.cargiant.co.uk/car/Mercedes/A200/KK21GKO,2023-09-09 12:19:51.615916,0,,0,Sold,0,,
-323,Mercedes,GLC,2019,26999,SUV,Auto,Diesel,Red,37211,N/A,GV19BYL,https://www.cargiant.co.uk/car/Mercedes/GLC/GV19BYL,16/09/2023,27299,2023-09-09 12:19:51.694915,1,Sold,0,,
-329,Mercedes,GLC,2019,29499,SUV,Auto,Diesel,Black,16082,N/A,WN69OBL,https://www.cargiant.co.uk/car/Mercedes/GLC/WN69OBL,2023-09-09 12:19:51.712916,0,,0,Sold,0,,
+17,BMW,116D,2018,12999,Hatch,Auto,Diesel,Met Grey,68731,5,GU68ULB,https://www.cargiant.co.uk/car/BMW/116D/GU68ULB,2023-09-16 15:40:21.392051,0,,0,Sold,0,68.0,£8650 - £14990
+19,BMW,118i,2019,13299,Hatch,Manual,Petrol,White,84984,5,PX19JFO,https://www.cargiant.co.uk/car/BMW/118i/PX19JFO,2023-09-16 15:40:21.397050,0,,0,Sold,0,48.0,£10800 - £16000
+24,BMW,2 Series Tourer,2018,13799,MPV,Auto,Hybrid,White,73988,N/A,FJ68RLX,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/FJ68RLX,2023-09-16 15:40:21.409049,0,,0,Sold,0,,
+46,BMW,2 Series Tourer,2018,14999,MPV,Auto,Hybrid,Met Blue,56740,N/A,SJ68KGN,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/SJ68KGN,2023-09-16 15:40:21.462049,0,,0,Sold,0,,
+92,BMW,118i,2019,16999,Hatch,Auto,Petrol,Blue,43560,5,FE69XST,https://www.cargiant.co.uk/car/BMW/118i/FE69XST,2023-09-16 15:40:21.575550,0,,0,Sold,0,93.0,£2545 - £17995
+94,BMW,2 Series Tourer,2019,16999,MPV,Manual,Petrol,Met Grey,30834,N/A,KW69COJ,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/KW69COJ,2023-09-16 15:40:21.580552,0,,0,Sold,0,,
+103,BMW,X2,2019,17499,SUV,Auto,Petrol,White,66435,N/A,AX19FHN,https://www.cargiant.co.uk/car/BMW/X2/AX19FHN,2023-09-16 15:40:21.603549,0,,0,Sold,0,42.0,£15991 - £19499
+145,BMW,520D,2019,18999,Estate,Auto,Diesel,Blue,77242,N/A,VO69MTU,https://www.cargiant.co.uk/car/BMW/520D/VO69MTU,2023-09-16 15:40:21.711550,0,,0,Sold,0,46.0,£15995 - £22495
+156,BMW,2 Series Tourer,2018,19499,MPV,Auto,Diesel,Silver,29487,N/A,GL68TDU,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/GL68TDU,2023-09-16 15:40:21.740052,0,,0,Sold,0,,
+343,Lexus,UX,2019,20999,SUV,Auto,Hybrid,Black,21973,N/A,BN69UWF,https://www.cargiant.co.uk/car/Lexus/UX/BN69UWF,2023-09-16 15:40:22.297552,0,,0,Sold,0,,
+200,Mercedes,A180,2019,14999,Hatch,Manual,Petrol,White,47636,5,WA19LLT,https://www.cargiant.co.uk/car/Mercedes/A180/WA19LLT,2023-09-16 15:40:21.881050,0,,0,Sold,0,68.0,£1990 - £20990
+273,Mercedes,A200,2020,20999,Hatch,Auto,Petrol,White,36154,5,RK20RDU,https://www.cargiant.co.uk/car/Mercedes/A200/RK20RDU,2023-09-16 15:40:22.090049,0,,0,Sold,0,66.0,£18000 - £22495
+281,Mercedes,A200,2021,21799,Hatch,Auto,Diesel,Silver,24909,5,KK21GKO,https://www.cargiant.co.uk/car/Mercedes/A200/KK21GKO,2023-09-16 15:40:22.113552,0,,0,Sold,0,35.0,£19499 - £25995
+315,Mercedes,GLC,2019,26999,SUV,Auto,Diesel,Red,37211,N/A,GV19BYL,https://www.cargiant.co.uk/car/Mercedes/GLC/GV19BYL,2023-09-16 15:40:22.214052,0,,0,Sold,0,,
+321,Mercedes,GLC,2019,29499,SUV,Auto,Diesel,Black,16082,N/A,WN69OBL,https://www.cargiant.co.uk/car/Mercedes/GLC/WN69OBL,2023-09-16 15:40:22.232052,0,,0,Sold,0,,

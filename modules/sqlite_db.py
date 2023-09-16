@@ -3,7 +3,7 @@ import datetime
 from functools import reduce
 import pandas as pd
 import os
-
+import re
 
 
 class SQLiteDatabase:
@@ -488,31 +488,48 @@ class SQLiteDatabase:
                     if (Car_Current_Status != Car_DB_Status) and self.CarStatus:  
                         self.number_of_car_status_changed_list.append(currentcarreg)
                         self.number_of_car_status_changed += 1
-                        
+                # Handle all different status 
                         string_updated = f"Car status changed for {currentcarreg}. Old status:{Car_DB_Status}. New Status: {self.CarStatus}"
                         print(string_updated)
-                        if (Car_Current_Status == "Reserved") and (Car_DB_Status != "Reserved"):
-                            self.cursor.execute(f"SELECT NumberReserved FROM used_cars where Reg = '{currentcarreg}'")
-                            Car_DB_NumberReserved = self.cursor.fetchone()[0]
-                            if Car_DB_NumberReserved is None:
+                        if (self.CarStatus == "Reserved"): # handling reserved cars
+                            if (Car_DB_Status != "Reserved"): # if the db status is not reserved
+                                self.cursor.execute(f"SELECT NumberReserved FROM used_cars where Reg = '{currentcarreg}'")
+                                Car_DB_NumberReserved = self.cursor.fetchone()[0]
+                                if Car_DB_NumberReserved is None: #database has no value so we set reserved to 1
+                                    db_string = f'''
+                                UPDATE {table} SET CarStatus = ?, NumberReserved = 1 WHERE REG = ?
+                                '''
+                                else:   # database was reserved before so increment
+                                    db_string = f'''
+                                UPDATE {table} SET CarStatus = ?, NumberReserved = NumberReserved + 1 WHERE REG = ?
+                                '''
+                                self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
+                                self.conn.commit()   
+                                print("Car was reserved so incrementing the count Number Reserved", flush=True) 
+                        elif self.CarStatus == "":    # Handle the empty status cars. These are avaliable to purchase cars      
+                                print(f"VERBOSE: {currentcarreg} has no value. Setting to Available", flush=True)
                                 db_string = f'''
-                             UPDATE {table} SET CarStatus = ?, NumberReserved = 1 WHERE REG = ?
-                               '''
-                            else:   
+                                UPDATE {table} SET CarStatus = ? WHERE REG = ?
+                                '''
+                                self.cursor.execute(db_string, ("Available", currentcarreg))
+                                self.conn.commit()  
+                    
+                        elif self.CarStatus == "Sold": 
+                                print(f"VERBOSE: {currentcarreg} is {self.CarStatus}.")
                                 db_string = f'''
-                             UPDATE {table} SET CarStatus = ?, NumberReserved = NumberReserved + 1 WHERE REG = ?
-                            '''
-                            self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
-                            self.conn.commit()   
-                            print("Car was reserved so incrementing the count Number Reserved", flush=True) 
-
-                        else: #Car is not reserved so push the scraped status to the database as "Avaliable as ..."
-                 
-                            db_string = f'''
-                            UPDATE {table} SET CarStatus = ? WHERE REG = ?
-                            '''
-                            self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
-                            self.conn.commit()  
+                                UPDATE {table} SET CarStatus = ? WHERE REG = ?
+                                '''
+                                self.cursor.execute(db_string, (Car_Current_Status, currentcarreg))
+                                self.conn.commit()  
+                    
+                        elif re.search(r"AVAILABLE IN.*",self.CarStatus):
+                                print(f"VERBOSE: {currentcarreg} is not ready yet. Setting status to {self.CarStatus}")
+                                db_string = f'''
+                                UPDATE {table} SET CarStatus = ? WHERE REG = ?
+                                '''
+                                self.cursor.execute(db_string, (Car_Current_Status, currentcarreg))
+                                self.conn.commit()  
+                
                     if self.ValuationPercentage:
                             db_string = f'''
                             UPDATE {table} SET ValuationPercentage = ? WHERE REG = ?
@@ -525,14 +542,6 @@ class SQLiteDatabase:
                             '''
                             self.cursor.execute(db_string, (self.ValuationRange, currentcarreg))
                             self.conn.commit() 
-                    else:
-                            #debug print(f"VERBOSE: Setting on {currentcarreg}: {matching_car}", flush=True)
-                            db_string = f'''
-                            UPDATE {table} SET CarStatus = ? WHERE REG = ?
-                            '''
-                            print(f"setting {currentcarreg} to available", flush=True)
-                            self.cursor.execute(db_string, (Car_Current_Status, currentcarreg))
-                            self.conn.commit()   
 
                 else:  # Add a new car into the database
                       #  print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
