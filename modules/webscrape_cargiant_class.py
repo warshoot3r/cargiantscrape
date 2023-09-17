@@ -259,7 +259,7 @@ class WebScraperCargiant:
                     car_status = "Available"
                 else: 
                     car_status = car_status_get
-                print(f"VERBOSE: {model_name} saved as {car_status}", flush=True)
+                print(f"VERBOSE: {model_name} {car_reg} saved as {car_status}", flush=True)
             except NoSuchElementException:
                 car_status = ""
                 print(f"VERBOSE: {model_name} status is empty. {car_status}", flush=True)

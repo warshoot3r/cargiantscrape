@@ -75,13 +75,22 @@ class car_background_information:
 
     def get_car_properties(self, reg) -> car:
         car = self.cars.get(reg, None)
-        return car 
+        return car
     
     def get_autotrader_prices(self, reg):
         """
         returns a list of prices scraped from autotrader
         """
         return self.cars.get(reg, None).autotrader_price_valuation
+    
+    def get_calculated_cars(self):
+        """
+        returns a list of price which cars have calculated valuations
+        
+        """
+        calculated_cars = self.cars.items()
+        print(f"{calculated_cars}")
+        return calculated_cars
     
     def get_car_percentage_range(self, reg, price_to_check):
         """
