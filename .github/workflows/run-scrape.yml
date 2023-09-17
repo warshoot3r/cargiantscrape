@@ -52,42 +52,42 @@ jobs:
         with:
             name: cargiantdbfile
             path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
-  background_data:
-              runs-on: ubuntu-latest
-              strategy:
-                matrix:
-                  # Select the images from DockerHub here to test
-                  image_variant:
-                    - jammyboi/cgwebscrape:master
-                fail-fast: false
-              steps:
-                  - name: Checkout Repository
-                    uses: actions/checkout@v3
+  # background_data:
+  #             runs-on: ubuntu-latest
+  #             strategy:
+  #               matrix:
+  #                 # Select the images from DockerHub here to test
+  #                 image_variant:
+  #                   - jammyboi/cgwebscrape:master
+  #               fail-fast: false
+  #             steps:
+  #                 - name: Checkout Repository
+  #                   uses: actions/checkout@v3
       
-                  - name: Docker pull image
-                    run: |
-                        docker pull "${{ matrix.image_variant }}"
-                  - name: Download artifact
-                    uses: dawidd6/action-download-artifact@v2
-                    id: download_db_step
-                    continue-on-error: True
-                    with:
-                      name: cargiantdbfile
-                      repo: ${{ github.repository }}
-                      path: /home/runner/work/cargiantscrape/cargiantscrape/
+  #                 - name: Docker pull image
+  #                   run: |
+  #                       docker pull "${{ matrix.image_variant }}"
+  #                 - name: Download artifact
+  #                   uses: dawidd6/action-download-artifact@v2
+  #                   id: download_db_step
+  #                   continue-on-error: True
+  #                   with:
+  #                     name: cargiantdbfile
+  #                     repo: ${{ github.repository }}
+  #                     path: /home/runner/work/cargiantscrape/cargiantscrape/
       
-                  - name: create empty db file as no db file provided from artifact
-                    if: steps.download_db_step.outcome == 'failure'
-                    run: |
-                      touch /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
-                  - name: Run Price scraping
-                    if: steps.download_db_step.outcome == 'success'
-                    run: |
-                      docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} calculate_prices_on_db.py
+  #                 - name: create empty db file as no db file provided from artifact
+  #                   if: steps.download_db_step.outcome == 'failure'
+  #                   run: |
+  #                     touch /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
+  #                 - name: Run Price scraping
+  #                   if: steps.download_db_step.outcome == 'success'
+  #                   run: |
+  #                     docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} calculate_prices_on_db.py
           
-                  - name: Save db data as an artifact
-                    uses: actions/upload-artifact@v3
-                    with:
-                        name: cargiantdbfile
-                        path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
+  #                 - name: Save db data as an artifact
+  #                   uses: actions/upload-artifact@v3
+  #                   with:
+  #                       name: cargiantdbfile
+  #                       path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
       
