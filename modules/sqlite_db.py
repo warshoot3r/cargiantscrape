@@ -275,15 +275,15 @@ class SQLiteDatabase:
         """
         Function to filter a datafram by lambda expressions and via a list of REG
         """
-        if filters is None:
-            print("No filters. dataframe is not filtered", flush=True)
-            return db
+
         combined_filters = []
         for column, condition in filters.items():
             combined_filters.append(db[column].apply(condition))
-
-        database = db[reduce(lambda x, y: x & y, combined_filters)]
-   
+        if combined_filters:
+            database = db[reduce(lambda x, y: x & y, combined_filters)]
+        else:
+            print("No filters provided. so returning unmodified database")
+            return db.copy()   
         if ListOfCarRegistrations != None:
             combined_filters_reg = [] 
             for current_reg in ListOfCarRegistrations:
