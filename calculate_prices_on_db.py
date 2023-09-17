@@ -1,4 +1,4 @@
-qimport sys
+import sys
 import os
 # Add the parent directory (project) to sys.path
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
