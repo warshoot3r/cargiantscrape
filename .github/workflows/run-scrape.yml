@@ -85,7 +85,7 @@ jobs:
                     id: download_db_step
                     with:
                       name: cargiantdbfile
-                      path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
+                      path: /home/runner/work/cargiantscrape/cargiantscrape/
 
                   - name: Run Price scraping
                     if: steps.download_db_step.outcome == 'success'
