@@ -28,7 +28,6 @@ ENV CHROME_DRIVER=/usr/bin/chromedriver
 
 # Copy class files and main.py
 COPY --link modules /app/modules
-COPY --link remove_unresolvable_cars.py .
 COPY --link chatbot_autorun.py .
 COPY --link test.py .
 COPY --link chatbot_autorun_onetime.py .
