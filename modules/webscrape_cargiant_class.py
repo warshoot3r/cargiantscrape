@@ -88,7 +88,7 @@ class WebScraperCargiant:
         """
         print(f"\n\nNumber of cars scraped from cargiant -> {self.length}\n\n")
 
-    def search_for_manufacturer(self, manufacturer, numberofpages=5):
+    def search_for_manufacturer(self, manufacturer, numberofpages=15):
         """
         Sets the search to a specific manufacturer. This does not save the generic model eg, 3 series
         Args:
@@ -186,6 +186,7 @@ class WebScraperCargiant:
         
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
         car_listing_items_page_1 = driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
+        print(f"\nCurrently web scraping {self.manufacturer_search} cars on page 1", flush=True)
         self.extract_web_data(car_listing_items_page_1)
         # check if only 1 page here. we must stop if is only one. otherwise code below will scrape same page.
         page_count = driver.find_element(By.CSS_SELECTOR, "#TotalPages").get_attribute("value")#
@@ -194,19 +195,26 @@ class WebScraperCargiant:
             print(f"Stopping scraping as only 1 page")
         
         else:
-            for page in range(1,numberofpages+1):
+            for page in range(1,numberofpages):
+                
+
                 pages = driver.find_elements(By.CSS_SELECTOR , '[data-paging-pages-template="page"]')
-                print(f"Currently web scraping {self.manufacturer_search} cars on page {page+1}.")
+                print(f"\nCurrently web scraping {self.manufacturer_search} cars on page {page+1}.", flush=True)
                 try:
                     driver.execute_script("arguments[0].click()", pages[page]) # click page
                     wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.car-listing-item")))
                     current_page = driver.find_elements(By.CSS_SELECTOR, "div.car-listing-item")
                     self.extract_web_data(current_page)
-                    print("Page successfully scraped", flush=True)
+                    driver.find_element(By.CSS_SELECTOR , '[data-paging-pages-template="next"]') #check if page has a next button. NoSuchElementException is raised and page scrape stops
+                except NoSuchElementException:
+                        print("Reached end of pages", flush=True)
+                        self.stopwebdriver(driver)
+                        return
                 except IndexError:
-                    print("No more pages to scrape", flush=True)
-                    return
-        self.stopwebdriver(driver)
+                        print("Nothing to scrape", flush=True)
+                        self.stopwebdriver(driver)
+                        return
+        
    
     def extract_web_data(self, scraped_data):
         
@@ -261,8 +269,8 @@ class WebScraperCargiant:
                     car_status = car_status_get
                 print(f"VERBOSE: {model_name} {car_reg} saved as {car_status}", flush=True)
             except NoSuchElementException:
-                car_status = ""
-                print(f"VERBOSE: {model_name} {car_reg} status is empty. {car_status}", flush=True)
+                car_status = "Available"
+                print(f"VERBOSE: {model_name} {car_reg} status is empty. Setting status to {car_status}", flush=True)
 
             DoorsAndType_split = re.split(r"\d\s(?=\s)", DoorsAndType)
 
@@ -307,7 +315,7 @@ class WebScraperCargiant:
             self.data = pd.concat([self.data.reset_index(drop=True), tf.reset_index(drop=True)])
             print("VERBOSE: Appended to self.data ")
             self.length = self.data.shape[0]
-            print("Saved to database and returning this scrape as pd.")
+            print(f"DEBUG: Appended to scrapeDB.", flush=True)
            
         # if not self.keepalive:
         #     driver.quit()

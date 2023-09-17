@@ -49,7 +49,7 @@ def import_cars(CarSearch):
     if(CarSearch):
         for i in range(CarSearch.length):
             current_car = CarSearch.data.iloc[i]
-            print(f"this car with {current_car['Manufacturer']}  {current_car['Reg']} {current_car['Car Status']}")
+            #print(f"this car with {current_car['Manufacturer']}  {current_car['Reg']} {current_car['Car Status']}")
             DB.import_car_properties(
                     Body_Type=current_car["Body Type"],
                     Color=current_car["Color"],
@@ -116,7 +116,7 @@ if price_changed or new_cars or status_changed:
 
     # csv_dataframe['CarStatus'].fillna('NA', inplace=True) # fix for NA otherwise we can not use str.contains below
 
-    not_available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)] # The available cars
+    not_available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'].str.contains(r'AVAILABLE|Reserved', case=True, regex=True)] # The available cars
     available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'] == "Available"] # The available cars
     # bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", data frame=available_csv, caption="Available Cars", file_name="available")
     # bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=not_available_csv, caption="Waiting Cars", file_name="waiting")

@@ -471,7 +471,7 @@ class SQLiteDatabase:
                     self.cursor.execute(f"SELECT CarStatus FROM used_cars where Reg = '{currentcarreg}'")
                     Car_DB_Status = self.cursor.fetchone()[0]
                     #update the days car has been added
-                    print(f"DEBUG: {matching_car} {currentcarreg} >{self.CarStatus}< and >{Car_DB_Status}<" )
+                    # print(f"DEBUG: {matching_car} {currentcarreg} >{self.CarStatus}< and >{Car_DB_Status}<" )
                     self.cursor.execute("UPDATE used_cars SET DaysAdded = julianday(CURRENT_DATE) - julianday(DateCarAdded) WHERE CarStatus != 'Sold'")
                     self.conn.commit()
 
@@ -496,13 +496,13 @@ class SQLiteDatabase:
                         self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated, currentcarreg))
                         self.conn.commit()
                         print("Imported updated entry", flush=True)
-                    if self.CarStatus == "" and Car_DB_Status == "": # required fix for empty Availablity
-                        print(f"VERBOSE: {currentcarreg}. DB status and value is empty. Setting to Available", flush=True)
-                        db_string = f'''
-                        UPDATE {table} SET CarStatus = ? WHERE REG = ?
-                        '''
-                        self.cursor.execute(db_string, ("Available", currentcarreg))
-                        self.conn.commit()  
+                    # if self.CarStatus == "" and Car_DB_Status == "": # required fix for empty Availablity
+                    #     print(f"VERBOSE: {currentcarreg}. DB status and value is empty. Setting to Available", flush=True)
+                    #     db_string = f'''
+                    #     UPDATE {table} SET CarStatus = ? WHERE REG = ?
+                    #     '''
+                    #     self.cursor.execute(db_string, ("Available", currentcarreg))
+                    #     self.conn.commit()  
 
 
                     if (Car_Current_Status != Car_DB_Status) and Car_Current_Status:  
@@ -570,6 +570,7 @@ class SQLiteDatabase:
                         self.number_of_car_new_changed += 1
                         self.number_of_car_new_changed_list.append(data['Reg']) # Store the REG of new car in a list
                         car_properties = incoming_data[0]
+                        #if CarStatus is empty, assign it Available
                         car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])
 
                         sql_values_count_string = ", ".join([f"?" for _ in car_properties])
@@ -582,7 +583,6 @@ class SQLiteDatabase:
                         #     "DateCarAdded": datetime.date.today(),
                         #     "DaysAdded": 0
                         # }
-                        print("VERBOSE: set a new car with date today")
                         db_string_update = f"UPDATE {table} SET DateCarAdded = ?, DaysAdded = 0 WHERE REG = ?"
                         self.cursor.execute(db_string_update, (datetime.date.today(), data['Reg']))
                         self.conn.commit()
