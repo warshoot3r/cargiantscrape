@@ -262,7 +262,7 @@ class WebScraperCargiant:
                 print(f"VERBOSE: {model_name} {car_reg} saved as {car_status}", flush=True)
             except NoSuchElementException:
                 car_status = ""
-                print(f"VERBOSE: {model_name} status is empty. {car_status}", flush=True)
+                print(f"VERBOSE: {model_name} {car_reg}status is empty. {car_status}", flush=True)
 
             DoorsAndType_split = re.split(r"\d\s(?=\s)", DoorsAndType)
 
