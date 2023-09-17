@@ -104,7 +104,7 @@ class autotrader_naming:
             model_name_without_brackets = re.match(pattern, model.text)
             models.append(model_name_without_brackets.group(0))
         return models
-    def translate_modelname_to_autotrader(self, car_make, input_string):
+    def translate_modelname_to_autotrader(self, car_make, input_string, custom_data: None):
         """
         Takes a model name and Returns a model name which is defined in autotrader. This shouldn be used in the "aggregatedTrim" with just "Make" to scrape prices
         ARG
@@ -113,22 +113,32 @@ class autotrader_naming:
 
         returns 320d 
         """
-        car_models = self.get_car_models(make=car_make)
+        if custom_data:
+            car_models = custom_data
+        else:
+            car_models = self.get_car_models(make=car_make)
         
         best_match = None
         best_score = 0 
         for car_model_name in car_models:
             similarity_score = fuzz.ratio(input_string.lower(), car_model_name.lower())
+
+
+            #BMW logic###
+            if re.match (r"(3\s*series|series\s*3)", car_model_name.lower()): ##boost BMW [number] series scores
+                similarity_score += 10
+            if re.match (r"(\d\s*series|series\s*\d)", car_model_name.lower()): ##boost BMW [number] series scores
+                similarity_score += 20
+
+            ######
+            
+             
             if similarity_score > best_score:
                 best_match = car_model_name
                 best_score = similarity_score
+            print(f"{car_model_name}: {similarity_score}")
 
-        print(f"DEBUG: Best match was {input_string}->{best_match} with score {best_score}  ")
+
+        print(f"DEBUG: Best match was {input_string}->{best_match} with score {best_score}\n")
         return best_match
         
-naming = autotrader_naming(driver="safari")
-
-
-print(naming.get_car_models("BMW"))
-
-naming.translate_modelname_to_autotrader(car_make="BMW", input_string="BMW 318i")
