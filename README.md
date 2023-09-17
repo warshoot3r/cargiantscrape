@@ -2,8 +2,8 @@
 pythonised scraping car giant for models and prices. Sends a report via telegram.
 
 
-Production branch: [![Automatic - Build and push multi tag as branch name](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-test-master.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-test-master.yml)
-Recent Run: [![Daily run and send messages via Telegram](https://github.com/warshoot3r/cargiantscrape/actions/workflows/run-scrape.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/run-scrape.yml)
+Production branch: [![Automatic - Build and push multi tag as branch name](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-test-master.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-test-master.yml)  
+Recent Run: [![Daily run and send messages via Telegram](https://github.com/warshoot3r/cargiantscrape/actions/workflows/run-scrape.yml/badge.svg)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/run-scrape.yml)  
 
 
 # Compatibility 
