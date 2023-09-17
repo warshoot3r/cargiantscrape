@@ -449,9 +449,7 @@ class SQLiteDatabase:
                     "NumberOfPriceReductions": 0,
                     "NumberReserved": 0,
                     "ValuationPercentage": self.ValuationPercentage,
-                    "ValuationRange": self.ValuationRange,
-                    "DateCarAdded": datetime.date.today(),
-                    "DaysAdded": 0
+                    "ValuationRange": self.ValuationRange
                 },
             ]
             incoming_data =  [{k: v for k, v in data.items() if v is not None} for data in to_imported_incoming_data]
@@ -580,6 +578,15 @@ class SQLiteDatabase:
 
                         self.cursor.execute(db_string, (*car_properties.values(),))
                         self.conn.commit()
+                        # update_cars_with_current_date = {
+                        #     "DateCarAdded": datetime.date.today(),
+                        #     "DaysAdded": 0
+                        # }
+                        print("VERBOSE: set a new car with date today")
+                        db_string_update = f"UPDATE {table} SET DateCarAdded = ?, DaysAdded = 0 WHERE REG = ?"
+                        self.cursor.execute(db_string_update, (datetime.date.today(), data['Reg']))
+                        self.conn.commit()
+
     def move_sold_cars_to_db(self, URL):
         """
         Moves the "Sold" cars to a different table and deletes it from database

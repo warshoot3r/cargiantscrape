@@ -1,1 +1,1 @@
-id,Manufacturer,URL,Model,CarStatus,Year,Price,ValuationPercentage,ValuationRange,Mileage,Body Type,Transmission,Fuel,Color,Doors,Reg,DateUpdated,OldPrice,OldDate,NumberOfPriceReductions,NumberReserved,DateCarAdded,DaysAdded
+id,Manufacturer,Model,Year,Price,Body Type,Transmission,Fuel,Color,Mileage,Doors,Reg,URL,DateUpdated,OldPrice,OldDate,NumberOfPriceReductions,CarStatus,NumberReserved,ValuationPercentage,ValuationRange,DateCarAdded,DaysAdded
