@@ -18,7 +18,7 @@ autotrader_price_db = car_background_information(driver="chrome",postal_code="TR
 
 #get the car database that we will calculate the prices on 
 car_filters = {
-    "ValuationRange" : lambda x: x is None,
+    # "ValuationRange" : lambda x: x is None,
     # "CarStatus": lambda x: x != "Sold"
     # "Price": lambda x: x < 10000
 }
@@ -49,7 +49,7 @@ for import_car_to_scrape in cars_to_get_extra_information:
 
 
 print("Will start scraping prices now ")
-autotrader_price_db.parallel_scrape_autotrader_price(worker_threads=4, timeout_time=25)
+autotrader_price_db.parallel_scrape_autotrader_price(worker_threads=8, timeout_time=25)
 
 
 
