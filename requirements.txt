@@ -64,3 +64,4 @@ urllib3[socks]==2.0.4
     #   selenium
 wsproto==1.2.0
     # via trio-websocket
+fuzzywuzzy
