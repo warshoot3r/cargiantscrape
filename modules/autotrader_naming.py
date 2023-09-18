@@ -81,6 +81,7 @@ class autotrader_naming:
                 cookie_button.click()
                 print("VERBOSE: Clicked cookie prompt.")
                 driver.switch_to.parent_frame() 
+                break
             except exceptions.NoSuchElementException as e:
                 print(f"No cookie prompt. {e}")
                 attempts += 1
