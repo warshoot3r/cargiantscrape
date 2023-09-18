@@ -195,7 +195,7 @@ class car_background_information:
             # Navigate to the URL
             driver = self.selenium_setup()
             wait = WebDriverWait(driver, timeout=5)
-            minimum_mileage = mileage - 3000 if mileage - 3000 >=0 else 0
+            minimum_mileage = mileage - 3000 if mileage - 3000 >=100 else 100
             maximum_mileage = mileage + 3000
             from_year = year - 1 
             to_year = year

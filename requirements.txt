@@ -26,6 +26,8 @@ idna==3.4
     # via
     #   requests
     #   trio
+levenshtein==0.21.1
+    # via python-levenshtein
 numpy==1.25.2
     # via
     #   -r package.txt
@@ -38,8 +40,12 @@ pysocks==1.7.1
     # via urllib3
 python-dateutil==2.8.2
     # via pandas
+python-levenshtein==0.21.1
+    # via -r package.txt
 pytz==2023.3
     # via pandas
+rapidfuzz==3.3.0
+    # via levenshtein
 requests==2.31.0
     # via -r package.txt
 selenium==4.10.0
