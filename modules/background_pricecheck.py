@@ -37,7 +37,7 @@ class car_background_information:
         
         elif self.driver == "chrome":
             chrome_options = ChromeOptions()
-            chrome_options.add_argument("--headless=new")
+            # chrome_options.add_argument("--headless=new")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-gpu")
             chrome_options.add_argument("--disable-dev-shm-usage")
@@ -163,7 +163,8 @@ class car_background_information:
                         if base_model_name:
                             print(f"For {reg}: successfully got new name. {car_model}: Base Name -> {base_model_name}", flush=True)
                             car_model = base_model_name.replace(" ", "%20")
-                            model_variant = 
+                            model_variant = car_autotrader_naming.translate_modelvariant_to_autotrader(car_make=car_make, car_model=base_model_name, input_string=car_make)
+                            print(model_variant)
                             future = executor.submit(self.scrape_autotrader, car_make, car_model, mileage, year, reg)
                         else:
                             future = executor.submit(self.scrape_autotrader, car_make, car_model, mileage, year, reg)
@@ -180,7 +181,7 @@ class car_background_information:
                             future.cancel()
 
 
-    def scrape_autotrader(self, car_make, car_model, mileage, year, reg):
+    def scrape_autotrader(self, car_make, car_model, car_model_variant, mileage, year, reg):
             # Navigate to the URL
             driver = self.selenium_setup()
             wait = WebDriverWait(driver, timeout=5)
@@ -196,8 +197,13 @@ class car_background_information:
 
             #convert spaces in string for http friendly url
             car_model = car_model.replace(" ", "%20")
+
+            if car_model_variant:
             # Define the URL
-            car_parameters = f"&make={car_make}",f"&aggregatedTrim={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
+                car_parameters = f"&make={car_make}",f"&model={car_model}",f"&aggregatedTrim={car_model_variant}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
+            else:
+                car_parameters = f"&make={car_make}",f"&aggregatedTrim={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
+
             temp = "".join(car_parameters)
             autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
             

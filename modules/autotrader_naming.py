@@ -59,6 +59,28 @@ class autotrader_naming:
             firefox_options.add_argument("--start-minimized")
             self.driver = webdriver.Firefox(options=firefox_options)
 
+        
+    def handle_cookie_prompt(self, driver):
+        #handles cookie prompt
+        driver = self.driver
+        wait = WebDriverWait(driver=driver, timeout=10)
+        try:
+            wait.until(EC.presence_of_element_located((By.TAG_NAME, "iframe")))
+            cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")[1].get_attribute("id")
+            if cookie_prompt_iframe:
+                driver.switch_to.frame(cookie_prompt_iframe)
+                wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[title="Accept All"]')))
+                cookie_button = driver.find_element(By.CSS_SELECTOR, 'button[title="Accept All"]')
+                cookie_button.click()
+                print("VERBOSE: Clicked cookie prompt.")    
+                driver.switch_to.default_content() 
+        except exceptions.NoSuchElementException as e:
+            print(f"No cookie prompt. {e}")
+        except exceptions.ElementClickInterceptedException as e:
+            print(f"Could not click cookie button {e}")
+        except:
+            print(f"General error occured on cookie accept")
+
     def get_car_makes(self):
         self.selenium_setup()
         driver = self.driver
@@ -90,7 +112,7 @@ class autotrader_naming:
         url = f"https://www.autotrader.co.uk/car-search?make={make}&postcode=TR17%200BJ"
         print(f"DEBUG using {url}", flush=True)
         driver.get(url)
-
+        
         #click button
         model_button_section = driver.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-model"]')
         model_button = model_button_section.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-button"]').click()
@@ -104,7 +126,30 @@ class autotrader_naming:
         for model in all_model:
             model_name_without_brackets = re.match(pattern, model.text)
             models.append(model_name_without_brackets.group(0))
+        driver.close()
         return models
+    
+    def translate_modelvariant_to_autotrader(self, car_make, car_model, input_string, custom_data = None):
+
+        if custom_data:
+            model_variants_from_model = custom_data
+        else:
+            model_variants_from_model = self.get_model_variant_from_model(car_model=car_model,make=car_make)
+
+        best_match = None
+        best_score = 0
+
+
+        for car_variant in model_variants_from_model:
+
+            similarity_score = fuzz.ratio(input_string.lower(), car_variant.lower())
+
+            if similarity_score > best_score:
+                best_match = input_string
+                best_score = similarity_score
+        
+        print(f"best match for car variant was {best_match} with score : {best_score}")
+        return best_match
     def translate_modelname_to_autotrader(self, car_make, input_string, custom_data = None):
         """
         Takes a model name and Returns a model name which is defined in autotrader. This shouldn be used in the "aggregatedTrim" with just "Make" to scrape prices
@@ -189,14 +234,21 @@ class autotrader_naming:
         car_model = car_model.replace(" ", "%20")
         url = f"https://www.autotrader.co.uk/car-search?make={make}&model={car_model}&postcode=TR17%200BJ"
         print(f"DEBUG using {url}", flush=True)
-        wait = WebDriverWait(driver=self.driver, timeout=5)
+        wait = WebDriverWait(driver=driver, timeout=15)
         driver.get(url)
-        
-        model_variant_button = driver.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]').find_element(By.CSS_SELECTOR, "button")
+        self.handle_cookie_prompt(driver)
+        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
+        model_variant_button = driver.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')
+        print("Pressing button")
+        model_variant_button.find_element(By.CSS_SELECTOR, "button")
+        print("Pressed button")
         model_variant_button.click()
         #inside the model variants data table
         model_variant_css = By.CSS_SELECTOR, '[data-section="aggregated_trim"]'
-        wait.until(EC.presence_of_element_located(model_variant_css))
+        try: 
+            wait.until(EC.presence_of_element_located(model_variant_css))
+        except:
+            print("Waiting for model variant failed")
         model_variant_data = driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]').find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
 
 
@@ -204,8 +256,10 @@ class autotrader_naming:
 
         for model_variant in model_variant_data:
             models.append(model_variant.text)
-
+        driver.close()
         return models
     
-naming = autotrader_naming(driver="safari")
-print(naming.get_model_variant_from_model(make="BMW",car_model="1 Series"))
+naming = autotrader_naming(driver="chrome")
+# print(naming.get_model_variant_from_model(make="BMW",car_model="1 Series"))
+
+naming.translate_modelvariant_to_autotrader(car_make="BMW", car_model="1 Series", input_string="118D")
