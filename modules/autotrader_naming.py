@@ -262,6 +262,7 @@ class autotrader_naming:
             wait.until(EC.presence_of_element_located(model_variant_css))
         except:
             print("Waiting for model variant failed")
+        time.sleep(1)
         model_variant_data = driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]').find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
 
 
