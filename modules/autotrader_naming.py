@@ -24,7 +24,7 @@ class autotrader_naming:
     def selenium_setup(self):
         if self.driver == "safari":
             safari_options = SafariOptions()
-            self.driver = webdriver.Safari(options=safari_options)
+            return webdriver.Safari(options=safari_options)
         
         elif self.driver == "chrome":
             chrome_options = ChromeOptions()
@@ -37,7 +37,7 @@ class autotrader_naming:
             chrome_options.add_argument("--ignore-certificate-errors")
             chrome_options.add_argument("--disable-extensions")
             chrome_options.add_argument("--start-minimized")
-            self.driver = webdriver.Chrome(options=chrome_options)
+            return webdriver.Chrome(options=chrome_options)
         elif self.driver == "chromium":
             chromium_options = ChromiumOptions()
             chromium_options.add_argument("--no-sandbox")
@@ -49,7 +49,7 @@ class autotrader_naming:
             chromium_options.add_argument("--ignore-certificate-errors")
             chromium_options.add_argument("--disable-extensions")
             chromium_options.add_argument("--start-minimized")
-            self.driver = webdriver.Chrome(options=chromium_options)
+            return webdriver.Chrome(options=chromium_options)
         
         elif self.driver == "firefox":
             firefox_options = FirefoxOptions()
@@ -57,14 +57,14 @@ class autotrader_naming:
             firefox_options.add_argument("--window-size=1920,1200")
             firefox_options.add_argument("--ignore-certificate-errors")
             firefox_options.add_argument("--start-minimized")
-            self.driver = webdriver.Firefox(options=firefox_options)
+            return webdriver.Firefox(options=firefox_options)
 
         
     def handle_cookie_prompt(self, driver):
         #handles cookie prompt
-        driver = self.driver 
         wait = WebDriverWait(driver=driver, timeout=10)
         try:
+            time.sleep(1)
             wait.until(EC.presence_of_element_located((By.TAG_NAME, "iframe")))
             cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")[1].get_attribute("id")
             if cookie_prompt_iframe:
@@ -82,8 +82,8 @@ class autotrader_naming:
             print(f"General error occured on cookie accept")
 
     def get_car_makes(self):
-        self.selenium_setup()
-        driver = self.driver
+        
+        driver = self.selenium_setup()
         url = "https://www.autotrader.co.uk/car-search?postcode=TR17%200BJ"
         driver.get(url)
 
@@ -106,8 +106,8 @@ class autotrader_naming:
         return manufacturers
 
     def get_car_models(self, make):
-        self.selenium_setup()
-        driver = self.driver
+       
+        driver = self.selenium_setup()
         make = make.replace(" ","%20")
         url = f"https://www.autotrader.co.uk/car-search?make={make}&postcode=TR17%200BJ"
         # print(f"DEBUG get car models using {url}", flush=True)
@@ -237,8 +237,8 @@ class autotrader_naming:
         
     def get_model_variant_from_model(self, make, car_model):
 
-        self.selenium_setup()
-        driver = self.driver
+        
+        driver = self.selenium_setup()
         #may fix the nosuchelementexcepton
         make = make.replace(" ","%20")
         car_model = car_model.replace(" ", "%20")

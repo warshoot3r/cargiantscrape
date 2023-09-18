@@ -21,7 +21,7 @@ car_filters = {
     # "ValuationRange" : lambda x: x is None,
     # "ValuationPercentage": lambda x: x is None,
     # "CarStatus": lambda x: x != "Sold"
-    "Price": lambda x: x < 13000
+    "Price": lambda x: x < 11000
 }
 db = Car_database.return_as_panda_dataframe()
 sort_database = Car_database.filter_table(db=db, filters=car_filters)
@@ -50,7 +50,7 @@ for import_car_to_scrape in cars_to_get_extra_information:
 
 
 print("SCRIPT: Will gather prices from Autotrader ")
-autotrader_price_db.parallel_scrape_autotrader_price(worker_threads=8, timeout_time=25)
+autotrader_price_db.parallel_scrape_autotrader_price(worker_threads=4, timeout_time=25)
 
 
 
@@ -76,6 +76,8 @@ for  car_data in autotrader_price_db.get_all_cars():
         ValuationRange= car_valuation
     )
 print(f"Printing imported table")
-internal_db = Car_database.return_as_panda_dataframe()
+db = Car_database.return_as_panda_dataframe()
+only_reg = Car_database.filter_table(db=db, filters=car_filters)
+print(only_reg[["Manufacturer", "Model", "CarStatus", "ValuationPercentage", "ValuationRange"]])
+
 Car_database.close_db()
-print(internal_db)

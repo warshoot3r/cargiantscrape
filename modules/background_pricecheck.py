@@ -123,10 +123,14 @@ class car_background_information:
         """
         
         prices = self.cars.get(reg, None).autotrader_price_valuation
-        if (prices is None) or (len(prices) < 2):
+        if (prices is None):
             return None
         prices_as_int = [int(value.replace(',', '' )) for value in prices]
-
+        if (len(prices) < 2):
+            print(len(prices))
+            print(prices_as_int)
+            return "£" +  min(prices_as_int) + (" - ") + "£" + max(prices_as_int)
+    
         max_price = max(prices_as_int)
         min_price = min(prices_as_int)
         return "£" + str(min_price)  + (" - ") + "£" +  str(max_price)
@@ -266,8 +270,8 @@ class car_background_information:
                     if price:
                         cars_list.append(price)
                         
-            print(f"MODULE: Successfully got prices for {reg}\n", flush=True)
-            self.cars[reg].autotrader_price_valuation = cars_list[:-2]
+            print(f"MODULE: Successfully got prices for {reg} {cars_list} \n", flush=True)
+            self.cars[reg].autotrader_price_valuation = cars_list
             driver.close()
             driver.quit()
 
