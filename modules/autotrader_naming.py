@@ -261,9 +261,11 @@ class autotrader_naming:
             except exceptions.TimeoutException:
                 print("DEBUG: Element is not visible yet")
                 time.sleep(1)
-                continue
+                attempts += 1
             except:
                 print("Error occured on clicking the Model Variants button")
+                break
+            if attempts >= 10:
                 break
   
         #inside the model variants data table
