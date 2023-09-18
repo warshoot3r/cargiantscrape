@@ -11,6 +11,7 @@ from selenium.webdriver.safari.options import Options as SafariOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 import concurrent.futures
 import time
+from .autotrader_naming import autotrader_naming
 class car:
     def __init__(self, reg: str, car_make: str, car_model: str, mileage: int, year: int):
         self.reg = reg
@@ -122,10 +123,10 @@ class car_background_information:
         """
         
         prices = self.cars.get(reg, None).autotrader_price_valuation
-        if (prices is None) or (len(prices) < 2):
+        if (prices is None) or (len(prices) == 0):
             return None
         prices_as_int = [int(value.replace(',', '' )) for value in prices]
-
+    
         max_price = max(prices_as_int)
         min_price = min(prices_as_int)
         return "£" + str(min_price)  + (" - ") + "£" +  str(max_price)
@@ -150,12 +151,22 @@ class car_background_information:
                         mileage = car[1].mileage
                         year = car[1].year
                         reg = car[1].reg
-        
+                                   
+                        car_autotrader_naming = autotrader_naming(driver="chrome")
+                        base_model_name = car_autotrader_naming.translate_modelname_to_autotrader(car_make=car_make, input_string=car_model)
+
                         #patching values for autotrader 
                         if(car_make == "Mercedes"):
                             car_make = "Mercedes-Benz"
-                        
-                        future = executor.submit(self.scrape_autotrader, car_make, car_model, mileage, year, reg)
+
+                         #before bruteforcing try to get the actual initial model class name
+                        if base_model_name:
+                            car_model_http = base_model_name.replace(" ", "%20")
+                            model_variant = car_autotrader_naming.translate_modelvariant_to_autotrader(car_make=car_make, car_model=base_model_name, input_string=car_model)
+                            print(f"Pre-price check: {reg} {car_model} successfully got new name. Model->{base_model_name}. Model Variant->{model_variant}", flush=True)
+                            future = executor.submit(self.scrape_autotrader, car_make, car_model_http, model_variant,mileage, year, reg)
+                        else:
+                            future = executor.submit(self.scrape_autotrader, car_make, car_model, mileage, year, reg)
                         futures.append(future)
                     # concurrent.futures.wait(futures)
                     start_time = time.time()
@@ -169,12 +180,10 @@ class car_background_information:
                             future.cancel()
 
 
-    def scrape_autotrader(self, car_make, car_model, mileage, year, reg):
+    def scrape_autotrader(self, car_make, car_model, car_model_variant, mileage, year, reg):
             # Navigate to the URL
             driver = self.selenium_setup()
             wait = WebDriverWait(driver, timeout=5)
-            print(f"Trying to scrape {reg}", flush=True)
-
             minimum_mileage = mileage - 3000
             maximum_mileage = mileage + 3000
             from_year = year - 1
@@ -185,18 +194,26 @@ class car_background_information:
 
             #convert spaces in string for http friendly url
             car_model = car_model.replace(" ", "%20")
+
+            if car_model_variant:
             # Define the URL
-            car_parameters = f"&make={car_make}",f"&aggregatedTrim={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
+                car_parameters = f"&make={car_make}",f"&model={car_model}",f"&aggregatedTrim={car_model_variant}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
+            else:
+                car_parameters = f"&make={car_make}",f"&model={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
+
             temp = "".join(car_parameters)
             autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
+            
+            
+            
 
-         
-            while attempts < attempts_max:
+
+            while (attempts < attempts_max) or success:
                 try:     #Error basic handling None and not 200
                     print(f"Attempt {attempts}", flush=True)
                     print(f"DEBUG: url='{autotrader}'", flush=True)
                     driver.get(autotrader)
-                    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
+                    success = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
                     break
 
                 except exceptions.TimeoutException:
@@ -216,6 +233,8 @@ class car_background_information:
 
                     else:
                         print("Not able to get prices", flush=True)
+                finally: 
+                    print(f"MODULE: Got best case price scenario for {reg}", flush=True)
                         
                     
             data = driver.page_source
@@ -247,8 +266,8 @@ class car_background_information:
                     if price:
                         cars_list.append(price)
                         
-            print(f"Successfully got prices for {reg}", flush=True)
-            self.cars[reg].autotrader_price_valuation = cars_list[:-2]
+            print(f"MODULE: Successfully got prices for {reg} {cars_list} \n", flush=True)
+            self.cars[reg].autotrader_price_valuation = cars_list
             driver.close()
             driver.quit()
 
