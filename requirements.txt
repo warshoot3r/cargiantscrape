@@ -42,7 +42,7 @@ pytz==2023.3
     # via pandas
 requests==2.31.0
     # via -r package.txt
-selenium==4.12.0
+selenium==4.10.0
     # via -r package.txt
 six==1.16.0
     # via python-dateutil
