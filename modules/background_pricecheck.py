@@ -37,7 +37,7 @@ class car_background_information:
         
         elif self.driver == "chrome":
             chrome_options = ChromeOptions()
-            # chrome_options.add_argument("--headless=new")
+            chrome_options.add_argument("--headless=new")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-gpu")
             chrome_options.add_argument("--disable-dev-shm-usage")
@@ -161,11 +161,10 @@ class car_background_information:
 
                          #before bruteforcing try to get the actual initial model class name
                         if base_model_name:
-                            print(f"For {reg}: successfully got new name. {car_model}: Base Name -> {base_model_name}", flush=True)
-                            car_model = base_model_name.replace(" ", "%20")
-                            model_variant = car_autotrader_naming.translate_modelvariant_to_autotrader(car_make=car_make, car_model=base_model_name, input_string=car_make)
-                            print(model_variant)
-                            future = executor.submit(self.scrape_autotrader, car_make, car_model, mileage, year, reg)
+                            car_model_http = base_model_name.replace(" ", "%20")
+                            model_variant = car_autotrader_naming.translate_modelvariant_to_autotrader(car_make=car_make, car_model=base_model_name, input_string=car_model)
+                            print(f"Pre-price check: {reg} {car_model} successfully got new name. Model->{base_model_name}. Model Variant->{model_variant}", flush=True)
+                            future = executor.submit(self.scrape_autotrader, car_make, car_model_http, model_variant,mileage, year, reg)
                         else:
                             future = executor.submit(self.scrape_autotrader, car_make, car_model, mileage, year, reg)
                         futures.append(future)
@@ -185,8 +184,6 @@ class car_background_information:
             # Navigate to the URL
             driver = self.selenium_setup()
             wait = WebDriverWait(driver, timeout=5)
-            print(f"Trying to scrape {reg}", flush=True)
-
             minimum_mileage = mileage - 3000
             maximum_mileage = mileage + 3000
             from_year = year - 1
@@ -202,7 +199,7 @@ class car_background_information:
             # Define the URL
                 car_parameters = f"&make={car_make}",f"&model={car_model}",f"&aggregatedTrim={car_model_variant}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
             else:
-                car_parameters = f"&make={car_make}",f"&aggregatedTrim={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
+                car_parameters = f"&make={car_make}",f"&model={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
 
             temp = "".join(car_parameters)
             autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
@@ -211,12 +208,12 @@ class car_background_information:
             
 
 
-            while attempts < attempts_max:
+            while (attempts < attempts_max) or success:
                 try:     #Error basic handling None and not 200
                     print(f"Attempt {attempts}", flush=True)
                     print(f"DEBUG: url='{autotrader}'", flush=True)
                     driver.get(autotrader)
-                    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
+                    success = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
                     break
 
                 except exceptions.TimeoutException:
@@ -236,6 +233,8 @@ class car_background_information:
 
                     else:
                         print("Not able to get prices", flush=True)
+                finally: 
+                    print(f"MODULE: Got best case price scenario for {reg}", flush=True)
                         
                     
             data = driver.page_source
@@ -267,7 +266,7 @@ class car_background_information:
                     if price:
                         cars_list.append(price)
                         
-            print(f"Successfully got prices for {reg}", flush=True)
+            print(f"MODULE: Successfully got prices for {reg}\n", flush=True)
             self.cars[reg].autotrader_price_valuation = cars_list[:-2]
             driver.close()
             driver.quit()

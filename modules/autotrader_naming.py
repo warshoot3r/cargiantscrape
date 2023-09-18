@@ -28,7 +28,7 @@ class autotrader_naming:
         
         elif self.driver == "chrome":
             chrome_options = ChromeOptions()
-            # chrome_options.add_argument("--headless=new")
+            chrome_options.add_argument("--headless=new")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-gpu")
             chrome_options.add_argument("--disable-dev-shm-usage")
@@ -62,7 +62,7 @@ class autotrader_naming:
         
     def handle_cookie_prompt(self, driver):
         #handles cookie prompt
-        driver = self.driver
+        driver = self.driver 
         wait = WebDriverWait(driver=driver, timeout=10)
         try:
             wait.until(EC.presence_of_element_located((By.TAG_NAME, "iframe")))
@@ -110,7 +110,7 @@ class autotrader_naming:
         driver = self.driver
         make = make.replace(" ","%20")
         url = f"https://www.autotrader.co.uk/car-search?make={make}&postcode=TR17%200BJ"
-        print(f"DEBUG using {url}", flush=True)
+        # print(f"DEBUG get car models using {url}", flush=True)
         driver.get(url)
         
         #click button
@@ -145,11 +145,16 @@ class autotrader_naming:
             similarity_score = fuzz.ratio(input_string.lower(), car_variant.lower())
 
             if similarity_score > best_score:
-                best_match = input_string
+                best_match = car_variant
                 best_score = similarity_score
-        
-        print(f"best match for car variant was {best_match} with score : {best_score}")
-        return best_match
+                
+        if best_score < 60:
+            print(f"DEBUG: Best match for variant lower than 60 certainty. Return nothing. {input_string}->{best_match} (score:{best_score})")
+            return
+        else:
+            print(f"DEBUG: Best match for variant {input_string}->{best_match} (score:{best_score})")
+            return best_match
+
     def translate_modelname_to_autotrader(self, car_make, input_string, custom_data = None):
         """
         Takes a model name and Returns a model name which is defined in autotrader. This shouldn be used in the "aggregatedTrim" with just "Make" to scrape prices
@@ -221,30 +226,37 @@ class autotrader_naming:
             score_data.append({car_model_name : similarity_score})
 
 
-        print(f"DEBUG: Best match is {input_string}->{best_match} with score {best_score}")
+        
         #more diagnostic print(f"DEBUG: Best match was {input_string}->{best_match} with score {best_score}\n with {score_data} \n")
-
-        return best_match
+        if best_score < 60:
+            print(f"DEBUG: Best match lower than 60 certainty. Return nothing. {input_string}->{best_match} (score:{best_score})")
+            return
+        else:
+            print(f"DEBUG: Best match {input_string}->{best_match} (score:{best_score})")
+            return best_match
         
     def get_model_variant_from_model(self, make, car_model):
 
         self.selenium_setup()
         driver = self.driver
+        #may fix the nosuchelementexcepton
         make = make.replace(" ","%20")
         car_model = car_model.replace(" ", "%20")
         url = f"https://www.autotrader.co.uk/car-search?make={make}&model={car_model}&postcode=TR17%200BJ"
-        print(f"DEBUG using {url}", flush=True)
+        # print(f"DEBUG using {url}", flush=True)
         wait = WebDriverWait(driver=driver, timeout=15)
         driver.get(url)
         self.handle_cookie_prompt(driver)
         wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
         model_variant_button = driver.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')
-        print("Pressing button")
+
+        time.sleep(1) #This must be used so that button clicks.
         model_variant_button.find_element(By.CSS_SELECTOR, "button")
-        print("Pressed button")
+ 
         model_variant_button.click()
         #inside the model variants data table
         model_variant_css = By.CSS_SELECTOR, '[data-section="aggregated_trim"]'
+        time.sleep(1)
         try: 
             wait.until(EC.presence_of_element_located(model_variant_css))
         except:
@@ -262,4 +274,4 @@ class autotrader_naming:
 naming = autotrader_naming(driver="chrome")
 # print(naming.get_model_variant_from_model(make="BMW",car_model="1 Series"))
 
-naming.translate_modelvariant_to_autotrader(car_make="BMW", car_model="1 Series", input_string="118D")
+naming.translate_modelvariant_to_autotrader(car_make="BMW", car_model="1 Series", input_string="116D")

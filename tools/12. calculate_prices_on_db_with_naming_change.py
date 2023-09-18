@@ -21,7 +21,7 @@ car_filters = {
     # "ValuationRange" : lambda x: x is None,
     # "ValuationPercentage": lambda x: x is None,
     # "CarStatus": lambda x: x != "Sold"
-    "Price": lambda x: x < 10000
+    "Price": lambda x: x < 13000
 }
 db = Car_database.return_as_panda_dataframe()
 sort_database = Car_database.filter_table(db=db, filters=car_filters)
@@ -49,7 +49,7 @@ for import_car_to_scrape in cars_to_get_extra_information:
         
 
 
-print("Will start scraping prices now ")
+print("SCRIPT: Will gather prices from Autotrader ")
 autotrader_price_db.parallel_scrape_autotrader_price(worker_threads=8, timeout_time=25)
 
 
