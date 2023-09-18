@@ -19,8 +19,8 @@ autotrader_price_db = car_background_information(driver="chrome",postal_code="TR
 #get the car database that we will calculate the prices on 
 car_filters = {
     "ValuationRange" : lambda x: x is None,
-    "ValuationPercentage": lambda x: x is None,
-    # "CarStatus": lambda x: x != "Sold"
+   # "ValuationPercentage": lambda x: x is None,
+    #CarStatus": lambda x: x != "Sold"
     # "Price": lambda x: x < 10000
 }
 db = Car_database.return_as_panda_dataframe()
