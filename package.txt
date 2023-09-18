@@ -1,6 +1,6 @@
 numpy
 pandas
-selenium==4.12.0
+selenium==4.10.0
 beautifulsoup4
 requests
 fuzzywuzzy

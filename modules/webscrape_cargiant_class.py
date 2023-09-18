@@ -38,7 +38,7 @@ class WebScraperCargiant:
             self.url = "https://www.cargiant.co.uk/search/" + manufacturer_search + "/all"
             print("Setting the search to", self.url)
         else: 
-            self.url = "https://www.cargiant.co.uk/search/all/all"
+            self.url = "https://www.cargiant.co.uk/search/all"
 
     def initialize_driver(self):
         """
@@ -51,15 +51,25 @@ class WebScraperCargiant:
         
         elif self.driver == "chrome":
             chrome_options = ChromeOptions()
-            chrome_options.headless = True
-            chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--headless=new")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-gpu")
             chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--window-size=1920,1200")
             chrome_options.add_argument("--ignore-certificate-errors")
             chrome_options.add_argument("--disable-extensions")
-            chrome_options.add_argument("--start-minimized")
+            chrome_options.add_argument("--start-maximized")
+            chrome_options.add_argument("--disable-default-apps")
+            chrome_options.add_argument("--disable-features=Translate")
+            chrome_options.add_argument("--disable-client-side-phishing-detection")
+            chrome_options.add_argument("--no-first-run")
+            chrome_options.add_argument("--incognito")
+            chrome_options.add_argument("--disable-component-extensions-with-background-pages")
+            chrome_options.add_argument("--disable-ipc-flooding-protection")
+            chrome_options.add_argument("--disable-hang-monitor")
+            chrome_options.add_argument("--disable-popup-blocking")
+            chrome_options.add_argument("--enable-automation")
+            chrome_options.add_argument("--disable-background-networking")
             return webdriver.Chrome(options=chrome_options)
         elif self.driver == "chromium":
             chromium_options = ChromiumOptions()
