@@ -120,25 +120,32 @@ class autotrader_naming:
         
         best_match = None
         best_score = 0 
+        score_data = []
         for car_model_name in car_models:
             similarity_score = fuzz.ratio(input_string.lower(), car_model_name.lower())
 
-
-            #BMW logic###
-            if re.match (r"(3\s*series|series\s*3)", car_model_name.lower()): ##boost BMW [number] series scores
-                similarity_score += 10
-            if re.match (r"(\d\s*series|series\s*\d)", car_model_name.lower()): ##boost BMW [number] series scores
-                similarity_score += 20
-
-            ######
             
-             
+            #BMW models algo adjust
+            if(car_make == "BMW"):
+                if re.match(r"(\d\s*series|series\s*\d)", car_model_name.lower()): ##boost BMW [number] series scores
+                    similarity_score += 50
+                ######
+                input_numeric_part_series = re.search(r"\b(\d+)\b\s[S-s]eries\b", car_model_name.lower())
+                car_model_numeric_part = re.search(r"\d\w\w\w",  input_string.lower())
+                if input_numeric_part_series and car_model_numeric_part: # select the words if the match numeric part eg. 1 series == 112i 
+                    if input_numeric_part_series.group(0)[0] == car_model_numeric_part.group(0)[0]: # this gets the first digit
+                        similarity_score += 30
+                
+
+            # functions getting the top score
             if similarity_score > best_score:
                 best_match = car_model_name
                 best_score = similarity_score
-            print(f"{car_model_name}: {similarity_score}")
+            score_data.append({car_model_name : similarity_score})
 
 
-        print(f"DEBUG: Best match was {input_string}->{best_match} with score {best_score}\n")
+        print(f"DEBUG: Best match was {input_string}->{best_match} with score {best_score}")
+        #more diagnostic print(f"DEBUG: Best match was {input_string}->{best_match} with score {best_score}\n with {score_data} \n")
+
         return best_match
         
