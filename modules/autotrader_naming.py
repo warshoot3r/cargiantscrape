@@ -250,7 +250,8 @@ class autotrader_naming:
         driver.get(url)
         self.handle_cookie_prompt(driver)
         model_variant_button = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
-    
+
+        attempts = 0
         while True:
             try:
                 model_variant_button.click()
