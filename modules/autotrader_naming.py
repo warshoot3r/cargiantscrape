@@ -28,7 +28,7 @@ class autotrader_naming:
         
         elif self.driver == "chrome":
             chrome_options = ChromeOptions()
-            chrome_options.add_argument("--headless=new")
+            # chrome_options.add_argument("--headless=new")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-gpu")
             chrome_options.add_argument("--disable-dev-shm-usage")
@@ -62,18 +62,13 @@ class autotrader_naming:
         
     def handle_cookie_prompt(self, driver):
         #handles cookie prompt
-        wait = WebDriverWait(driver=driver, timeout=10)
+        wait = WebDriverWait(driver=driver, timeout=20)
         try:
-            time.sleep(1)
-            wait.until(EC.presence_of_element_located((By.TAG_NAME, "iframe")))
-            cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")[1].get_attribute("id")
-            if cookie_prompt_iframe:
-                driver.switch_to.frame(cookie_prompt_iframe)
-                wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[title="Accept All"]')))
-                cookie_button = driver.find_element(By.CSS_SELECTOR, 'button[title="Accept All"]')
-                cookie_button.click()
-                print("VERBOSE: Clicked cookie prompt.")    
-                driver.switch_to.default_content() 
+            wait.until(EC.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR, 'iframe[title="SP Consent Message"]')))
+            cookie_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[title="Accept All"]')))
+            cookie_button.click()
+            print("VERBOSE: Clicked cookie prompt.")
+            driver.switch_to.parent_frame() 
         except exceptions.NoSuchElementException as e:
             print(f"No cookie prompt. {e}")
         except exceptions.ElementClickInterceptedException as e:
@@ -126,7 +121,6 @@ class autotrader_naming:
         for model in all_model:
             model_name_without_brackets = re.match(pattern, model.text)
             models.append(model_name_without_brackets.group(0))
-        driver.close()
         return models
     
     def translate_modelvariant_to_autotrader(self, car_make, car_model, input_string, custom_data = None):
@@ -236,41 +230,43 @@ class autotrader_naming:
             return best_match
         
     def get_model_variant_from_model(self, make, car_model):
-
-        
-        driver = self.selenium_setup()
         #may fix the nosuchelementexcepton
         make = make.replace(" ","%20")
         car_model = car_model.replace(" ", "%20")
         url = f"https://www.autotrader.co.uk/car-search?make={make}&model={car_model}&postcode=TR17%200BJ"
         # print(f"DEBUG using {url}", flush=True)
-        wait = WebDriverWait(driver=driver, timeout=15)
+        driver = self.selenium_setup()
+        wait = WebDriverWait(driver=driver, timeout=2)
         driver.get(url)
         self.handle_cookie_prompt(driver)
-        time.sleep(1)
-        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
-        model_variant_button = driver.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')
-
-        time.sleep(1) #This must be used so that button clicks.
-        model_variant_button.find_element(By.CSS_SELECTOR, "button")
- 
-        model_variant_button.click()
+        model_variant_button = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
+    
+        while True:
+            try:
+                model_variant_button.click()
+                print("DEBUG: Clicked")
+                wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
+                
+                break
+            except exceptions.TimeoutException:
+                print("DEBUG: Element is not visible yet")
+                time.sleep(1)
+                continue
+            except:
+                print("Error occured on clicking the Model Variants button")
+                break
+  
         #inside the model variants data table
-        model_variant_css = By.CSS_SELECTOR, '[data-section="aggregated_trim"]'
-        time.sleep(1)
-        try: 
-            wait.until(EC.presence_of_element_located(model_variant_css))
-        except:
-            print("Waiting for model variant failed")
-        time.sleep(1)
-        model_variant_data = driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]').find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
+
+        model_variant_data_section = driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]')
+        model_variant_data = model_variant_data_section.find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
 
 
         models = []
 
         for model_variant in model_variant_data:
             models.append(model_variant.text)
-        driver.close()
+        
         return models
     
 naming = autotrader_naming(driver="chrome")
