@@ -11,6 +11,7 @@ from selenium.webdriver.safari.options import Options as SafariOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 import concurrent.futures
 import time
+from .autotrader_naming import autotrader_naming
 class car:
     def __init__(self, reg: str, car_make: str, car_model: str, mileage: int, year: int):
         self.reg = reg
@@ -150,12 +151,22 @@ class car_background_information:
                         mileage = car[1].mileage
                         year = car[1].year
                         reg = car[1].reg
-        
+                                   
+                        car_autotrader_naming = autotrader_naming(driver="chrome")
+                        base_model_name = car_autotrader_naming.translate_modelname_to_autotrader(car_make=car_make, input_string=car_model)
+
                         #patching values for autotrader 
                         if(car_make == "Mercedes"):
                             car_make = "Mercedes-Benz"
-                        
-                        future = executor.submit(self.scrape_autotrader, car_make, car_model, mileage, year, reg)
+
+                         #before bruteforcing try to get the actual initial model class name
+                        if base_model_name:
+                            print(f"For {reg}: successfully got new name. {car_model}: Base Name -> {base_model_name}", flush=True)
+                            car_model = base_model_name.replace(" ", "%20")
+                            model_variant = 
+                            future = executor.submit(self.scrape_autotrader, car_make, car_model, mileage, year, reg)
+                        else:
+                            future = executor.submit(self.scrape_autotrader, car_make, car_model, mileage, year, reg)
                         futures.append(future)
                     # concurrent.futures.wait(futures)
                     start_time = time.time()
@@ -189,8 +200,11 @@ class car_background_information:
             car_parameters = f"&make={car_make}",f"&aggregatedTrim={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
             temp = "".join(car_parameters)
             autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
+            
+            
+            
 
-         
+
             while attempts < attempts_max:
                 try:     #Error basic handling None and not 200
                     print(f"Attempt {attempts}", flush=True)

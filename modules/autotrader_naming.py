@@ -58,6 +58,7 @@ class autotrader_naming:
             firefox_options.add_argument("--ignore-certificate-errors")
             firefox_options.add_argument("--start-minimized")
             self.driver = webdriver.Firefox(options=firefox_options)
+
     def get_car_makes(self):
         self.selenium_setup()
         driver = self.driver
@@ -104,7 +105,7 @@ class autotrader_naming:
             model_name_without_brackets = re.match(pattern, model.text)
             models.append(model_name_without_brackets.group(0))
         return models
-    def translate_modelname_to_autotrader(self, car_make, input_string, custom_data: None):
+    def translate_modelname_to_autotrader(self, car_make, input_string, custom_data = None):
         """
         Takes a model name and Returns a model name which is defined in autotrader. This shouldn be used in the "aggregatedTrim" with just "Make" to scrape prices
         ARG
@@ -114,7 +115,14 @@ class autotrader_naming:
         returns 320d 
         """
         if custom_data:
+            print("AUTOTRADER_CARDB: Using provided custom data", flush=True)
             car_models = custom_data
+        elif car_make == "BMW":
+            car_models = ['1602', '1 Series', '2002', '2 Series', '2 Series Active Tourer', '2 Series Gran Coupe', '2 Series Gran Tourer', '3 Series', '3 Series Gran Turismo', '4 Series', '4 Series Gran Coupe', '5 Series', '5 Series Gran Turismo', '6 Series', '6 Series Gran Coupe', '6 Series Gran Turismo', '7 Series', '8 Series', '8 Series Gran Coupe', 'Alpina B10', 'Alpina B3', 'Alpina B4', 'Alpina B4 Gran Coupe', 'Alpina B5', 'Alpina B6', 'Alpina B8 Gran Coupe', 'Alpina D3', 'Alpina D4', 'Alpina D4 Gran Coupe', 'Alpina D5', 'Alpina Roadster', 'Alpina Unspecified Models', 'Alpina XB7', 'Alpina XD3', 'E9', 'i3', 'i4', 'i5', 'i7', 'i8', 'Isetta', 'iX', 'iX1', 'iX3', 'M2', 'M3', 'M4', 'M5', 'M6', 'M6 Gran Coupe', 'M8', 'M8 Gran Coupe', 'X1', 'X2', 'X3', 'X3 M', 'X4', 'X4 M', 'X5', 'X5 M', 'X6', 'X6 M', 'X7', 'XM', 'Z1', 'Z3', 'Z3 M', 'Z4', 'Z4 M', 'Z8']
+        elif car_make == "Mercedes":
+            car_models =  ['190', '190 SL', '200', '220', '230', '230 SL', '250', '250 SL', '260', '280', '280 S', '280 SL', '300', '310', '320', '350 SL', '380', '400', '420', '450', '450 SL', '500', '560SL', 'A Class', 'AMG', 'AMG GT', 'AMG GT 63', 'B Class', 'C Class', 'Citan', 'CL', 'CLA Class', 'CLC Class', 'CLK', 'CLS', 'E Class', 'EQA', 'EQB', 'EQC', 'EQE', 'EQS', 'EQV', 'eVito', 'G Class', 'GLA Class', 'GLB Class', 'GLC Class', 'GL Class', 'GLE Class', 'GLS Class', 'Maybach GLS Class', 'Maybach S Class', 'M Class', 'R Class', 'S Class', 'SE Class', 'SEC Series', 'SLC', 'SL Class', 'SLK', 'SLR McLaren', 'SLS', 'Sprinter', 'Traveliner', 'V Class', 'Viano', 'Vito', 'X Class',                        'A160', 'E220', 'A180', 'CLA', 'C350e', 'C300h', 'GLA', 'C200', 'A200', 'A250', 'C220', 'B180', 'B200', 'GLC', 'C300de', 'C250', 'C300', 'E200', 'B220', 'S350L', 'A35', 'GLE', 'E300de', 'GLB', 'EQA']
+        elif car_make == "Lexus":
+            car_models = ['IS 300H', 'CT 200h', 'NX 300H', 'UX', 'ES 300h', 'RX 400h', 'RC 300h', 'RX 450h']
         else:
             car_models = self.get_car_models(make=car_make)
         
@@ -138,7 +146,7 @@ class autotrader_naming:
 
 
                         # Mercedes
-            if(car_make == "Mercedes") : # Bump up the [letter] Class
+            if(car_make == "Mercedes") or (car_make == "Mercedes-Benz") : # Bump up the [letter] Class
                 input_name_letter_part = re.search(r"([a-zA-Z]\d\d)|([a-zA-Z]{3})", input_string.lower())
                 car_model_name_letter_part = re.search(r"[a-zA-Z]{1,3}\s\b[cC]lass\b", car_model_name.lower())
                 if input_name_letter_part and car_model_name_letter_part:
@@ -168,8 +176,36 @@ class autotrader_naming:
             score_data.append({car_model_name : similarity_score})
 
 
-        print(f"DEBUG: Best match was {input_string}->{best_match} with score {best_score}")
+        print(f"DEBUG: Best match is {input_string}->{best_match} with score {best_score}")
         #more diagnostic print(f"DEBUG: Best match was {input_string}->{best_match} with score {best_score}\n with {score_data} \n")
 
         return best_match
         
+    def get_model_variant_from_model(self, make, car_model):
+
+        self.selenium_setup()
+        driver = self.driver
+        make = make.replace(" ","%20")
+        car_model = car_model.replace(" ", "%20")
+        url = f"https://www.autotrader.co.uk/car-search?make={make}&model={car_model}&postcode=TR17%200BJ"
+        print(f"DEBUG using {url}", flush=True)
+        wait = WebDriverWait(driver=self.driver, timeout=5)
+        driver.get(url)
+        
+        model_variant_button = driver.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]').find_element(By.CSS_SELECTOR, "button")
+        model_variant_button.click()
+        #inside the model variants data table
+        model_variant_css = By.CSS_SELECTOR, '[data-section="aggregated_trim"]'
+        wait.until(EC.presence_of_element_located(model_variant_css))
+        model_variant_data = driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]').find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
+
+
+        models = []
+
+        for model_variant in model_variant_data:
+            models.append(model_variant.text)
+
+        return models
+    
+naming = autotrader_naming(driver="safari")
+print(naming.get_model_variant_from_model(make="BMW",car_model="1 Series"))

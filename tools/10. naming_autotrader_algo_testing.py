@@ -55,6 +55,22 @@ model_name_index = car_db.return_as_panda_dataframe().columns.get_loc("Model")
 for car in unique_database_mercedes_models:
     naming.translate_modelname_to_autotrader(car_make="Mercedes",custom_data=mercedes_custom_data, input_string=str(car))
 
+####
+
+
+
+
+### lexus
+
+Lexus_custom_data = ['IS 300H', 'CT 200h', 'NX 300H', 'UX', 'ES 300h', 'RX 400h', 'RC 300h', 'RX 450h']
+db_Lexus_models = data[data["Manufacturer"] == "Lexus"]
+unique_database_Lexus_models = (db_Lexus_models["Model"].drop_duplicates()).to_list()
+car_names = car_db.retrieve_db(column="Manufacturer",input_data="Lexus")
+print( unique_database_Lexus_models, flush=True)
+model_name_index = car_db.return_as_panda_dataframe().columns.get_loc("Model")
+for car in unique_database_Lexus_models:
+    naming.translate_modelname_to_autotrader(car_make="Lexus",custom_data=Lexus_custom_data, input_string=str(car))
+
 
 
 
