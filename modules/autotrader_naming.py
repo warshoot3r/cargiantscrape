@@ -247,6 +247,7 @@ class autotrader_naming:
         wait = WebDriverWait(driver=driver, timeout=15)
         driver.get(url)
         self.handle_cookie_prompt(driver)
+        time.sleep(1)
         wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
         model_variant_button = driver.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')
 
