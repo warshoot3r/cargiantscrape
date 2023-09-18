@@ -529,8 +529,8 @@ class SQLiteDatabase:
                                 self.cursor.execute(db_string, (self.CarStatus, currentcarreg))
                                 self.conn.commit()   
                                 print("Car was reserved so incrementing the count Number Reserved", flush=True) 
-                        elif self.CarStatus == "":    # Handle the empty status cars. These are avaliable to purchase cars      
-                                print(f"VERBOSE: {currentcarreg} has no value. Setting to Available", flush=True)
+                        elif self.CarStatus == "Available":    # Handle the empty status cars. These are avaliable to purchase cars      
+                                print(f"VERBOSE: {currentcarreg} is available so Setting to Available", flush=True)
                                 db_string = f'''
                                 UPDATE {table} SET CarStatus = ? WHERE REG = ?
                                 '''
