@@ -123,13 +123,9 @@ class car_background_information:
         """
         
         prices = self.cars.get(reg, None).autotrader_price_valuation
-        if (prices is None):
+        if (prices is None) or (len(prices) == 0):
             return None
         prices_as_int = [int(value.replace(',', '' )) for value in prices]
-        if (len(prices) < 2):
-            print(len(prices))
-            print(prices_as_int)
-            return "£" +  min(prices_as_int) + (" - ") + "£" + max(prices_as_int)
     
         max_price = max(prices_as_int)
         min_price = min(prices_as_int)
