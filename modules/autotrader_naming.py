@@ -135,7 +135,31 @@ class autotrader_naming:
                 if input_numeric_part_series and car_model_numeric_part: # select the words if the match numeric part eg. 1 series == 112i 
                     if input_numeric_part_series.group(0)[0] == car_model_numeric_part.group(0)[0]: # this gets the first digit
                         similarity_score += 30
-                
+
+
+                        # Mercedes
+            if(car_make == "Mercedes") : # Bump up the [letter] Class
+                input_name_letter_part = re.search(r"([a-zA-Z]\d\d)|([a-zA-Z]{3})", input_string.lower())
+                car_model_name_letter_part = re.search(r"[a-zA-Z]{1,3}\s\b[cC]lass\b", car_model_name.lower())
+                if input_name_letter_part and car_model_name_letter_part:
+                    if input_name_letter_part.group(0)[0] == car_model_name_letter_part.group(0)[0]:
+                        similarity_score += 80
+                    #bump down EQE  [Q] [part car model names as they are electric variants
+                        if input_name_letter_part.group(0)[1] == "q":
+                            similarity_score -= 30
+
+                #3 letter classees like bump up CLA-> to CLA class
+                input_name_cla = re.search(r"\b[a-zA-Z]{3}\b", input_string.lower())
+                car_model_cla = re.search(r"[a-zA-Z]{3}\s\b[cC]lass\b", car_model_name.lower())
+                if input_name_cla and car_model_cla:
+                                    #for bump up GLE (the E ) part
+                    if input_name_cla.group(0)[0] == "g":
+                        #if the E part matches the first part of inputname
+                        if input_name_cla.group(0)[0] ==  car_model_name_letter_part.group(0)[2]:
+                            similarity_score += 50 
+                    elif input_name_cla.group(0)[0] == car_model_name_letter_part.group(0)[0]:
+                        similarity_score += 50
+
 
             # functions getting the top score
             if similarity_score > best_score:
