@@ -72,30 +72,20 @@ class autotrader_naming:
         
     def handle_cookie_prompt(self, driver):
         #handles cookie prompt
-        wait = WebDriverWait(driver=driver, timeout=20)
-        attempts = 0
-        while True:
-            try:
-                wait.until(EC.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR, 'iframe[title="SP Consent Message"]')))
-                cookie_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[title="Accept All"]')))
+        wait = WebDriverWait(driver=driver, timeout=10)
+        try:
+            time.sleep(1)
+            wait.until(EC.presence_of_element_located((By.TAG_NAME, "iframe")))
+            cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")[1].get_attribute("id")
+            if cookie_prompt_iframe:
+                driver.switch_to.frame(cookie_prompt_iframe)
+                wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[title="Accept All"]')))
+                cookie_button = driver.find_element(By.CSS_SELECTOR, 'button[title="Accept All"]')
                 cookie_button.click()
-                print("VERBOSE: Clicked cookie prompt.")
-                driver.switch_to.parent_frame() 
-                break
-            except exceptions.NoSuchElementException as e:
-                print(f"No cookie prompt. {e}")
-                attempts += 1
-            except exceptions.ElementClickInterceptedException as e:
-                print(f"Could not click cookie button {e}")
-                attempts += 1
-            except exceptions.TimeoutException as e :
-                print(f"Timed out loading the iframe {e}")
-                attempts += 1
-            except:
-                print(f"General error occured on cookie accept")
-                break
-            if attempts <= 10:
-                break
+                print("VERBOSE: Clicked cookie prompt.")    
+                driver.switch_to.default_content() 
+        except exceptions.NoSuchElementException as e:
+                print(f"Exception while setting cookies. {e}")
     def get_car_makes(self):
         
         driver = self.selenium_setup()
