@@ -58,19 +58,34 @@ class TelegramBot:
                 if updates:
                     for key in updates:
 
-                    #Each message
-                        print("Chats: ",key, flush=True)
-                        print("\n\n", flush=True)
-                        update_id = key["update_id"]
-                        print(f"Update_id : {update_id}", flush=True)
-                        if "message" in key:
-                        #   print(key["message"], flush=True)
-                          for message_value in key:
-                            if isinstance(key[message_value],dict):
-                                for message_key, message_value in key[message_value].items():
-                                    print(message_key,' : ', message_value, flush=True)
-                            
-          
+                    # #Each message
+                    #     print("Chats: ",key, flush=True)
+                    #     print("\n\n", flush=True)
+                    #     update_id = key["update_id"]
+                    #     print(f"Update_id : {update_id}", flush=True)
+                    #     if "message" in key:
+                    #     #   print(key["message"], flush=True)
+                    #       for message_value in key:
+                    #         if isinstance(key[message_value],dict):
+                    #             for message_key, message_value in key[message_value].items():
+                    #                 print(message_key,' : ', message_value, flush=True)
+                        # if "my_chat_member" in key:
+                        #     print("group chat")
+                        #     for message_value in key:
+                        #         if isinstance(key[message_value],dict):
+                        #             for message_key, message_value in key[message_value].items():
+                        #                 print(message_key,' : ', message_value, flush=True)
+
+                        if 'message' in key and 'chat' in key['message']:
+                            chat = key['message']['chat']
+                            chat_id = chat['id']
+                            chat_title = chat.get('title', 'Private Chat')
+                            chat_type = chat['type']
+                            print(f"Chat ID: {chat_id}, Title: {chat_title}, Type: {chat_type}")
+                            if 'text' in key['message']:
+                                text = key['message']['text']
+                                print(f"Chat ID: {chat_id}, Title: {chat_title}, Type: {chat_type}")
+                                print(f"Message Text: {text}")
                 else:
                     print("Failed to get updates. Error:", response_json["description"], flush=True)
         except requests.exceptions.RequestException as e:
