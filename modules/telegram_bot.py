@@ -52,14 +52,27 @@ class TelegramBot:
         try:
             response = requests.get(get_updates_url)
             response_json = response.json()
+            
             if response_json["ok"]:
                 updates = response_json["result"]
                 if updates:
-                    for update in updates:
-                        chat_id = update["message"]["chat"]["id"]
-                        print("Received message from chat ID:", chat_id)
-            else:
-                print("Failed to get updates. Error:", response_json["description"])
+                    for key in updates:
+
+                    #Each message
+                        print("Chats: ",key)
+                        print("\n\n")
+                        update_id = key["update_id"]
+                        print(f"Update_id : {update_id}")
+                        if "message" in key:
+                        #   print(key["message"])
+                          for message_value in key:
+                            if isinstance(key[message_value],dict):
+                                for message_key, message_value in key[message_value].items():
+                                    print(message_key,' : ', message_value)
+                            
+          
+                else:
+                    print("Failed to get updates. Error:", response_json["description"])
         except requests.exceptions.RequestException as e:
             print("Error getting updates:", e)
 
