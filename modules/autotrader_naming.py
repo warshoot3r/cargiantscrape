@@ -317,7 +317,7 @@ class autotrader_naming:
         url = f"https://www.autotrader.co.uk/car-search?make={make}&model={car_model}&postcode=TR17%200BJ"
         # print(f"DEBUG using {url}", flush=True)
         driver = self.selenium_setup()
-        wait = WebDriverWait(driver=driver, timeout=5)
+        wait = WebDriverWait(driver=driver, timeout=20)
         driver.get(url)
         print(url)
         self.handle_cookie_prompt(driver)
@@ -343,7 +343,9 @@ class autotrader_naming:
   
         #inside the model variants data table
 
+        wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-section="aggregated_trim"]')))
         model_variant_data_section =  driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]')
+        wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
         model_variant_data = model_variant_data_section.find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
         
         models = []
