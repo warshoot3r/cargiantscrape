@@ -141,6 +141,48 @@ class car_background_information:
         max_price = max(prices_as_int)
         min_price = min(prices_as_int)
         return "£" + str(min_price)  + (" - ") + "£" +  str(max_price)
+     
+    def series_scrape_autotrader_price(self, worker_threads=2, timeout_time=30):
+                """
+                 pull prices from autotrader
+                args:
+                    timeout_time is in minutes
+                Returns:
+                    Nothing
+                
+                """
+                timeout = timeout_time * 60
+                #parallel processe
+               
+                for car in self.cars.items():
+                    #array 0 is the reg. array 1 contains the params
+                    car_make = car[1].car_make
+                    car_model = car[1].car_model
+                    mileage = car[1].mileage
+                    year = car[1].year
+                    reg = car[1].reg
+                                
+                    car_autotrader_naming = autotrader_naming(driver="chrome")
+                    base_model_name = car_autotrader_naming.translate_modelname_to_autotrader(car_make=car_make, input_string=car_model)
+
+                    #patching values for autotrader 
+                    if(car_make == "Mercedes"):
+                        car_make = "Mercedes-Benz"
+
+                        #before bruteforcing try to get the actual initial model class name
+                    if base_model_name:
+                        car_model_http = base_model_name.replace(" ", "%20")
+                        model_variant = car_autotrader_naming.translate_modelvariant_to_autotrader(car_make=car_make, car_model=base_model_name, input_string=car_model)
+                        print(f"Pre-price check: {reg} {car_model} successfully got new name. Model->{base_model_name}. Model Variant->{model_variant}", flush=True)
+                        self.scrape_autotrader(car_make, car_model_http, model_variant, mileage, year, reg)
+                    else:
+                        self.scrape_autotrader(car_make, car_model, mileage, year, reg)
+                    start_time = time.time()
+                    #wait for tasks to finish or timeout time
+                    if time.time() - start_time >= timeout:
+                        print("Timeout reached. stopping.", flush=True)
+                        break
+
     
     def parallel_scrape_autotrader_price(self, worker_threads=2, timeout_time=30):
                 """

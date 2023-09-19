@@ -343,7 +343,7 @@ class autotrader_naming:
                 model_variant_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
 
                 model_variant_button.click()
-                print("DEBUG: Clicked on Model Variant Pane", flush=True)
+                print(f"DEBUG: {url} Clicked on Model Variant Pane", flush=True)
                 # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
                 wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
                 wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))

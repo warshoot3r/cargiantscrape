@@ -52,7 +52,7 @@ for import_car_to_scrape in cars_to_get_extra_information:
 
 
 print("Will start scraping prices now ", flush=True)
-autotrader_price_db.parallel_scrape_autotrader_price(worker_threads=2, timeout_time=25)
+autotrader_price_db.series_scrape_autotrader_price(worker_threads=2, timeout_time=25)
 
 
 
