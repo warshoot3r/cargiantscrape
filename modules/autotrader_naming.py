@@ -88,7 +88,9 @@ class autotrader_naming:
         try:
             wait.until(EC.presence_of_element_located((By.TAG_NAME, 'iframe')))
             cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")
-            if cookie_prompt_iframe[1]:
+            if cookie_prompt_iframe is None:
+                return
+            elif cookie_prompt_iframe[1]:
                 driver.switch_to.frame(cookie_prompt_iframe[1].get_attribute("id"))
                 wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[title="Accept All"]')))
                 cookie_button = driver.find_element(By.CSS_SELECTOR, 'button[title="Accept All"]')
@@ -317,7 +319,7 @@ class autotrader_naming:
         url = f"https://www.autotrader.co.uk/car-search?make={make}&model={car_model}&postcode=TR17%200BJ"
         # print(f"DEBUG using {url}", flush=True)
         driver = self.selenium_setup()
-        wait = WebDriverWait(driver=driver, timeout=20)
+        wait = WebDriverWait(driver=driver, timeout=5)
         driver.get(url)
         print(url)
         self.handle_cookie_prompt(driver)
