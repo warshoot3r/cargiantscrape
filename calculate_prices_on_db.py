@@ -21,7 +21,7 @@ car_filters = {
     "ValuationRange" : lambda x: x is None,
     # "Reg": lambda x : x == "CF17FSL"
    # "ValuationPercentage": lambda x: x is None,
-    #CarStatus": lambda x: x != "Sold"
+    #CarStatus": lambda x: x != "Sold"g
     # "Price": lambda x: x < 10000
 }
 db = Car_database.return_as_panda_dataframe()
