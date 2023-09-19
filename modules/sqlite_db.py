@@ -587,7 +587,7 @@ class SQLiteDatabase:
                         #     "DaysAdded": 0
                         # }
                         db_string_update = f"UPDATE {table} SET DateCarAdded = ?, DaysAdded = 0 WHERE REG = ?"
-                        self.cursor.execute(db_string_update, (datetime.date.today(), data['Reg']))
+                        self.cursor.execute(db_string_update, (datetime.datetime.now().strftime("%H:%M %d/%m/%Y"), data['Reg']))
                         self.conn.commit()
 
     def move_sold_cars_to_db(self, URL):
