@@ -195,8 +195,8 @@ class car_background_information:
             # Navigate to the URL
             driver = self.selenium_setup()
             wait = WebDriverWait(driver, timeout=5)
-            minimum_mileage = mileage - 3000 if mileage - 3000 >=100 else 100
-            maximum_mileage = mileage + 3000
+            minimum_mileage = mileage - 5000 if mileage - 3000 >=100 else 100
+            maximum_mileage = mileage + 5000
             from_year = year - 1 
             to_year = year
             #try twice by changing the models:
@@ -207,7 +207,7 @@ class car_background_information:
             car_model = car_model.replace(" ", "%20")
 
             if car_model_variant:
-            # Define the URL
+            # Define the URL first one is as we have full details, else just try  as model
                 car_parameters = f"&make={car_make}",f"&model={car_model}",f"&aggregatedTrim={car_model_variant}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
             else:
                 car_parameters = f"&make={car_make}",f"&model={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
@@ -232,13 +232,13 @@ class car_background_information:
                     if attempts == 1:
                         car_model = str(car_model).lower()
                         print("trying in lowercase",flush=True)
-                        car_parameters = f"&make={car_make}",f"&aggregatedTrim={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
+                        car_parameters = f"&make={car_make}",f"&model={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
                         temp = "".join(car_parameters)
                         autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
                     elif attempts == 2:
                         print(f"Page did not load. Empty page")        
                         print("Switching from \"aggregated body\" to \"model\" and restarting")
-                        car_parameters = f"&make={car_make}",f"&model={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
+                        car_parameters = f"&make={car_make}",f"&aggregatedTrim={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
                         temp = "".join(car_parameters)
                         autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
 
