@@ -174,7 +174,7 @@ class autotrader_naming:
             except:
                 print("Error occured on clicking the Model Variants button")
                 return
-            if attempts >= 10:
+            if attempts >= 5:
                 print(f"Failed to get models for {url}")
                 return
   
@@ -216,21 +216,24 @@ class autotrader_naming:
         best_match = None
         best_score = 0
 
+        if model_variants_from_model:
+            for car_variant in model_variants_from_model:
 
-        for car_variant in model_variants_from_model:
+                similarity_score = fuzz.ratio(input_string.lower(), car_variant.lower())
 
-            similarity_score = fuzz.ratio(input_string.lower(), car_variant.lower())
-
-            if similarity_score > best_score:
-                best_match = car_variant
-                best_score = similarity_score
-                
-        if best_score < 60:
-            print(f"DEBUG: Best match for variant  {input_string} lower than 60 certainty. Return nothing. {input_string}->{best_match} (score:{best_score})")
-            return
+                if similarity_score > best_score:
+                    best_match = car_variant
+                    best_score = similarity_score
+                    
+            if best_score < 60:
+                print(f"DEBUG: Best match for variant  {input_string} lower than 60 certainty. Return nothing. {input_string}->{best_match} (score:{best_score})")
+                return 
+            else:
+                print(f"DEBUG: Best match for variant {input_string}->{best_match} (score:{best_score})")
+                return best_match
         else:
-            print(f"DEBUG: Best match for variant {input_string}->{best_match} (score:{best_score})")
-            return best_match
+            print("DEBUG: No data from input. Can't return a best match")
+            return
 
     def translate_modelname_to_autotrader(self, car_make, input_string, custom_data = None):
         """
@@ -249,59 +252,63 @@ class autotrader_naming:
         elif car_make == "Mercedes":
             car_models =  ['190', '190 SL', '200', '220', '230', '230 SL', '250', '250 SL', '260', '280', '280 S', '280 SL', '300', '310', '320', '350 SL', '380', '400', '420', '450', '450 SL', '500', '560SL', 'A Class', 'AMG', 'AMG GT', 'AMG GT 63', 'B Class', 'C Class', 'Citan', 'CL', 'CLA Class', 'CLC Class', 'CLK', 'CLS', 'E Class', 'EQA', 'EQB', 'EQC', 'EQE', 'EQS', 'EQV', 'eVito', 'G Class', 'GLA Class', 'GLB Class', 'GLC Class', 'GL Class', 'GLE Class', 'GLS Class', 'Maybach GLS Class', 'Maybach S Class', 'M Class', 'R Class', 'S Class', 'SE Class', 'SEC Series', 'SLC', 'SL Class', 'SLK', 'SLR McLaren', 'SLS', 'Sprinter', 'Traveliner', 'V Class', 'Viano', 'Vito', 'X Class',                        'A160', 'E220', 'A180', 'CLA', 'C350e', 'C300h', 'GLA', 'C200', 'A200', 'A250', 'C220', 'B180', 'B200', 'GLC', 'C300de', 'C250', 'C300', 'E200', 'B220', 'S350L', 'A35', 'GLE', 'E300de', 'GLB', 'EQA']
         elif car_make == "Lexus":
-            car_models = ['IS 300H', 'CT 200h', 'NX 300H', 'UX', 'ES 300h', 'RX 400h', 'RC 300h', 'RX 450h']
+            car_models = ['CT 200h', 'ES 300h', 'GS 250', 'GS 300', 'GS 430', 'GS 450h', 'GX', 'IS 200', 'IS 220d', 'IS 250', 'IS 300', 'IS F', 'LC 500', 'LFA', 'LS 400', 'LS 430', 'LS 460', 'LS 500h', 'LS 600h', 'NX 200t', 'NX 300h', 'NX 350h', 'NX 450h+', 'RC 200t', 'RC 300h', 'RC F', 'RX 200t', 'RX 300', 'RX 350', 'RX 350h', 'RX 400h', 'RX 450h', 'RX 450h+', 'RX 500h', 'RX L 450h', 'RX Unspecified', 'RZ 450e', 'SC 430', 'UX 250h', 'UX 300e']
         else:
             car_models = self.get_car_models(make=car_make)
         
         best_match = None
         best_score = 0 
         score_data = []
-        for car_model_name in car_models:
-            similarity_score = fuzz.ratio(input_string.lower(), car_model_name.lower())
 
-            
-            #BMW models algo adjust
-            if(car_make == "BMW"):
-                if re.match(r"(\d\s*series|series\s*\d)", car_model_name.lower()): ##boost BMW [number] series scores
-                    similarity_score += 50
-                ######
-                input_numeric_part_series = re.search(r"\b(\d+)\b\s[S-s]eries\b", car_model_name.lower())
-                car_model_numeric_part = re.search(r"\d\w\w\w",  input_string.lower())
-                if input_numeric_part_series and car_model_numeric_part: # select the words if the match numeric part eg. 1 series == 112i 
-                    if input_numeric_part_series.group(0)[0] == car_model_numeric_part.group(0)[0]: # this gets the first digit
-                        similarity_score += 30
+        if car_models: 
+            for car_model_name in car_models:
+                similarity_score = fuzz.ratio(input_string.lower(), car_model_name.lower())
 
-
-                        # Mercedes
-            if(car_make == "Mercedes") or (car_make == "Mercedes-Benz") : # Bump up the [letter] Class
-                input_name_letter_part = re.search(r"([a-zA-Z]\d\d)|([a-zA-Z]{3})", input_string.lower())
-                car_model_name_letter_part = re.search(r"[a-zA-Z]{1,3}\s\b[cC]lass\b", car_model_name.lower())
-                if input_name_letter_part and car_model_name_letter_part:
-                    if input_name_letter_part.group(0)[0] == car_model_name_letter_part.group(0)[0]:
-                        similarity_score += 80
-                    #bump down EQE  [Q] [part car model names as they are electric variants
-                        if input_name_letter_part.group(0)[1] == "q":
-                            similarity_score -= 30
-
-                #3 letter classees like bump up CLA-> to CLA class
-                input_name_cla = re.search(r"\b[a-zA-Z]{3}\b", input_string.lower())
-                car_model_cla = re.search(r"[a-zA-Z]{3}\s\b[cC]lass\b", car_model_name.lower())
-                if input_name_cla and car_model_cla:
-                                    #for bump up GLE (the E ) part
-                    if input_name_cla.group(0)[0] == "g":
-                        #if the E part matches the first part of inputname
-                        if input_name_cla.group(0)[0] ==  car_model_name_letter_part.group(0)[2]:
-                            similarity_score += 50 
-                    elif input_name_cla.group(0)[0] == car_model_name_letter_part.group(0)[0]:
+                
+                #BMW models algo adjust
+                if(car_make == "BMW"):
+                    if re.match(r"(\d\s*series|series\s*\d)", car_model_name.lower()): ##boost BMW [number] series scores
                         similarity_score += 50
+                    ######
+                    input_numeric_part_series = re.search(r"\b(\d+)\b\s[S-s]eries\b", car_model_name.lower())
+                    car_model_numeric_part = re.search(r"\d\w\w\w",  input_string.lower())
+                    if input_numeric_part_series and car_model_numeric_part: # select the words if the match numeric part eg. 1 series == 112i 
+                        if input_numeric_part_series.group(0)[0] == car_model_numeric_part.group(0)[0]: # this gets the first digit
+                            similarity_score += 30
 
 
-            # functions getting the top score
-            if similarity_score > best_score:
-                best_match = car_model_name
-                best_score = similarity_score
-            score_data.append({car_model_name : similarity_score})
+                            # Mercedes
+                if(car_make == "Mercedes") or (car_make == "Mercedes-Benz") : # Bump up the [letter] Class
+                    input_name_letter_part = re.search(r"([a-zA-Z]\d\d)|([a-zA-Z]{3})", input_string.lower())
+                    car_model_name_letter_part = re.search(r"[a-zA-Z]{1,3}\s\b[cC]lass\b", car_model_name.lower())
+                    if input_name_letter_part and car_model_name_letter_part:
+                        if input_name_letter_part.group(0)[0] == car_model_name_letter_part.group(0)[0]:
+                            similarity_score += 80
+                        #bump down EQE  [Q] [part car model names as they are electric variants
+                            if input_name_letter_part.group(0)[1] == "q":
+                                similarity_score -= 30
 
+                    #3 letter classees like bump up CLA-> to CLA class
+                    input_name_cla = re.search(r"\b[a-zA-Z]{3}\b", input_string.lower())
+                    car_model_cla = re.search(r"[a-zA-Z]{3}\s\b[cC]lass\b", car_model_name.lower())
+                    if input_name_cla and car_model_cla:
+                                        #for bump up GLE (the E ) part
+                        if input_name_cla.group(0)[0] == "g":
+                            #if the E part matches the first part of inputname
+                            if input_name_cla.group(0)[0] ==  car_model_name_letter_part.group(0)[2]:
+                                similarity_score += 50 
+                        elif input_name_cla.group(0)[0] == car_model_name_letter_part.group(0)[0]:
+                            similarity_score += 50
+
+
+                # functions getting the top score
+                if similarity_score > best_score:
+                    best_match = car_model_name
+                    best_score = similarity_score
+                score_data.append({car_model_name : similarity_score})
+        else:
+            print("DEBUG: No data from input. Can't return models")
+            return
 
         
         #more diagnostic print(f"DEBUG: Best match was {input_string}->{best_match} with score {best_score}\n with {score_data} \n")
@@ -341,10 +348,10 @@ class autotrader_naming:
                 attempts += 1
             except:
                 print(f"Error occured on clicking the Model Variants button")
-                return
-            if attempts >= 10:
+                return None
+            if attempts >= 5:
                 print(f"Failed to get model variants for {url}")
-                return
+                return None
   
         #inside the model variants data table
 
@@ -364,3 +371,5 @@ naming = autotrader_naming(driver="chrome")
 # naming.get_car_models(make="BMW")
 # naming.translate_modelvariant_to_autotrader(car_make="BMW", car_model="1 Series", input_string="116D")
 #
+
+print(naming.get_car_models(make="Lexus"))

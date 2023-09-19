@@ -19,6 +19,7 @@ autotrader_price_db = car_background_information(driver="chrome",postal_code="TR
 #get the car database that we will calculate the prices on 
 car_filters = {
     "ValuationRange" : lambda x: x is None,
+    "Reg": lambda x : x == "CF17FSL"
    # "ValuationPercentage": lambda x: x is None,
     #CarStatus": lambda x: x != "Sold"
     # "Price": lambda x: x < 10000
