@@ -178,7 +178,7 @@ class car_background_information:
                         print(f"Pre-price check: {reg} {car_model} successfully got new name. Model->{base_model_name}. Model Variant->{model_variant}", flush=True)
                         self.scrape_autotrader(car_make=car_make, car_model=car_model_http,car_model_variant=model_variant, mileage=mileage, year=year, reg=reg)
                     else:
-                        self.scrape_autotrader(car_make=car_make, car_model=car_model, mileage=mileage, year=year, reg=reg)
+                        self.scrape_autotrader(car_make=car_make, car_model=car_model,car_model_variant=None, mileage=mileage, year=year, reg=reg)
                     
                     #wait for tasks to finish or timeout time
                     if time.time() - start_time >= timeout:
