@@ -4,6 +4,7 @@ on:
   push:
     paths-ignore: 
       - ".github/**"
+  workflow_dispatch: 
 
 env:
   REGISTRY_IMAGE: jammyboi/cgwebscrape
