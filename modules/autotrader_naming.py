@@ -85,18 +85,30 @@ class autotrader_naming:
     def handle_cookie_prompt(self, driver: webdriver.Remote ):
         #handles cookie prompt
         wait = WebDriverWait(driver=driver, timeout=10)
-        try:
-            wait.until(EC.presence_of_element_located((By.TAG_NAME, 'iframe')))
-            cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")
-            if len(cookie_prompt_iframe) == 2: 
-                        driver.switch_to.frame(cookie_prompt_iframe[1].get_attribute("id"))
-                        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[title="Accept All"]')))
-                        cookie_button = driver.find_element(By.CSS_SELECTOR, 'button[title="Accept All"]')
-                        cookie_button.click()
-                        print("VERBOSE: Clicked cookie prompt.")    
-                        driver.switch_to.default_content() 
-        except exceptions.NoSuchElementException as e:
-                print(f"Exception while setting cookies. {e}")
+        attempts = 0
+        while True:
+            try:
+                wait.until(EC.presence_of_element_located((By.TAG_NAME, 'iframe')))
+                cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")
+                if len(cookie_prompt_iframe) == 2: 
+                            driver.switch_to.frame(cookie_prompt_iframe[1].get_attribute("id"))
+                            wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[title="Accept All"]')))
+                            cookie_button = driver.find_element(By.CSS_SELECTOR, 'button[title="Accept All"]')
+                            cookie_button.click()
+                            print("VERBOSE: Clicked cookie prompt.")    
+                            driver.switch_to.default_content()
+                            break
+            except exceptions.NoSuchElementException as e:
+                    print(f"No Element Exception while setting cookies. {e}")
+                    break
+            except exceptions.TimeoutException as e:
+                print("Timeout Exception when accepting cookies")
+                time.sleep(1)
+                attempts += 1
+
+        if attempts >= 5:
+            print("Failed to set cookies after 5 attempts")
+            return
     def get_car_makes(self):
         
         driver = self.selenium_setup()
@@ -197,7 +209,7 @@ class autotrader_naming:
 
         models = []
         for model in all_model:
-            # print(model.text)
+            print(model.text, model.tag_name)
             models.append(model.text)
         # for model in all_model:
         #     print(model.text)
@@ -365,11 +377,13 @@ class autotrader_naming:
         
         return models
     
-# naming = autotrader_naming(driver="chrome")
+naming = autotrader_naming(driver="chrome")
 # print(naming.get_model_variant_from_model(make="BMW",car_model="1 Series"))
 # print(naming.get_car_makes())
 # naming.get_car_models(make="BMW")
 # naming.translate_modelvariant_to_autotrader(car_make="BMW", car_model="1 Series", input_string="116D")
 #
 
-# print(naming.get_car_models(make="Lexus"))
+print(naming.get_car_models(make="Lexus"))
+print(naming.get_car_models(make="Mercedes-Benz"))
+print(naming.get_car_models(make="BMW"))
