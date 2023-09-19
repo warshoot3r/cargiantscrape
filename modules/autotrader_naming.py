@@ -27,15 +27,27 @@ class autotrader_naming:
             return webdriver.Safari(options=safari_options)
         
         elif self.driver == "chrome":
+            # import logging
+            # logging.basicConfig(level=logging.ERROR)
             chrome_options = ChromeOptions()
-            # chrome_options.add_argument("--headless=new")
+            from fake_headers import Headers
+
+            header = Headers(
+                browser="chrome",  # Generate only Chrome UA
+                os="win",  # Generate only Windows platformd
+                headers=False # generate misc headers
+            )
+            customUserAgent = header.generate()['User-Agent']
+
+            chrome_options.add_argument(f"user-agent={customUserAgent}")
+            chrome_options.add_argument("--headless=new")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-gpu")
             chrome_options.add_argument("--disable-dev-shm-usage")
-            chrome_options.add_argument("--window-size=1920,1200")
+            chrome_options.add_argument("--window-size=1920,1080")
             chrome_options.add_argument("--ignore-certificate-errors")
             chrome_options.add_argument("--disable-extensions")
-            chrome_options.add_argument("--start-maximized")
+            chrome_options.add_argument("--start-minimized")
             chrome_options.add_argument("--disable-default-apps")
             chrome_options.add_argument("--disable-features=Translate")
             chrome_options.add_argument("--disable-client-side-phishing-detection")
@@ -74,10 +86,7 @@ class autotrader_naming:
         #handles cookie prompt
         wait = WebDriverWait(driver=driver, timeout=10)
         try:
-            time.sleep(1)
-            f = driver.find_elements(By.TAG_NAME, "iframe")
-            print(f[1].get_attribute("outerHTML"))
-            wait.until(EC.presence_of_element_located((By.TAG_NAME, "iframe")))
+            wait.until(EC.presence_of_element_located((By.TAG_NAME, 'iframe')))
             cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")[1].get_attribute("id")
             if cookie_prompt_iframe:
                 driver.switch_to.frame(cookie_prompt_iframe)
@@ -118,19 +127,24 @@ class autotrader_naming:
         make = make.replace(" ","%20")
         url = f"https://www.autotrader.co.uk/car-search?make={make}&postcode=TR17%200BJ"
         # print(f"DEBUG get car models using {url}", flush=True)
+        wait = WebDriverWait(driver=driver, timeout=10)
         driver.get(url)
-        
+        self.handle_cookie_prompt(driver)
         #click button
         model_button_section = driver.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-model"]')
         model_button = model_button_section.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-button"]').click()
         #get all models
         models = driver.find_element(By.CSS_SELECTOR, '[data-section="model"]')
         all_models_ul = models.find_element(By.XPATH, '//*[@id="model-facet-panel"]/section/div[2]/div/ul')
+        
         all_model = all_models_ul.find_elements(By.XPATH, ".//li")
-
+     
         pattern = r"(?<!\()\b.*?(?=\()"
+
         models = []
         for model in all_model:
+            print(model.text)
+            break
             model_name_without_brackets = re.match(pattern, model.text)
             models.append(model_name_without_brackets.group(0))
         return models
@@ -155,7 +169,7 @@ class autotrader_naming:
                 best_score = similarity_score
                 
         if best_score < 60:
-            print(f"DEBUG: Best match for variant lower than 60 certainty. Return nothing. {input_string}->{best_match} (score:{best_score})")
+            print(f"DEBUG: Best match for variant  {input_string} lower than 60 certainty. Return nothing. {input_string}->{best_match} (score:{best_score})")
             return
         else:
             print(f"DEBUG: Best match for variant {input_string}->{best_match} (score:{best_score})")
@@ -248,19 +262,19 @@ class autotrader_naming:
         url = f"https://www.autotrader.co.uk/car-search?make={make}&model={car_model}&postcode=TR17%200BJ"
         # print(f"DEBUG using {url}", flush=True)
         driver = self.selenium_setup()
-        wait = WebDriverWait(driver=driver, timeout=2)
+        wait = WebDriverWait(driver=driver, timeout=5)
         driver.get(url)
         print(url)
         self.handle_cookie_prompt(driver)
-        model_variant_button = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
+        model_variant_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
 
         attempts = 0
         while True:
             try:
                 model_variant_button.click()
                 print("DEBUG: Clicked")
-                wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
-                
+                # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
+                wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
                 break
             except exceptions.TimeoutException:
                 print("DEBUG: Element is not visible yet")
@@ -274,18 +288,17 @@ class autotrader_naming:
   
         #inside the model variants data table
 
-        model_variant_data_section = driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]')
+        model_variant_data_section =  driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]')
         model_variant_data = model_variant_data_section.find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
-
-
-        models = []
         
+        models = []
         for model_variant in model_variant_data:
-            models.append(model_variant.text)
+            print(model_variant.text)
         
         return models
     
 naming = autotrader_naming(driver="chrome")
 # print(naming.get_model_variant_from_model(make="BMW",car_model="1 Series"))
-
-naming.translate_modelvariant_to_autotrader(car_make="BMW", car_model="1 Series", input_string="116D")
+naming.get_car_models(make="BMW")
+# naming.translate_modelvariant_to_autotrader(car_make="BMW", car_model="1 Series", input_string="116D")
+#
