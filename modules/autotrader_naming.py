@@ -365,11 +365,11 @@ class autotrader_naming:
         
         return models
     
-naming = autotrader_naming(driver="chrome")
+# naming = autotrader_naming(driver="chrome")
 # print(naming.get_model_variant_from_model(make="BMW",car_model="1 Series"))
 # print(naming.get_car_makes())
 # naming.get_car_models(make="BMW")
 # naming.translate_modelvariant_to_autotrader(car_make="BMW", car_model="1 Series", input_string="116D")
 #
 
-print(naming.get_car_models(make="Lexus"))
+# print(naming.get_car_models(make="Lexus"))
