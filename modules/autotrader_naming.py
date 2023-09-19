@@ -28,7 +28,7 @@ class autotrader_naming:
         
         elif self.driver == "chrome":
             chrome_options = ChromeOptions()
-            chrome_options.add_argument("--headless=new")
+            # chrome_options.add_argument("--headless=new")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-gpu")
             chrome_options.add_argument("--disable-dev-shm-usage")
@@ -70,11 +70,13 @@ class autotrader_naming:
             return webdriver.Firefox(options=firefox_options)
 
         
-    def handle_cookie_prompt(self, driver):
+    def handle_cookie_prompt(self, driver: webdriver.Remote ):
         #handles cookie prompt
         wait = WebDriverWait(driver=driver, timeout=10)
         try:
             time.sleep(1)
+            f = driver.find_elements(By.TAG_NAME, "iframe")
+            print(f[1].get_attribute("outerHTML"))
             wait.until(EC.presence_of_element_located((By.TAG_NAME, "iframe")))
             cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")[1].get_attribute("id")
             if cookie_prompt_iframe:
@@ -248,6 +250,7 @@ class autotrader_naming:
         driver = self.selenium_setup()
         wait = WebDriverWait(driver=driver, timeout=2)
         driver.get(url)
+        print(url)
         self.handle_cookie_prompt(driver)
         model_variant_button = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
 
@@ -276,7 +279,7 @@ class autotrader_naming:
 
 
         models = []
-
+        
         for model_variant in model_variant_data:
             models.append(model_variant.text)
         
