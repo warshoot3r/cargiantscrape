@@ -238,7 +238,7 @@ class car_background_information:
     def scrape_autotrader(self, car_make, car_model, car_model_variant, mileage, year, reg):
             # Navigate to the URL
             driver = self.selenium_setup()
-            wait = WebDriverWait(driver, timeout=5)
+            wait = WebDriverWait(driver, timeout=15)
             minimum_mileage = mileage - 5000 if mileage - 3000 >=100 else 100
             maximum_mileage = mileage + 5000
             from_year = year - 1 
