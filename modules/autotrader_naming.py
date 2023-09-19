@@ -127,9 +127,10 @@ class autotrader_naming:
                 attempts += 1
             except:
                 print("Error occured on clicking the Model Variants button")
-                break
+                return
             if attempts >= 10:
-                break
+                print(f"Failed to get car makes for {url}")
+                return
 
         wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-section="make"]')))
         make_section =  driver.find_element(By.CSS_SELECTOR, '[data-section="make"]')
@@ -172,9 +173,10 @@ class autotrader_naming:
                 attempts += 1
             except:
                 print("Error occured on clicking the Model Variants button")
-                break
+                return
             if attempts >= 10:
-                break
+                print(f"Failed to get models for {url}")
+                return
   
         #inside the model variants da
 
@@ -339,7 +341,7 @@ class autotrader_naming:
                 attempts += 1
             except:
                 print(f"Error occured on clicking the Model Variants button")
-                break
+                return
             if attempts >= 10:
                 print(f"Failed to get model variants for {url}")
                 return
