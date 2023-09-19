@@ -244,7 +244,9 @@ class car_background_information:
                         print(f"Not able to get prices for {reg}", flush=True)
                         return
                 finally: 
-                    print(f"MODULE: Got price scenario for {reg}", flush=True)
+                    if success:
+                        print(f"MODULE: Got price for {reg}", flush=True)
+                        break
                         
                     
             data = driver.page_source
