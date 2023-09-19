@@ -105,10 +105,12 @@ class autotrader_naming:
                 print(f"Timeout Exception when accepting cookies {e}")
                 time.sleep(1)
                 attempts += 1
+                continue
 
         if attempts >= 5:
             print("Failed to set cookies after 5 attempts")
             return
+        
     def get_car_makes(self):
         
         driver = self.selenium_setup()
