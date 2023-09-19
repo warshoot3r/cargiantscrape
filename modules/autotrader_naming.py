@@ -205,7 +205,7 @@ class autotrader_naming:
 
         models = []
         for model in all_model:
-            print(model.text, model.tag_name, flush=True)
+            # print(model.text, flush=True)
             models.append(model.text)
         # for model in all_model:
         #     print(model.text, flush=True)
@@ -296,7 +296,7 @@ class autotrader_naming:
                             if input_name_letter_part.group(0)[1] == "q":
                                 similarity_score -= 30
 
-                    #3 letter classees like bump up CLA-> to CLA class
+                    #3 letter model classes like bump up CLA-> to CLA class
                     input_name_cla = re.search(r"\b[a-zA-Z]{3}\b", input_string.lower())
                     car_model_cla = re.search(r"[a-zA-Z]{3}\s\b[cC]lass\b", car_model_name.lower())
                     if input_name_cla and car_model_cla:
@@ -305,8 +305,10 @@ class autotrader_naming:
                             #if the E part matches the first part of inputname
                             if input_name_cla.group(0)[0] ==  car_model_name_letter_part.group(0)[2]:
                                 similarity_score += 50 
-                        elif input_name_cla.group(0)[0] == car_model_name_letter_part.group(0)[0]:
+                        if input_name_cla.group(0)[0] == car_model_name_letter_part.group(0)[0]:
+                            #if eg. the g in GLA match GLE Class
                             similarity_score += 50
+ 
 
 
                 # functions getting the top score
