@@ -110,7 +110,7 @@ class SQLiteDatabase:
             self.Doors = "N/A"
         self.Reg = str(Reg)
         self.URL = str(URL) if URL is not None else None
-        self.DateUpdated = datetime.datetime.now()
+        self.DateUpdated = datetime.datetime.now().strftime(("%H:%M %d/%m/%Y"))
         self.CarStatus = str(CarStatus) if CarStatus is not None else None
         self.ValuationPercentage = int(ValuationPercentage) if ValuationPercentage is not None else None
         self.ValuationRange = str(ValuationRange) if ValuationRange is not None else None
@@ -481,7 +481,7 @@ class SQLiteDatabase:
 
                     if (Car_Current_price != car_DB_PRICE) and (Car_Current_price): #  dont run because line 427 which will set car_current_price to None. DB will have price. this will cause it to replace with None
                         print(f"Car with Reg: {currentcarreg} is existing with the same price", flush=True)
-                        self.DateUpdated = datetime.datetime.now().strftime('%d/%m/%Y')
+                        self.DateUpdated = datetime.datetime.now().strftime("%H:%M %d/%m/%Y")
                         string_updated = f"Car Price Changed, updating DB. DatabasePrice={ car_DB_PRICE} CurrentPrice= {Car_Current_price}"
                         self.number_of_car_prices_changed += 1
                         self.number_of_car_prices_changed_list.append(currentcarreg) # Store the REG of price changed car in a list
