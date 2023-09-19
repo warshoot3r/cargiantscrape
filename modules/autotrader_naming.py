@@ -85,9 +85,7 @@ class autotrader_naming:
     def handle_cookie_prompt(self, driver: webdriver.Remote ):
         #handles cookie prompt
         wait = WebDriverWait(driver=driver, timeout=10)
-        attempts = 0
-        while True:
-            try:
+        try:
                 wait.until(EC.presence_of_element_located((By.TAG_NAME, 'iframe')))
                 cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")
                 if len(cookie_prompt_iframe) == 2: 
@@ -97,19 +95,15 @@ class autotrader_naming:
                             cookie_button.click()
                             print("VERBOSE: Clicked cookie prompt.")    
                             driver.switch_to.default_content()
-                            break
-            except exceptions.NoSuchElementException as e:
-                    print(f"No Element Exception while setting cookies. {e}")
-                    break
-            except exceptions.TimeoutException as e:
-                print(f"Timeout Exception when accepting cookies {e}")
-                time.sleep(1)
-                attempts += 1
-                continue
 
-        if attempts >= 5:
-            print("Failed to set cookies after 5 attempts")
+        except exceptions.NoSuchElementException as e:
+            print(f"No Element Exception while setting cookies. {e}")
             return
+        
+        except exceptions.TimeoutException as e:
+            print(f"Timeout Exception when accepting cookies {e}")
+            return
+              
         
     def get_car_makes(self):
         
