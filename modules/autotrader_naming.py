@@ -87,9 +87,9 @@ class autotrader_naming:
         wait = WebDriverWait(driver=driver, timeout=10)
         try:
             wait.until(EC.presence_of_element_located((By.TAG_NAME, 'iframe')))
-            cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")[1].get_attribute("id")
+            cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")
             if cookie_prompt_iframe:
-                driver.switch_to.frame(cookie_prompt_iframe)
+                driver.switch_to.frame(cookie_prompt_iframe[1].get_attribute("id"))
                 wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[title="Accept All"]')))
                 cookie_button = driver.find_element(By.CSS_SELECTOR, 'button[title="Accept All"]')
                 cookie_button.click()
@@ -102,24 +102,48 @@ class autotrader_naming:
         driver = self.selenium_setup()
         url = "https://www.autotrader.co.uk/car-search?postcode=TR17%200BJ"
         driver.get(url)
-
-
+        self.handle_cookie_prompt(driver=driver)
+        wait = WebDriverWait(driver=driver, timeout=10)
         #click button
-        make_button_section = driver.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-make"]')
-
-        make_button_section.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-button"]').click()
-        #get all makes
-        make = driver.find_element(By.CSS_SELECTOR, '[data-section="make"]')
-        all_makes = make.find_element(By.XPATH, "//h3[text()='All makes']/following-sibling::ul")
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-make"]')))
 
 
+
+        model_variant_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-make"]')))
+        #get all makes  
+      
+      
+        attempts = 0
+        while True:
+            try:
+                model_variant_button.click()
+                print("DEBUG: Clicked")
+                # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
+                wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[id="make-facet-panel"]')))
+                break
+            except exceptions.TimeoutException:
+                print("DEBUG: Element is not visible yet")
+                time.sleep(1)
+                attempts += 1
+            except:
+                print("Error occured on clicking the Model Variants button")
+                break
+            if attempts >= 10:
+                break
+
+        wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-section="make"]')))
+        make_section =  driver.find_element(By.CSS_SELECTOR, '[data-section="make"]')
+        wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
+        make_data = make_section.find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
+                        
         manufacturers = []
-        makes = all_makes.find_elements(By.XPATH, ".//li/button/span[1]")
 
-        for car_makes in makes:
+        for car_makes in make_data:
+            print(car_makes.text)
             manufacturers.append(car_makes.text)
-
         return manufacturers
+  
+        
 
     def get_car_models(self, make):
        
@@ -131,22 +155,53 @@ class autotrader_naming:
         driver.get(url)
         self.handle_cookie_prompt(driver)
         #click button
-        model_button_section = driver.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-model"]')
-        model_button = model_button_section.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-button"]').click()
-        #get all models
+        model_button = driver.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-model"]')
+
+
+        attempts = 0
+        while True:
+            try:
+                model_button.click()
+                print("DEBUG: Clicked")
+                # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
+                wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
+                break
+            except exceptions.TimeoutException:
+                print("DEBUG: Element is not visible yet")
+                time.sleep(1)
+                attempts += 1
+            except:
+                print("Error occured on clicking the Model Variants button")
+                break
+            if attempts >= 10:
+                break
+  
+        #inside the model variants da
+
+        #get all odels
         models = driver.find_element(By.CSS_SELECTOR, '[data-section="model"]')
-        all_models_ul = models.find_element(By.XPATH, '//*[@id="model-facet-panel"]/section/div[2]/div/ul')
         
-        all_model = all_models_ul.find_elements(By.XPATH, ".//li")
+        wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR,'[data-section="model"]')))
+
+        all_model = models.find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
+
+        wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
+
+        # all_models_ul = models.find_element(By.XPATH, '//*[@id="model-facet-panel"]/section/div[2]/div/ul')
+        
+        # all_model = all_models_ul.find_elements(By.XPATH, ".//li")
      
-        pattern = r"(?<!\()\b.*?(?=\()"
+        # pattern = r"(?<!\()\b.*?(?=\()"
 
         models = []
         for model in all_model:
-            print(model.text)
-            break
-            model_name_without_brackets = re.match(pattern, model.text)
-            models.append(model_name_without_brackets.group(0))
+            # print(model.text)
+            models.append(model.text)
+        # for model in all_model:
+        #     print(model.text)
+        #     model_name_without_brackets = re.match(pattern, model.text)
+        #     if model_name_without_brackets:
+        #         models.append(model_name_without_brackets.group(0))
         return models
     
     def translate_modelvariant_to_autotrader(self, car_make, car_model, input_string, custom_data = None):
@@ -293,12 +348,13 @@ class autotrader_naming:
         
         models = []
         for model_variant in model_variant_data:
-            print(model_variant.text)
+            models.append(model_variant.text)
         
         return models
     
 naming = autotrader_naming(driver="chrome")
 # print(naming.get_model_variant_from_model(make="BMW",car_model="1 Series"))
-naming.get_car_models(make="BMW")
+# print(naming.get_car_makes())
+# naming.get_car_models(make="BMW")
 # naming.translate_modelvariant_to_autotrader(car_make="BMW", car_model="1 Series", input_string="116D")
 #
