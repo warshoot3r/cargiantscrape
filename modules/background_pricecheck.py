@@ -152,10 +152,12 @@ class car_background_information:
                 
                 """
                 timeout = timeout_time * 60
-                #parallel processe
-               
+                #
+                
+              
+                start_time = time.time()        
                 for car in self.cars.items():
-                    #array 0 is the reg. array 1 contains the params
+                    #aarray 0 is the reg. array 1 contains the params
                     car_make = car[1].car_make
                     car_model = car[1].car_model
                     mileage = car[1].mileage
@@ -177,11 +179,11 @@ class car_background_information:
                         self.scrape_autotrader(car_make, car_model_http, model_variant, mileage, year, reg)
                     else:
                         self.scrape_autotrader(car_make, car_model, mileage, year, reg)
-                    start_time = time.time()
+                    
                     #wait for tasks to finish or timeout time
                     if time.time() - start_time >= timeout:
                         print("Timeout reached. stopping.", flush=True)
-                        break
+                        return
 
     
     def parallel_scrape_autotrader_price(self, worker_threads=2, timeout_time=30):
