@@ -97,11 +97,11 @@ class autotrader_naming:
                             driver.switch_to.default_content()
 
         except exceptions.NoSuchElementException as e:
-            print(f"No Element Exception while setting cookies. {e}")
+            print(f"No Element Exception while setting cookies. {e}", flush=True)
             return
         
         except exceptions.TimeoutException as e:
-            print(f"Timeout Exception when accepting cookies {e}")
+            print(f"Timeout Exception when accepting cookies {e}", flush=True)
             return
               
         
@@ -125,19 +125,19 @@ class autotrader_naming:
             try:
                 model_variant_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-make"]')))
                 model_variant_button.click()
-                print("DEBUG: Clicked")
+                print("DEBUG: Clicked", flush=True)
                 # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
                 wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[id="make-facet-panel"]')))
                 break
             except exceptions.TimeoutException:
-                print("DEBUG: Element is not visible yet")
+                print("DEBUG: Element is not visible yet", flush=True)
                 time.sleep(1)
                 attempts += 1
             except:
-                print("Error occured on clicking the Model Variants button")
+                print("Error occured on clicking the Model Variants button", flush=True)
                 return
             if attempts >= 10:
-                print(f"Failed to get car makes for {url}")
+                print(f"Failed to get car makes for {url}", flush=True)
                 return
 
         wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-section="make"]')))
@@ -148,7 +148,7 @@ class autotrader_naming:
         manufacturers = []
 
         for car_makes in make_data:
-            print(car_makes.text)
+            print(car_makes.text, flush=True)
             manufacturers.append(car_makes.text)
         return manufacturers
   
@@ -171,19 +171,19 @@ class autotrader_naming:
             try:
                 model_button = driver.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-model"]')
                 model_button.click()
-                print("DEBUG: Clicked")
+                print("DEBUG: Clicked", flush=True)
                 # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
                 wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
                 break
             except exceptions.TimeoutException:
-                print("DEBUG: Element is not visible yet")
+                print("DEBUG: Element is not visible yet", flush=True)
                 time.sleep(1)
                 attempts += 1
             except:
-                print("Error occured on clicking the Model Variants button")
+                print("Error occured on clicking the Model Variants button", flush=True)
                 return
             if attempts >= 5:
-                print(f"Failed to get models for {url}")
+                print(f"Failed to get models for {url}", flush=True)
                 return
   
         #inside the model variants da
@@ -205,10 +205,10 @@ class autotrader_naming:
 
         models = []
         for model in all_model:
-            print(model.text, model.tag_name)
+            print(model.text, model.tag_name, flush=True)
             models.append(model.text)
         # for model in all_model:
-        #     print(model.text)
+        #     print(model.text, flush=True)
         #     model_name_without_brackets = re.match(pattern, model.text)
         #     if model_name_without_brackets:
         #         models.append(model_name_without_brackets.group(0))
@@ -234,13 +234,13 @@ class autotrader_naming:
                     best_score = similarity_score
                     
             if best_score < 60:
-                print(f"DEBUG: Best match for variant  {input_string} lower than 60 certainty. Return nothing. {input_string}->{best_match} (score:{best_score})")
+                print(f"DEBUG: Best match for variant  {input_string} lower than 60 certainty. Return nothing. {input_string}->{best_match} (score:{best_score})", flush=True)
                 return 
             else:
-                print(f"DEBUG: Best match for variant {input_string}->{best_match} (score:{best_score})")
+                print(f"DEBUG: Best match for variant {input_string}->{best_match} (score:{best_score})", flush=True)
                 return best_match
         else:
-            print("DEBUG: No data from input. Can't return a best match")
+            print("DEBUG: No data from input. Can't return a best match", flush=True)
             return
 
     def translate_modelname_to_autotrader(self, car_make, input_string, custom_data = None):
@@ -315,16 +315,16 @@ class autotrader_naming:
                     best_score = similarity_score
                 score_data.append({car_model_name : similarity_score})
         else:
-            print("DEBUG: No data from input. Can't return models")
+            print("DEBUG: No data from input. Can't return models", flush=True)
             return
 
         
-        #more diagnostic print(f"DEBUG: Best match was {input_string}->{best_match} with score {best_score}\n with {score_data} \n")
+        #more diagnostic print(f"DEBUG: Best match was {input_string}->{best_match} with score {best_score}\n with {score_data} \n", flush=True)
         if best_score < 60:
-            print(f"DEBUG: Best match lower than 60 certainty. Return nothing. {input_string}->{best_match} (score:{best_score})")
+            print(f"DEBUG: Best match lower than 60 certainty. Return nothing. {input_string}->{best_match} (score:{best_score})", flush=True)
             return
         else:
-            print(f"DEBUG: Best match {input_string}->{best_match} (score:{best_score})")
+            print(f"DEBUG: Best match {input_string}->{best_match} (score:{best_score})", flush=True)
             return best_match
         
     def get_model_variant_from_model(self, make, car_model):
@@ -334,32 +334,30 @@ class autotrader_naming:
         url = f"https://www.autotrader.co.uk/car-search?make={make}&model={car_model}&postcode=TR17%200BJ"
         # print(f"DEBUG using {url}", flush=True)
         driver = self.selenium_setup()
-        wait = WebDriverWait(driver=driver, timeout=5)
+        wait = WebDriverWait(driver=driver, timeout=10)
         driver.get(url)
-        print(url)
         self.handle_cookie_prompt(driver)
-
         attempts = 0
         while True:
             try:
                 model_variant_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
 
                 model_variant_button.click()
-                print("DEBUG: Clicked")
+                print("DEBUG: Clicked", flush=True)
                 # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
                 wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
                 wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
                 wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-section="aggregated_trim"]')))
                 break
             except exceptions.TimeoutException:
-                print(f"DEBUG: {car_model} is not visible yet")
+                print(f"DEBUG: {car_model} is not visible yet", flush=True)
                 time.sleep(1)
                 attempts += 1
             except:
-                print(f"Error occured on clicking the Model Variants button")
+                print(f"Error occured on clicking the Model Variants button", flush=True)
                 return None
             if attempts >= 5:
-                print(f"Failed to get model variants for {url}")
+                print(f"Failed to get model variants for {url}", flush=True)
                 return None
   
         #inside the model variants data table
@@ -375,12 +373,12 @@ class autotrader_naming:
         return models
     
 # naming = autotrader_naming(driver="chrome")
-# # print(naming.get_model_variant_from_model(make="BMW",car_model="1 Series"))
-# # print(naming.get_car_makes())
+# # print(naming.get_model_variant_from_model(make="BMW",car_model="1 Series"), flush=True)
+# # print(naming.get_car_makes(), flush=True)
 # # naming.get_car_models(make="BMW")
 # # naming.translate_modelvariant_to_autotrader(car_make="BMW", car_model="1 Series", input_string="116D")
 # #
 
-# print(naming.get_car_models(make="Lexus"))
-# print(naming.get_car_models(make="Mercedes-Benz"))
+# print(naming.get_car_models(make="Lexus"), flush=True)
+# print(naming.get_car_models(make="Mercedes-Benz"), flush=True)
 # print(naming.get_car_models(make="BMW"))

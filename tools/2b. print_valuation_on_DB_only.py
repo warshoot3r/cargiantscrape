@@ -40,7 +40,7 @@ for import_car_to_scrape in cars_to_get_extra_information:
     autotrader_price_db.add_car(import_car_to_scrape)
 
 
-print("Will start scraping prices now")
+print("Will start scraping prices now", flush=True)
 autotrader_price_db.scrape_autotrader_price()
 
 
@@ -53,5 +53,5 @@ for car_data in autotrader_price_db.get_all_cars():
     values = autotrader_price_db.get_autotrader_prices(reg=reg)
     precentage_bound = autotrader_price_db.get_car_percentage_range(reg=reg, price_to_check=current_price)
 
-    print(f"For car {reg} £{current_price}. Estimate is {car_valuation}. Percent range is {precentage_bound}%")
+    print(f"For car {reg} £{current_price}. Estimate is {car_valuation}. Percent range is {precentage_bound}%", flush=True)
 

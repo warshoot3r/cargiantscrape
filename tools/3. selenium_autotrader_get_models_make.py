@@ -47,5 +47,5 @@ def get_car_models(make):
     return models
 
 
-print(get_car_makes())
+print(get_car_makes(), flush=True)
 print(get_car_models("Audi"))

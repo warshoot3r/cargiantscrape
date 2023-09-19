@@ -32,7 +32,7 @@ filters = {
 #scrape cars
 def scrape_cars():
     if(DB.is_db_recently_written() and not force_scrape):
-        print("Not scraping as DB written in last 10 minutes", flush="True")
+        print("Not scraping as DB written in last 10 minutes", flush="True", flush=True)
         time.sleep(2)
         return(False)
     print("Starting", flush=True)
@@ -49,7 +49,7 @@ def import_cars(CarSearch):
     if(CarSearch):
         for i in range(CarSearch.length):
             current_car = CarSearch.data.iloc[i]
-            #print(f"this car with {current_car['Manufacturer']}  {current_car['Reg']} {current_car['Car Status']}")
+            #print(f"this car with {current_car['Manufacturer']}  {current_car['Reg']} {current_car['Car Status']}", flush=True)
             DB.import_car_properties(
                     Body_Type=current_car["Body Type"],
                     Color=current_car["Color"],
@@ -86,14 +86,14 @@ if price_changed or new_cars or status_changed:
         bot.send_dataframe(chat_id, database_filtered[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:")
     if new_cars:
         database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
-        print(database_filtered_new_cars)
+        print(database_filtered_new_cars, flush=True)
         bot.send_dataframe(chat_id, database_filtered_new_cars[["URL","Manufacturer","Model", "Mileage", "Price"] ], "New cars were added:", True)
        #Send sold cars
   
     if status_changed:
         reg = DB.get_car_status_changed()
         database_filtered = DB.filter_table(filters, database, reg)
-        print(database_filtered)
+        print(database_filtered, flush=True)
         #old way bot.send_dataframe(chat_id, database_filtered[[ "URL","Manufacturer","Model", "CarStatus", "Price"]], "Some car status changed:")
 
         # new way send them seperatly

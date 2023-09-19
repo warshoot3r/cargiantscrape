@@ -81,7 +81,7 @@ class car_background_information:
         return self.cars.items()
     
     def add_car(self, car: car):
-        print(f"Imported Car {car.reg}")
+        print(f"Imported Car {car.reg}", flush=True)
         self.cars[car.reg] = car
         
 
@@ -101,7 +101,7 @@ class car_background_information:
         
         """
         calculated_cars = self.cars.items()
-        print(f"{calculated_cars}")
+        print(f"{calculated_cars}", flush=True)
         return calculated_cars
     
     def get_car_percentage_range(self, reg, price_to_check):
@@ -184,7 +184,7 @@ class car_background_information:
                     #wait for tasks to finish or timeout time
                     for future in concurrent.futures.as_completed(futures):
                         if time.time() - start_time >= timeout:
-                            print("Timeout reached. stopping.")
+                            print("Timeout reached. stopping.", flush=True)
                             break
                     for future in futures:
                         if not future.done():
@@ -206,20 +206,21 @@ class car_background_information:
             #convert spaces in string for http friendly url
             car_model = car_model.replace(" ", "%20")
 
-            if car_model_variant:
-            # Define the URL first one is as we have full details, else just try  as model
-                car_parameters = f"&make={car_make}",f"&model={car_model}",f"&aggregatedTrim={car_model_variant}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
-            else:
-                car_parameters = f"&make={car_make}",f"&model={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
-
-            temp = "".join(car_parameters)
-            autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
-            
+           
             
             
 
 
             while (attempts < attempts_max) or success:
+                if car_model_variant:
+                # Define the URL first one is as we have full details, else just try  as model
+                    car_parameters = f"&make={car_make}",f"&model={car_model}",f"&aggregatedTrim={car_model_variant}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
+                else:
+                    car_parameters = f"&make={car_make}",f"&model={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
+
+                temp = "".join(car_parameters)
+                autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
+            
                 try:     #Error basic handling None and not 200
                     print(f"Attempt {attempts}", flush=True)
                     print(f"DEBUG: url='{autotrader}'", flush=True)
@@ -235,7 +236,7 @@ class car_background_information:
                         autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
                     elif attempts == 2:
                         print(f"Page did not load. Empty page")        
-                        print("Switching from \"aggregated body\" to \"model\" and restarting")
+                        print("Switching from \"aggregated body\" to \"model\" and restarting", flush=True)
                         car_parameters = f"&make={car_make}",f"&aggregatedTrim={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
                         temp = "".join(car_parameters)
                         autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
@@ -261,7 +262,7 @@ class car_background_information:
             try:
                 number_of_cars = table_data.find_all('li')
             except:
-                print("No data")
+                print("No data", flush=True)
                 
             # Define a regular expression pattern to extract prices (£X,XXX.XX format)
             pattern = re.compile(r'£(\d{1,3},\d{3})*(\.\d{2})?')
@@ -342,7 +343,7 @@ class car_background_information:
             attempts = 0
             while attempts < attempts_max:
                 try:     #Error basic handling None and not 200
-                    print(f"Attempting {attempts}")
+                    print(f"Attempting {attempts}", flush=True)
                     print(f"DEBUG: url='{autotrader}'", flush=True)
                     driver.get(autotrader)
                     wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
@@ -352,19 +353,19 @@ class car_background_information:
                     attempts +=1
                     if attempts == 1:
                         car_model = str(car_model).lower()
-                        print("trying in lowercase")
+                        print("trying in lowercase", flush=True)
                         car_parameters = f"&make={car_make}",f"&aggregatedTrim={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
                         temp = "".join(car_parameters)
                         autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
                     elif attempts == 2:
                         print(f"Page did not load. Empty page")        
-                        print("Switching from \"aggregated body\" to \"model\" and restarting")
+                        print("Switching from \"aggregated body\" to \"model\" and restarting", flush=True)
                         car_parameters = f"&make={car_make}",f"&model={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
                         temp = "".join(car_parameters)
                         autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
 
                     else:
-                        print("Not able to get prices")
+                        print("Not able to get prices", flush=True)
                         break
                     
             data = driver.page_source
@@ -380,7 +381,7 @@ class car_background_information:
                 number_of_cars = table_data.find_all('li')
                 
             except:
-                print("No data")
+                print("No data", flush=True)
                 break
                 
             # Define a regular expression pattern to extract prices (£X,XXX.XX format)
@@ -419,9 +420,9 @@ class car_background_information:
 
 
 # #print the prices
-# print(car_db.get_autotrader_prices(reg="WK60ZTY"))
+# print(car_db.get_autotrader_prices(reg="WK60ZTY"), flush=True)
 
 # #print the range prices
-# print(car_db.get_car_range_price(reg="WK60ZTY"))
+# print(car_db.get_car_range_price(reg="WK60ZTY"), flush=True)
 
 

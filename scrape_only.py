@@ -35,7 +35,7 @@ filters = {
 #scrape cars
 def scrape_cars():
     if(DB.is_db_recently_written() and not force_scrape):
-        print("Not scraping as DB written in last 10 minutes", flush="True")
+        print("Not scraping as DB written in last 10 minutes", flush="True", flush=True)
         time.sleep(2)
         return(False)
     print("Starting", flush=True)
@@ -87,13 +87,13 @@ if price_changed or new_cars or status_changed:
         database_filtered.loc[:,"PriceChange"] = database_filtered["Price"] - database_filtered["OldPrice"] # should be added to class . temporary here for now
     if new_cars:
         database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
-        print(database_filtered_new_cars)
+        print(database_filtered_new_cars, flush=True)
        #Send sold cars
   
     if status_changed:
         reg = DB.get_car_status_changed()
         database_filtered = DB.filter_table(filters, database, reg)
-        print(database_filtered)
+        print(database_filtered, flush=True)
         #old way bot.send_dataframe(chat_id, database_filtered[[ "URL","Manufacturer","Model", "CarStatus", "Price"]], "Some car status changed:")
 
         # new way send them seperatly

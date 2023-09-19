@@ -59,22 +59,22 @@ class TelegramBot:
                     for key in updates:
 
                     #Each message
-                        print("Chats: ",key)
-                        print("\n\n")
+                        print("Chats: ",key, flush=True)
+                        print("\n\n", flush=True)
                         update_id = key["update_id"]
-                        print(f"Update_id : {update_id}")
+                        print(f"Update_id : {update_id}", flush=True)
                         if "message" in key:
-                        #   print(key["message"])
+                        #   print(key["message"], flush=True)
                           for message_value in key:
                             if isinstance(key[message_value],dict):
                                 for message_key, message_value in key[message_value].items():
-                                    print(message_key,' : ', message_value)
+                                    print(message_key,' : ', message_value, flush=True)
                             
           
                 else:
-                    print("Failed to get updates. Error:", response_json["description"])
+                    print("Failed to get updates. Error:", response_json["description"], flush=True)
         except requests.exceptions.RequestException as e:
-            print("Error getting updates:", e)
+            print("Error getting updates:", e, flush=True)
 
     def send_message(self, chat_id, message, ParserType="Markdownv2", max_message_length=4096):
         send_message_url = f"{self.base_url}sendMessage"
@@ -91,7 +91,7 @@ class TelegramBot:
                 if response_json["ok"]:
                     print("Message sent successfully!", flush=True)
                 else:
-                    print("Failed to send message. Error:", response_json["description"])
+                    print("Failed to send message. Error:", response_json["description"], flush=True)
             else:
                 # Message is too long, split it into chunks and send each chunk
                 chunks = [message[i:i+max_message_length] for i in range(0, len(message), max_message_length)]
@@ -106,9 +106,9 @@ class TelegramBot:
                     if response_json["ok"]:
                         print(f"Chunk {i} sent successfully!", flush=True)
                     else:
-                        print(f"Failed to send chunk {i}. Error:", response_json["description"])
+                        print(f"Failed to send chunk {i}. Error:", response_json["description"], flush=True)
         except requests.exceptions.RequestException as e:
-            print("Error sending message:", e)
+            print("Error sending message:", e, flush=True)
 
     def send_message_servername(self, chat_id, message):
         try: 
@@ -137,9 +137,9 @@ class TelegramBot:
             if response_json["ok"]:
                 print("File sent successfully!", flush=True)
             else:
-                print("Failed to send file. Error:", response_json["description"])
+                print("Failed to send file. Error:", response_json["description"], flush=True)
         except requests.exceptions.RequestException as e:
-            print("Error sending file:", e)
+            print("Error sending file:", e, flush=True)
         # finally:
         #     # Remove the temporary file
         #     import os
@@ -170,9 +170,9 @@ class TelegramBot:
                 if response_json["ok"]:
                     print(f"File '{file_name}' sent successfully!", flush=True)
                 else:
-                    print(f"Failed to send file '{file_name}'. Error:", response_json["description"])
+                    print(f"Failed to send file '{file_name}'. Error:", response_json["description"], flush=True)
             except requests.exceptions.RequestException as e:
-                print(f"Error sending file '{file_name}':", e)
+                print(f"Error sending file '{file_name}':", e, flush=True)
         # finally:
         #     # Remove the temporary CSV files
         #     for i in range(len(dataframes)):
@@ -233,9 +233,9 @@ class TelegramBot:
                 if response_json["ok"]:
                     print("Files sent successfully!", flush=True)
                 else:
-                    print("Failed to send files. Error:", response_json["description"])
+                    print("Failed to send files. Error:", response_json["description"], flush=True)
             except requests.exceptions.RequestException as e:
-                print("Error sending files:", e)
+                print("Error sending files:", e, flush=True)
         finally:
             # Remove the temporary directory and its contents
             for file_path in file_paths:

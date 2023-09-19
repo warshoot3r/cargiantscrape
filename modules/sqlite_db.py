@@ -131,14 +131,14 @@ class SQLiteDatabase:
             '''
         self.cursor.execute(sql_string_select)
         car_data = self.cursor.fetchall()
-        print(f"Old Data is {car_data}")
+        print(f"Old Data is {car_data}", flush=True)
         sql_string_update = f'''
             UPDATE used_cars SET {Key} = ? WHERE Reg = '{REG}'
             '''
         self.cursor.execute(sql_string_update, (Value,))
         self.cursor.execute(sql_string_select)
         car_data = self.cursor.fetchall()
-        print(f"New Data is {car_data}")
+        print(f"New Data is {car_data}", flush=True)
 
     def create_table(self):
         """
@@ -217,7 +217,7 @@ class SQLiteDatabase:
         for missingcolumn in schema:
             column_to_update = any(column[1] == missingcolumn for column in columns  )
             if not column_to_update:
-                print(f"Missing {missingcolumn} in DB. Database is being updated with table")
+                print(f"Missing {missingcolumn} in DB. Database is being updated with table", flush=True)
                 db_string = '''
                 ALTER TABLE {}
                 ADD {}
@@ -238,7 +238,7 @@ class SQLiteDatabase:
         """
         table = "used_cars"
 
-        print(f"deleting {REG} from {table}")
+        print(f"deleting {REG} from {table}", flush=True)
 
         sql_string = f"DELETE FROM {table} where Reg = '{REG}' "
         self.cursor.execute(sql_string)
@@ -254,7 +254,7 @@ class SQLiteDatabase:
         """
         table = "used_cars"
 
-        print(f"deleting {manufacturer} from {table}")
+        print(f"deleting {manufacturer} from {table}", flush=True)
 
         sql_string = f"DELETE FROM {table} where Manufacturer = '{manufacturer}' "
         self.cursor.execute(sql_string)
@@ -282,7 +282,7 @@ class SQLiteDatabase:
         if combined_filters:
             database = db[reduce(lambda x, y: x & y, combined_filters)]
         else:
-            print("No filters provided. so returning unmodified database")
+            print("No filters provided. so returning unmodified database", flush=True)
             return db.copy()   
         if ListOfCarRegistrations != None:
             combined_filters_reg = [] 
@@ -306,9 +306,9 @@ class SQLiteDatabase:
         sorted_table = table.sort_values(by="Price")
         pd.set_option('display.max_rows', None)
         if col_show:
-            print(sorted_table[[*col_show]])
+            print(sorted_table[[*col_show]], flush=True)
         else:
-            print(sorted_table)
+            print(sorted_table, flush=True)
 
     def print_raw_data_from_sqlite_db(self):
         """
@@ -318,7 +318,7 @@ class SQLiteDatabase:
         self.cursor.execute("SELECT * from used_cars")
         self.conn.commit()
         for item in self.cursor.fetchall():
-            print(item)
+            print(item, flush=True)
     def get_all_url(self):
         """
         Get all car urls. Returns all as list
@@ -347,13 +347,13 @@ class SQLiteDatabase:
             command = f"SELECT * from used_cars where {column} = {input_data} "
         else:  # For strings
             command = f"SELECT * from used_cars where {column} LIKE '{input_data}' ORDER BY DateUpdated ASC"
-        # print(command)
+        # print(command, flush=True)
         self.cursor.execute(command)
         data = self.cursor.fetchall()
 
-        # print(f"\nPrinting data from query: {column} -> {input_data}")
+        # print(f"\nPrinting data from query: {column} -> {input_data}", flush=True)
         # for item in data:
-        #     print(item)
+        #     print(item, flush=True)
         return data
 
     def close_db(self):
@@ -456,7 +456,7 @@ class SQLiteDatabase:
                 },
             ]
             incoming_data =  [{k: v for k, v in data.items() if v is not None} for data in to_imported_incoming_data]
-            #remove debug print(f"Will import: {incoming_data}")
+            #remove debug print(f"Will import: {incoming_data}", flush=True)
             self.cursor.execute("SELECT * from used_cars")
             existing_data = self.cursor.fetchall()
             column_names = [description[0] for description in self.cursor.description]
@@ -474,18 +474,18 @@ class SQLiteDatabase:
                     self.cursor.execute(f"SELECT CarStatus FROM used_cars where Reg = '{currentcarreg}'")
                     Car_DB_Status = self.cursor.fetchone()[0]
                     #update the days car has been added
-                    # print(f"DEBUG: {matching_car} {currentcarreg} >{self.CarStatus}< and >{Car_DB_Status}<" )
+                    # print(f"DEBUG: {matching_car} {currentcarreg} >{self.CarStatus}< and >{Car_DB_Status}<" , flush=True)
                     self.cursor.execute("UPDATE used_cars SET DaysAdded = julianday(CURRENT_DATE) - julianday(DateCarAdded) WHERE CarStatus != 'Sold'")
                     self.conn.commit()
 
 
                     if (Car_Current_price != car_DB_PRICE) and (Car_Current_price): #  dont run because line 427 which will set car_current_price to None. DB will have price. this will cause it to replace with None
-                        print(f"Car with Reg: {currentcarreg} is existing with the same price")
+                        print(f"Car with Reg: {currentcarreg} is existing with the same price", flush=True)
                         self.DateUpdated = datetime.datetime.now().strftime('%d/%m/%Y')
                         string_updated = f"Car Price Changed, updating DB. DatabasePrice={ car_DB_PRICE} CurrentPrice= {Car_Current_price}"
                         self.number_of_car_prices_changed += 1
                         self.number_of_car_prices_changed_list.append(currentcarreg) # Store the REG of price changed car in a list
-                        print(string_updated)
+                        print(string_updated, flush=True)
                         table = "used_cars"                    
                         car_properties = incoming_data[0]
                         car_properties_keys = ", ".join([f'"{key}"' for key, values in incoming_data[0].items()])
@@ -495,7 +495,7 @@ class SQLiteDatabase:
                         db_string = f'''
                         UPDATE {table} SET OldPrice = ?, Price = ?, OldDate = DateUpdated, DateUpdated = ?, NumberOfPriceReductions = NumberOfPriceReductions + 1 WHERE Reg = ?
                         '''
-                        print(self.DateUpdated)
+                        print(self.DateUpdated, flush=True)
                         self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated, currentcarreg))
                         self.conn.commit()
                         print("Imported updated entry", flush=True)
@@ -513,7 +513,7 @@ class SQLiteDatabase:
                         self.number_of_car_status_changed += 1
                 # Handle all different status 
                         string_updated = f"Car status changed for {currentcarreg}. Old status:{Car_DB_Status}. New Status: {self.CarStatus}"
-                        print(string_updated)
+                        print(string_updated, flush=True)
                         if (self.CarStatus == "Reserved"): # handling reserved cars
                             if (Car_DB_Status != "Reserved"): # if the db status is not reserved
                                 self.cursor.execute(f"SELECT NumberReserved FROM used_cars where Reg = '{currentcarreg}'")
@@ -539,7 +539,7 @@ class SQLiteDatabase:
 
                     
                         elif self.CarStatus == "Sold": 
-                                print(f"VERBOSE: {currentcarreg} is {self.CarStatus}.")
+                                print(f"VERBOSE: {currentcarreg} is {self.CarStatus}.", flush=True)
                                 db_string = f'''
                                 UPDATE {table} SET CarStatus = ? WHERE REG = ?
                                 '''
@@ -547,7 +547,7 @@ class SQLiteDatabase:
                                 self.conn.commit()  
                     
                         elif re.search(r"AVAILABLE.*",self.CarStatus):
-                                print(f"VERBOSE: {currentcarreg} is not ready yet. Setting status to {self.CarStatus}")
+                                print(f"VERBOSE: {currentcarreg} is not ready yet. Setting status to {self.CarStatus}", flush=True)
                                 db_string = f'''
                                 UPDATE {table} SET CarStatus = ? WHERE REG = ?
                                 '''
@@ -568,7 +568,7 @@ class SQLiteDatabase:
                             self.conn.commit() 
 
                 else:  # Add a new car into the database
-                        print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.")
+                        print(f"Adding a new Car into the DB: {data['Reg']}. The car is a {data['Manufacturer']} {data['Model']} with {data['Mileage']} miles.", flush=True)
                         table = "used_cars"
                         self.number_of_car_new_changed += 1
                         self.number_of_car_new_changed_list.append(data['Reg']) # Store the REG of new car in a list
@@ -601,7 +601,7 @@ class SQLiteDatabase:
         sqlstring = """
             update used_cars SET CarStatus = 'Sold' WHERE URL = ?
             """
-        print(f"Setting {URL} to sold ")
+        print(f"Setting {URL} to sold ", flush=True)
         self.cursor.execute(sqlstring, [URL])
         self.conn.commit()
 

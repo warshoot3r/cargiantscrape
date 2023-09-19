@@ -15,7 +15,7 @@ filter = {
     }
 array = ["MF68CEX", "YK16ETD", "YH16JUK"]
 data_filter = DB.filter_table( filter, data, array)
-# print(data_filter)
+# print(data_filter, flush=True)
 tb.send_dataframe(chat_id=credentials.chat_id, dataframe=data_filter[["URL", "Model", "Transmission", "Price"]], caption="ff")
 
 

@@ -24,10 +24,10 @@ for item in car_listing_items:
    model = item.find_element(By.CSS_SELECTOR, "span.title__main.set-h3")
    details = item.find_element(By.CSS_SELECTOR, "span.text-content")
    year =  item.find_element(By.CSS_SELECTOR, "span.title__sub__plate")                            
-   print("Car = " + model.text)
-   print("Price = " + price.text)
-   print("Year = " + year.text.replace(",", ""))
-   print("Details = " + details.text.strip() + "\n", flush=True)
+   print("Car = " + model.text, flush=True)
+   print("Price = " + price.text, flush=True)
+   print("Year = " + year.text.replace(",", ""), flush=True)
+   print("Details = " + details.text.strip() + "\n", flush=True, flush=True)
 
 
 driver.quit()

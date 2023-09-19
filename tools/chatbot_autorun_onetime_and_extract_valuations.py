@@ -92,13 +92,13 @@ def extract_valuations():
             current_price = (price[0][4])
             values = car_extra_information.get_autotrader_prices(reg=reg)
             precentage_bound = car_extra_information.get_car_percentage_range(reg=reg, price_to_check=current_price)
-            print("Importing data")
+            print("Importing data", flush=True)
             DB.import_car_properties(
                 Reg=reg,
                 ValuationPercentage=precentage_bound,
                 ValuationRange=car_valuation    
             )
-            print(f"For car {reg} £{current_price}. Estimate is {car_valuation}. Percent range is {precentage_bound}%")
+            print(f"For car {reg} £{current_price}. Estimate is {car_valuation}. Percent range is {precentage_bound}%", flush=True)
 
 
 
@@ -123,7 +123,7 @@ if price_changed or new_cars or status_changed:
         bot.send_dataframe(chat_id, database_filtered[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:")
     if new_cars:
         database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
-        print(database_filtered_new_cars)
+        print(database_filtered_new_cars, flush=True)
         bot.send_dataframe(chat_id, database_filtered_new_cars[["URL","Manufacturer","Model", "Mileage", "Price"] ], "New cars were added:", True)
        #Send sold cars
     #Send rest of cars
@@ -135,7 +135,7 @@ if price_changed or new_cars or status_changed:
     if status_changed:
         reg = DB.get_car_status_changed()
         database_filtered = DB.filter_table(filters, database, reg)
-        print(database_filtered)
+        print(database_filtered, flush=True)
         #old way bot.send_dataframe(chat_id, database_filtered[[ "URL","Manufacturer","Model", "CarStatus", "Price"]], "Some car status changed:")
 
         # new way send them seperatly

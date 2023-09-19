@@ -36,7 +36,7 @@ class WebScraperCargiant:
         if manufacturer_search is not None:
             self.manufacturer_search = manufacturer_search
             self.url = "https://www.cargiant.co.uk/search/" + manufacturer_search + "/all"
-            print("Setting the search to", self.url)
+            print("Setting the search to", self.url, flush=True)
         else: 
             self.url = "https://www.cargiant.co.uk/search/all"
 
@@ -96,7 +96,7 @@ class WebScraperCargiant:
         """
         Prints the number of cars scraped from cargiant
         """
-        print(f"\n\nNumber of cars scraped from cargiant -> {self.length}\n\n")
+        print(f"\n\nNumber of cars scraped from cargiant -> {self.length}\n\n", flush=True)
 
     def search_for_manufacturer(self, manufacturer, numberofpages=15):
         """
@@ -111,7 +111,7 @@ class WebScraperCargiant:
         self.numberofpages = numberofpages
         self.manufacturer_search = manufacturer
         url = "https://www.cargiant.co.uk/search/" + manufacturer + "/all"
-        print("Setting the search to", url)
+        print("Setting the search to", url, flush=True)
         self.pull_new_data(numberofpages=numberofpages, url=url)
 
     def search_for_manufacturer_with_bmw_or_mercedes(self, manufacturer, numberofpages=10 ):
@@ -154,7 +154,7 @@ class WebScraperCargiant:
         makes = soup.find_all(id="Makes")
         print("Listing Car makes", flush=True)
         for item in makes:
-            print(item.text)
+            print(item.text, flush=True)
 
 
     def search_data_for_car(self, search_col, term):
@@ -169,16 +169,16 @@ class WebScraperCargiant:
             WebScraperCargiant: A new WebScraperCargiant object containing the search results.
         """
         if search_col not in self.data.columns.values:
-            print(f"{search_col} must be one of:")
-            print(self.data.columns.values)
+            print(f"{search_col} must be one of:", flush=True)
+            print(self.data.columns.values, flush=True)
             return
 
         pattern = re.escape(term)
         mask = self.data[search_col].apply(lambda x: bool(re.search(pattern, x)))
         model_retrieved = self.data[mask]
         
-        print(f"\n\nReturning a search with: {search_col} -> {term}")
-        print(model_retrieved)
+        print(f"\n\nReturning a search with: {search_col} -> {term}", flush=True)
+        print(model_retrieved, flush=True)
         
         self.data = model_retrieved
         return self
@@ -202,7 +202,7 @@ class WebScraperCargiant:
         page_count = driver.find_element(By.CSS_SELECTOR, "#TotalPages").get_attribute("value")#
 
         if page_count == "1":
-            print(f"Stopping scraping as only 1 page")
+            print(f"Stopping scraping as only 1 page", flush=True)
         
         else:
             for page in range(1,numberofpages):
@@ -318,19 +318,19 @@ class WebScraperCargiant:
             tf.loc[i] = new_row
         
         if self.data.empty:
-            print("VERBOSE: No existing data. Scraped data is database ")
+            print("VERBOSE: No existing data. Scraped data is database ", flush=True)
             self.data = tf
             self.length = tf.shape[0]
         else:
             self.data = pd.concat([self.data.reset_index(drop=True), tf.reset_index(drop=True)])
-            print("VERBOSE: Appended to self.data ")
+            print("VERBOSE: Appended to self.data ", flush=True)
             self.length = self.data.shape[0]
             print(f"DEBUG: Appended to scrapeDB.", flush=True)
            
         # if not self.keepalive:
         #     driver.quit()
         
-        print(f"Data successfully pulled {tf.shape[0] } cars")
+        print(f"Data successfully pulled {tf.shape[0] } cars", flush=True)
     def parallel_pull_new_data(self, series_to_process, manufacturer=None, number_of_pages=7, worker_threads=4):
             """
             concurrently pull cargiant cars with multiple urls. 
@@ -361,8 +361,8 @@ class WebScraperCargiant:
                 # If you want to access the results from the futures, you can iterate through futures and retrieve results
                 for future in futures:
                     result = future.result()
-                    print(f"Finished a {result} scrape")
-                    print(result)
+                    print(f"Finished a {result} scrape", flush=True)
+                    print(result, flush=True)
                     # Process the result as needed
         
     def stopwebdriver(self, driver):
@@ -384,10 +384,10 @@ class WebScraperCargiant:
         if main_website.ok:
             get_reg_url = requests.get(Registration)
             if get_reg_url.url == "https://www.cargiant.co.uk/":
-                print(f"Link return {get_reg_url.url}. {Registration} likely sold.")
+                print(f"Link return {get_reg_url.url}. {Registration} likely sold.", flush=True)
                 return True
             else:
-                print(f"{Registration} is not sold . Nothing to do")
+                print(f"{Registration} is not sold . Nothing to do", flush=True)
                 return False
             
         else:

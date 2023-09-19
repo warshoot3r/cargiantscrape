@@ -20,7 +20,7 @@ from modules.autotrader_naming import autotrader_naming
 
 DB = SQLiteDatabase(db_path="used_cars.db")
 
-print(f"printing database: {SQLiteDatabase.return_as_panda_dataframe()}", flush=True)
+print(f"printing database: {SQLiteDatabase.return_as_panda_dataframe()}", flush=True, flush=True)
 car_extra_information = car_background_information(driver="chrome",postal_code="TR17%200BJ")
 
 

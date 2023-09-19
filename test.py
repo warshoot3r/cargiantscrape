@@ -9,17 +9,17 @@ DB = SQLiteDatabase()
 
 #create Telegrambot
 tb = TelegramBot(api_token=33)
-print("Successful teleegram bot init")
+print("Successful teleegram bot init", flush=True)
 
 data = DB.return_as_panda_dataframe()
 
 #Create selenium
 cars = WebScraperCargiant(driver="chromium", keepalive=True)
-print("Successful selenium init")
+print("Successful selenium init", flush=True)
 # test 1
 cars.get_car_makes()
 
-print("Successful Car makes init")
+print("Successful Car makes init", flush=True)
 #test 2
 filter = {
 
@@ -27,19 +27,19 @@ filter = {
     }
 array = ["MF68CEX", "YK16ETD", "YH16JUK"]
 data_filter = DB.filter_table( filter, data, array)
-print(data_filter)
+print(data_filter, flush=True)
 
 #test 3 pull data only for amd64 as no emulation isn possible ###
 
 
 
-print("Successful filter table")
-print("===============================")
-print("Successful execution:")
-print("Operating System:", platform.system())
-print("Architecture:", platform.machine())
+print("Successful filter table", flush=True)
+print("===============================", flush=True)
+print("Successful execution:", flush=True)
+print("Operating System:", platform.system(), flush=True)
+print("Architecture:", platform.machine(), flush=True)
 if( platform.machine() == "x86_64"):
-    print("Testing a 2 page scrape for performance test")
+    print("Testing a 2 page scrape for performance test", flush=True)
     start_time = time.time()
     cars.search_for_manufacturer(manufacturer="BMW", numberofpages=1)
     for i in range(cars.length):
@@ -61,15 +61,15 @@ if( platform.machine() == "x86_64"):
             )
     end_time = time.time()
     start_time_test_1 = time.time()
-    print("Testing raw Database export")
+    print("Testing raw Database export", flush=True)
     exported_table = DB.print_raw_data_from_sqlite_db()
     database = DB.return_as_panda_dataframe()
-    print("Printing a formated DB")
-    print(DB.print_as_panda_dataframe(database))
+    print("Printing a formated DB", flush=True)
+    print(DB.print_as_panda_dataframe(database), flush=True)
     end_time_test_1 = time.time()
     elapsed_time = end_time - start_time
     elapsed_time_test_1 = end_time_test_1 - start_time_test_1
-    print(f"Execution time for test: web scrape: {elapsed_time:.6f} seconds")
-    print(f"Execution time for DB functions: web scrape: {elapsed_time_test_1:.6f} seconds")
+    print(f"Execution time for test: web scrape: {elapsed_time:.6f} seconds", flush=True)
+    print(f"Execution time for DB functions: web scrape: {elapsed_time_test_1:.6f} seconds", flush=True)
 
 print("===============================")

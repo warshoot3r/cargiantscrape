@@ -18,7 +18,7 @@ try:
         cookie_button = driver.find_element(By.CSS_SELECTOR, 'button[title="Accept All"]')
         cookie_button.click()
 except:
-    print("No cookie prompt.")
+    print("No cookie prompt.", flush=True)
 
 time.sleep(5)
 

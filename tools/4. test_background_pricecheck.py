@@ -28,14 +28,14 @@ data = db.filter_table(db=database,filters=filters)
 
 db.print_as_panda_dataframe(table=data)
 
-print(data)
+print(data, flush=True)
 
 car_to_parse = []
 
 
 for index, row in data.iterrows():
 
-    print(row.Manufacturer, row.Model, row.Mileage, row.Reg, row.Year)
+    print(row.Manufacturer, row.Model, row.Mileage, row.Reg, row.Year, flush=True)
     car_to_parse.append(car(car_make=row.Manufacturer, car_model=row.Model, mileage=row.Mileage, reg=row.Reg, year=row.Year))
 
 
@@ -57,4 +57,4 @@ for car_data in car_additional_information.get_all_cars():
     values = car_additional_information.get_autotrader_prices(reg=reg)
     precentage_bound = car_additional_information.get_car_percentage_range(reg=reg, price_to_check=current_price)
 
-    print(f"For car {reg} £{current_price}. Estimate is {car_valuation}. Percent range is {precentage_bound}%")
+    print(f"For car {reg} £{current_price}. Estimate is {car_valuation}. Percent range is {precentage_bound}%", flush=True)

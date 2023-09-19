@@ -26,11 +26,11 @@ car_filters = {
 db = Car_database.return_as_panda_dataframe()
 sort_database = Car_database.filter_table(db=db, filters=car_filters)
 internal_db = sort_database
-print(internal_db)
+print(internal_db, flush=True)
 Car_database.close_db() # close db now incase another app needs to import
 
 cars_to_get_extra_information = []
-print(f"Number of cars {internal_db.count()['id']}")
+print(f"Number of cars {internal_db.count()['id']}", flush=True)
 for index, row in internal_db.iterrows(): #print and then create a master car object
     car_reg = row["Reg"]
     car_model = row["Model"]
@@ -40,7 +40,7 @@ for index, row in internal_db.iterrows(): #print and then create a master car ob
     print(f"VERBOSE: Going to work on {car_reg}: {car_model}", flush=True)
     this_car = car(car_make=car_make, car_model=car_model, mileage=car_mileage, reg=car_reg, year=car_year)
     cars_to_get_extra_information.append(this_car)
-print(f"imported {len(cars_to_get_extra_information)}")
+print(f"imported {len(cars_to_get_extra_information)}", flush=True)
     
 
         #import car to scraping database
@@ -49,7 +49,7 @@ for import_car_to_scrape in cars_to_get_extra_information:
         
 
 
-print("Will start scraping prices now ")
+print("Will start scraping prices now ", flush=True)
 autotrader_price_db.parallel_scrape_autotrader_price(worker_threads=8, timeout_time=25)
 
 
@@ -61,21 +61,21 @@ for  car_data in autotrader_price_db.get_all_cars():
     price_column_index = internal_db.columns.get_loc("Price")
     reg = car_data[0]
     current_price = Car_database.retrieve_db(column="Reg",input_data=reg)[0][price_column_index]
-    print(f"Working on {reg} with {current_price}")
+    print(f"Working on {reg} with {current_price}", flush=True)
 
     car_valuation = autotrader_price_db.get_car_range_price(reg=reg)
 
     values = autotrader_price_db.get_autotrader_prices(reg=reg)
     precentage_bound = autotrader_price_db.get_car_percentage_range(reg=reg, price_to_check=current_price)
 
-    print(f"For car {reg} £{current_price}. Estimate is {car_valuation}. Percent range is {precentage_bound}%")
+    print(f"For car {reg} £{current_price}. Estimate is {car_valuation}. Percent range is {precentage_bound}%", flush=True)
     #import to db
     Car_database.import_car_properties(
         Reg=reg,
         ValuationPercentage= precentage_bound,
         ValuationRange= car_valuation
     )
-print(f"Printing imported table")
+print(f"Printing imported table", flush=True)
 internal_db = Car_database.return_as_panda_dataframe()
 Car_database.close_db()
-print(internal_db)
+print(internal_db, flush=True)

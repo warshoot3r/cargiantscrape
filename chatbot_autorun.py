@@ -85,12 +85,12 @@ while(True):
             bot.send_dataframe(chat_id, database_filtered[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:")
         if new_cars:
             database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
-            print(database_filtered_new_cars)
+            print(database_filtered_new_cars, flush=True)
             bot.send_dataframe(chat_id, database_filtered_new_cars[["URL","Manufacturer","Model", "Mileage", "Price"] ], "New cars were added:")
         if status_changed:
             reg = DB.get_car_status_changed()
             database_filtered = DB.filter_table(filters, database, reg)
-            print(database_filtered)
+            print(database_filtered, flush=True)
             bot.send_dataframe(chat_id, database_filtered[[ "URL","Manufacturer","Model", "CarStatus", "Price", "NumberReserved"]], "Some car status changed:")
             bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars")
 
