@@ -125,7 +125,7 @@ class autotrader_naming:
             try:
                 model_variant_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-make"]')))
                 model_variant_button.click()
-                print("DEBUG: Clicked", flush=True)
+                print("DEBUG: Clicked on Make pane", flush=True)
                 # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
                 wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[id="make-facet-panel"]')))
                 break
@@ -171,7 +171,7 @@ class autotrader_naming:
             try:
                 model_button = driver.find_element(By.CSS_SELECTOR, '[data-testid="toggle-facet-model"]')
                 model_button.click()
-                print("DEBUG: Clicked", flush=True)
+                print("DEBUG: Clicked on Make Pane", flush=True)
                 # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
                 wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
                 break
@@ -257,8 +257,8 @@ class autotrader_naming:
             car_models = custom_data
         elif car_make == "BMW":
             car_models = ['1602', '1 Series', '2002', '2 Series', '2 Series Active Tourer', '2 Series Gran Coupe', '2 Series Gran Tourer', '3 Series', '3 Series Gran Turismo', '4 Series', '4 Series Gran Coupe', '5 Series', '5 Series Gran Turismo', '6 Series', '6 Series Gran Coupe', '6 Series Gran Turismo', '7 Series', '8 Series', '8 Series Gran Coupe', 'Alpina B10', 'Alpina B3', 'Alpina B4', 'Alpina B4 Gran Coupe', 'Alpina B5', 'Alpina B6', 'Alpina B8 Gran Coupe', 'Alpina D3', 'Alpina D4', 'Alpina D4 Gran Coupe', 'Alpina D5', 'Alpina Roadster', 'Alpina Unspecified Models', 'Alpina XB7', 'Alpina XD3', 'E9', 'i3', 'i4', 'i5', 'i7', 'i8', 'Isetta', 'iX', 'iX1', 'iX3', 'M2', 'M3', 'M4', 'M5', 'M6', 'M6 Gran Coupe', 'M8', 'M8 Gran Coupe', 'X1', 'X2', 'X3', 'X3 M', 'X4', 'X4 M', 'X5', 'X5 M', 'X6', 'X6 M', 'X7', 'XM', 'Z1', 'Z3', 'Z3 M', 'Z4', 'Z4 M', 'Z8']
-        elif car_make == "Mercedes":
-            car_models =  ['190', '190 SL', '200', '220', '230', '230 SL', '250', '250 SL', '260', '280', '280 S', '280 SL', '300', '310', '320', '350 SL', '380', '400', '420', '450', '450 SL', '500', '560SL', 'A Class', 'AMG', 'AMG GT', 'AMG GT 63', 'B Class', 'C Class', 'Citan', 'CL', 'CLA Class', 'CLC Class', 'CLK', 'CLS', 'E Class', 'EQA', 'EQB', 'EQC', 'EQE', 'EQS', 'EQV', 'eVito', 'G Class', 'GLA Class', 'GLB Class', 'GLC Class', 'GL Class', 'GLE Class', 'GLS Class', 'Maybach GLS Class', 'Maybach S Class', 'M Class', 'R Class', 'S Class', 'SE Class', 'SEC Series', 'SLC', 'SL Class', 'SLK', 'SLR McLaren', 'SLS', 'Sprinter', 'Traveliner', 'V Class', 'Viano', 'Vito', 'X Class',                        'A160', 'E220', 'A180', 'CLA', 'C350e', 'C300h', 'GLA', 'C200', 'A200', 'A250', 'C220', 'B180', 'B200', 'GLC', 'C300de', 'C250', 'C300', 'E200', 'B220', 'S350L', 'A35', 'GLE', 'E300de', 'GLB', 'EQA']
+        elif car_make == "Mercedes" or  car_make == "Mercedes-Benz":
+            car_models =  ['A Class', 'AMG', 'AMG GT', 'AMG GT 63', 'B Class', 'C Class', 'Citan', 'CL', 'CLA Class', 'CLC Class', 'CLK', 'CLS', 'E Class', 'EQA', 'EQB', 'EQC', 'EQE', 'EQS', 'EQV', 'eVito', 'G Class', 'GLA Class', 'GLB Class', 'GLC Class', 'GL Class', 'GLE Class', 'GLS Class', 'Maybach GLS Class', 'Maybach S Class', 'M Class', 'R Class', 'S Class', 'SE Class', 'SEC Series', 'SLC', 'SL Class', 'SLK', 'SLR McLaren', 'SLS', 'Sprinter', 'Traveliner', 'V Class', 'Viano', 'Vito', 'X Class']
         elif car_make == "Lexus":
             car_models = ['CT 200h', 'ES 300h', 'GS 250', 'GS 300', 'GS 430', 'GS 450h', 'GX', 'IS 200', 'IS 220d', 'IS 250', 'IS 300', 'IS F', 'LC 500', 'LFA', 'LS 400', 'LS 430', 'LS 460', 'LS 500h', 'LS 600h', 'NX 200t', 'NX 300h', 'NX 350h', 'NX 450h+', 'RC 200t', 'RC 300h', 'RC F', 'RX 200t', 'RX 300', 'RX 350', 'RX 350h', 'RX 400h', 'RX 450h', 'RX 450h+', 'RX 500h', 'RX L 450h', 'RX Unspecified', 'RZ 450e', 'SC 430', 'UX 250h', 'UX 300e']
         else:
@@ -324,7 +324,7 @@ class autotrader_naming:
             print(f"DEBUG: Best match lower than 60 certainty. Return nothing. {input_string}->{best_match} (score:{best_score})", flush=True)
             return
         else:
-            print(f"DEBUG: Best match {input_string}->{best_match} (score:{best_score})", flush=True)
+            print(f"DEBUG: Best match for model {input_string}->{best_match} (score:{best_score})", flush=True)
             return best_match
         
     def get_model_variant_from_model(self, make, car_model):
@@ -343,7 +343,7 @@ class autotrader_naming:
                 model_variant_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
 
                 model_variant_button.click()
-                print("DEBUG: Clicked", flush=True)
+                print("DEBUG: Clicked on Model Variant Pane", flush=True)
                 # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
                 wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
                 wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))

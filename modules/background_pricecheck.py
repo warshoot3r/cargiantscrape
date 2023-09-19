@@ -175,7 +175,7 @@ class car_background_information:
                             car_model_http = base_model_name.replace(" ", "%20")
                             model_variant = car_autotrader_naming.translate_modelvariant_to_autotrader(car_make=car_make, car_model=base_model_name, input_string=car_model)
                             print(f"Pre-price check: {reg} {car_model} successfully got new name. Model->{base_model_name}. Model Variant->{model_variant}", flush=True)
-                            future = executor.submit(self.scrape_autotrader, car_make, car_model_http, model_variant,mileage, year, reg)
+                            future = executor.submit(self.scrape_autotrader, car_make, car_model_http, model_variant, mileage, year, reg)
                         else:
                             future = executor.submit(self.scrape_autotrader, car_make, car_model, mileage, year, reg)
                         futures.append(future)
