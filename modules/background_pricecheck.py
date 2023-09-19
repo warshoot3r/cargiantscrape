@@ -230,8 +230,6 @@ class car_background_information:
                 except exceptions.TimeoutException:
                     attempts +=1
                     if attempts == 1:
-                        car_model = str(car_model).lower()
-                        print("trying in lowercase",flush=True)
                         car_parameters = f"&make={car_make}",f"&model={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
                         temp = "".join(car_parameters)
                         autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
@@ -243,9 +241,10 @@ class car_background_information:
                         autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
 
                     else:
-                        print("Not able to get prices", flush=True)
+                        print(f"Not able to get prices for {reg}", flush=True)
+                        return
                 finally: 
-                    print(f"MODULE: Got best case price scenario for {reg}", flush=True)
+                    print(f"MODULE: Got price scenario for {reg}", flush=True)
                         
                     
             data = driver.page_source
