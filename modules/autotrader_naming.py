@@ -88,15 +88,13 @@ class autotrader_naming:
         try:
             wait.until(EC.presence_of_element_located((By.TAG_NAME, 'iframe')))
             cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")
-            if cookie_prompt_iframe is None:
-                return
-            elif cookie_prompt_iframe[1]:
-                driver.switch_to.frame(cookie_prompt_iframe[1].get_attribute("id"))
-                wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[title="Accept All"]')))
-                cookie_button = driver.find_element(By.CSS_SELECTOR, 'button[title="Accept All"]')
-                cookie_button.click()
-                print("VERBOSE: Clicked cookie prompt.")    
-                driver.switch_to.default_content() 
+            if len(cookie_prompt_iframe) == 2: 
+                        driver.switch_to.frame(cookie_prompt_iframe[1].get_attribute("id"))
+                        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[title="Accept All"]')))
+                        cookie_button = driver.find_element(By.CSS_SELECTOR, 'button[title="Accept All"]')
+                        cookie_button.click()
+                        print("VERBOSE: Clicked cookie prompt.")    
+                        driver.switch_to.default_content() 
         except exceptions.NoSuchElementException as e:
                 print(f"Exception while setting cookies. {e}")
     def get_car_makes(self):
@@ -331,23 +329,25 @@ class autotrader_naming:
                 model_variant_button.click()
                 print("DEBUG: Clicked")
                 # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
-                wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
+                wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
+                wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
+                wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-section="aggregated_trim"]')))
                 break
             except exceptions.TimeoutException:
-                print("DEBUG: Element is not visible yet")
+                print(f"DEBUG: {car_model} is not visible yet")
                 time.sleep(1)
                 attempts += 1
             except:
-                print("Error occured on clicking the Model Variants button")
+                print(f"Error occured on clicking the Model Variants button")
                 break
             if attempts >= 10:
-                break
+                print(f"Failed to get model variants for {url}")
+                return
   
         #inside the model variants data table
 
-        wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-section="aggregated_trim"]')))
+       
         model_variant_data_section =  driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]')
-        wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
         model_variant_data = model_variant_data_section.find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
         
         models = []
