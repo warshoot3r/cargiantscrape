@@ -251,7 +251,7 @@ class car_background_information:
            
             
             
-
+            success = False
 
             while (attempts < attempts_max) or success:
                 if car_model_variant:
@@ -262,7 +262,7 @@ class car_background_information:
 
                 temp = "".join(car_parameters)
                 autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
-            
+                
                 try:     #Error basic handling None and not 200
                     print(f"Attempt {attempts}", flush=True)
                     print(f"DEBUG: url='{autotrader}'", flush=True)
@@ -284,11 +284,11 @@ class car_background_information:
                         autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
 
                     else:
-                        print(f"Not able to get prices for {reg}", flush=True)
+                        print(f"Not able to get prices for {reg} \n\n", flush=True)
                         return
                 finally: 
                     if success:
-                        print(f"MODULE: Got price for {reg}", flush=True)
+                        print(f"MODULE: Got price for {reg}\n\n", flush=True)
                         break
                         
                     
