@@ -31,12 +31,24 @@ class car_background_information:
         self.driver = driver
         self.postal_code = postal_code
     def selenium_setup(self):
+
+  
+
         if self.driver == "safari":
             safari_options = SafariOptions()
             return webdriver.Safari(options=safari_options)
         
         elif self.driver == "chrome":
+            from fake_headers import Headers
+
+            header = Headers(
+                browser="chrome",  # Generate only Chrome UA
+                os="win",  # Generate only Windows platformd
+                headers=False # generate misc headers
+            )
+            customUserAgent = header.generate()['User-Agent']
             chrome_options = ChromeOptions()
+            chrome_options.add_argument(f"user-agent={customUserAgent}")
             chrome_options.add_argument("--headless=new")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-gpu")
