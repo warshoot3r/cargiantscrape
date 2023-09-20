@@ -284,7 +284,8 @@ class car_background_information:
             car_model = car_model.replace(" ", "%20")
 
            
-            self.handle_cookie_prompt(driver=driver)
+            # this is not needed. as page can be scraped without buttons 
+            # self.handle_cookie_prompt(driver=driver)
             
             if car_model_variant:
             # Define the URL first one is as we have full details, else just try  as model

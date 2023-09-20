@@ -342,19 +342,25 @@ class autotrader_naming:
         attempts = 0
         while True:
             try:
+                driver.get(url)
                 model_variant_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
-
                 model_variant_button.click()
                 print(f"DEBUG: {url} Clicked on Model Variant Pane", flush=True)
                 # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
                 wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
                 wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
                 wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-section="aggregated_trim"]')))
+                model_variant_data_section =  driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]')
+                model_variant_data = model_variant_data_section.find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
+        
                 break
             except exceptions.TimeoutException:
                 print(f"DEBUG: {car_model} is not visible yet", flush=True)
                 time.sleep(1)
                 attempts += 1
+            except exceptions.StaleElementReferenceException:
+                print(f"DEBUG Stale element on model variant. Retrying", flush=True)
+                attempts +=1
             except:
                 print(f"Error occured on clicking the Model Variants button", flush=True)
                 return None
@@ -365,9 +371,7 @@ class autotrader_naming:
         #inside the model variants data table
 
        
-        model_variant_data_section =  driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]')
-        model_variant_data = model_variant_data_section.find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
-        
+
         models = []
         for model_variant in model_variant_data:
             models.append(model_variant.text)
