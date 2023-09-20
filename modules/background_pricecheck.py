@@ -390,7 +390,7 @@ class car_background_information:
                     print(f"Attempting {attempts}", flush=True)
                     print(f"DEBUG: url='{autotrader}'", flush=True)
                     driver.get(autotrader)
-                    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
+                    wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
                     break
 
                 except exceptions.TimeoutException:
