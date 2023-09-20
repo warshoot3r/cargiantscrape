@@ -19,3 +19,10 @@ bot.send_message(chat_id=credentials.cargiant_group_chat_id, message="test to te
 bot.send_message(chat_id=credentials.cargiant_group_chat_id, message="test to general chat", MessageThreadID=credentials.cargiant_general_id)
 
 bot.send_message(chat_id=credentials.cargiant_group_chat_id, message="test to production chat", MessageThreadID=credentials.cargiant_production_id)
+
+bot.send_message(chat_id=credentials.cargiant_group_chat_id, message="test to commands chat", MessageThreadID=credentials.cargiant_commands_id)
+
+
+# for i in range(150,210):
+#     i = str(i)
+#     bot.send_message(chat_id=credentials.cargiant_group_chat_id, message=i, MessageThreadID=i)
