@@ -286,8 +286,6 @@ class car_background_information:
            
             self.handle_cookie_prompt(driver=driver)
             
-            
-            success = False
             if car_model_variant:
             # Define the URL first one is as we have full details, else just try  as model
                 car_parameters = f"&make={car_make}",f"&model={car_model}",f"&aggregatedTrim={car_model_variant}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
@@ -296,13 +294,14 @@ class car_background_information:
 
             temp = "".join(car_parameters)
             autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
-            driver.get(autotrader)
+          
             print(f"Trying initial url {autotrader}", flush=True)
-            while (attempts < attempts_max) or success:
+            while attempts < attempts_max:
                 try:     #Error basic handling None and not 200
-                    print(f"Attempt {attempts}", flush=True)
+                    print(f"Going to Attempt {attempts}", flush=True)
                     print(f"DEBUG: url='{autotrader}'", flush=True)
-                    success = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
+                    driver.get(autotrader)
+                    success = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
                     print("Success!", success, flush=True)
                     break
 
@@ -322,10 +321,6 @@ class car_background_information:
                     else:
                         print(f"Not able to get prices for {reg} \n\n", flush=True)
                         return
-                finally: 
-                    if success:
-                        print(f"MODULE: Got price for {reg}\n\n", flush=True)
-                        break
                         
                     
             data = driver.page_source
