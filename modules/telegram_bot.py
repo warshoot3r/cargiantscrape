@@ -58,24 +58,6 @@ class TelegramBot:
                 if updates:
                     for key in updates:
 
-                    # #Each message
-                    #     print("Chats: ",key, flush=True)
-                    #     print("\n\n", flush=True)
-                    #     update_id = key["update_id"]
-                    #     print(f"Update_id : {update_id}", flush=True)
-                    #     if "message" in key:
-                    #     #   print(key["message"], flush=True)
-                    #       for message_value in key:
-                    #         if isinstance(key[message_value],dict):
-                    #             for message_key, message_value in key[message_value].items():
-                    #                 print(message_key,' : ', message_value, flush=True)
-                        # if "my_chat_member" in key:
-                        #     print("group chat")
-                        #     for message_value in key:
-                        #         if isinstance(key[message_value],dict):
-                        #             for message_key, message_value in key[message_value].items():
-                        #                 print(message_key,' : ', message_value, flush=True)
-
                         if 'message' in key and 'chat' in key['message']:
                             chat = key['message']['chat']
                             chat_id = chat['id']
@@ -84,14 +66,43 @@ class TelegramBot:
                             print(f"Chat ID: {chat_id}, Title: {chat_title}, Type: {chat_type}")
                             if 'text' in key['message']:
                                 text = key['message']['text']
+                                message_id = key['message']['message_id']
+                                from_person = key['message']['from']['first_name']+ " " +  key['message']['from']['last_name']
                                 print(f"Chat ID: {chat_id}, Title: {chat_title}, Type: {chat_type}")
-                                print(f"Message Text: {text}")
+                                print(f"Message: \"{text}\" MessageID:{message_id} From: {from_person} ")
                 else:
                     print("Failed to get updates. Error:", response_json["description"], flush=True)
         except requests.exceptions.RequestException as e:
             print("Error getting updates:", e, flush=True)
 
-    def send_message(self, chat_id, message, ParserType="Markdownv2", max_message_length=4096):
+
+    def get_recent_messages(self):
+        get_updates_url = f"{self.base_url}getUpdates"
+        try:
+            response = requests.get(get_updates_url)
+            response_json = response.json()
+            
+            if response_json["ok"]:
+                updates = response_json["result"]
+                if updates:
+                    for key in updates:
+
+                        if 'message' in key and 'chat' in key['message']:
+                            chat = key['message']['chat']
+                            chat_id = chat['id']
+                            chat_title = chat.get('title', 'Private Chat')
+                            chat_type = chat['type']
+                            if 'text' in key['message']:
+                                text = key['message']['text']
+                                message_id = key['message']['message_id']
+                                from_person = key['message']['from']['first_name']+ " " +  key['message']['from']['last_name']
+                                print(f"Message: \"{text}\" MessageID: {message_id} From: {from_person} ChatID: {chat_id}")
+                else:
+                    print("Failed to get updates. Error:", response_json["description"], flush=True)
+        except requests.exceptions.RequestException as e:
+            print("Error getting updates:", e, flush=True)
+
+    def send_message(self, chat_id, message, ParserType="Markdownv2", max_message_length=4096, MessageThreadID=None):
         send_message_url = f"{self.base_url}sendMessage"
         try:
             if len(message) <= max_message_length:
@@ -99,7 +110,8 @@ class TelegramBot:
                 data = {
                     "chat_id": chat_id,
                     "text": message,
-                    "parse_mode": ParserType
+                    "parse_mode": ParserType,
+                    "reply_to_message_id": MessageThreadID
                 }
                 response = requests.post(send_message_url, data=data)
                 response_json = response.json()
@@ -125,15 +137,15 @@ class TelegramBot:
         except requests.exceptions.RequestException as e:
             print("Error sending message:", e, flush=True)
 
-    def send_message_servername(self, chat_id, message):
+    def send_message_servername(self, chat_id, message, MessageThreadID):
         try: 
             get_computer_name = socket.gethostname()
             computer_name = re.sub(r'[^w\w\s]', '', get_computer_name)        
         except socket.error as e:
             return None
         message = f"From server: {computer_name} {message}"
-        self.send_message(chat_id=chat_id, message=message)
-    def send_dataframe_as_file(self, chat_id, dataframe, file_format="csv", caption="", file_name="data"):
+        self.send_message(chat_id=chat_id, message=message, MessageThreadID=MessageThreadID)
+    def send_dataframe_as_file(self, chat_id, dataframe, file_format="csv", caption="", file_name="data", MessageThreadID=None):
         if file_format not in ["csv", "xlsx"]:
             raise ValueError("Invalid file_format. Supported formats are 'csv' and 'xlsx'.")
 
@@ -147,7 +159,7 @@ class TelegramBot:
         files = {"document": open(filename, "rb")}
 
         try:
-            response = requests.post(send_document_url, data={"chat_id": chat_id, "caption": caption}, files=files)
+            response = requests.post(send_document_url, data={"chat_id": chat_id, "caption": caption, "reply_to_message_id": MessageThreadID}, files=files, )
             response_json = response.json()
             if response_json["ok"]:
                 print("File sent successfully!", flush=True)
