@@ -1,25 +1,59 @@
 id,Manufacturer,URL,Model,CarStatus,Year,Price,ValuationPercentage,ValuationRange,Mileage,Body Type,Transmission,Fuel,Color,Doors,Reg,DateUpdated,OldPrice,OldDate,NumberOfPriceReductions,NumberReserved,DateCarAdded,DaysAdded
-1,BMW,https://www.cargiant.co.uk/car/BMW/116D/RA18EFS,116D,Sold,2018,9499,68.0,£8195 - £10100,94002,Hatch,Manual,Diesel,White,5,RA18EFS,2023-09-16 18:35:43.617748,0,,0,0,2023-09-16,0
-17,BMW,https://www.cargiant.co.uk/car/BMW/116D/GU68ULB,116D,Sold,2018,12999,,,68731,Hatch,Auto,Diesel,Met Grey,5,GU68ULB,2023-09-16 18:35:43.634504,0,,0,0,2023-09-16,0
-19,BMW,https://www.cargiant.co.uk/car/BMW/118i/PX19JFO,118i,Sold,2019,13299,,,84984,Hatch,Manual,Petrol,White,5,PX19JFO,2023-09-16 18:35:43.636400,0,,0,0,2023-09-16,0
-24,BMW,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/FJ68RLX,2 Series Tourer,Sold,2018,13799,,,73988,MPV,Auto,Hybrid,White,N/A,FJ68RLX,2023-09-16 18:35:43.641215,0,,0,0,2023-09-16,0
-28,BMW,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/FG68LMK,2 Series Tourer,Sold,2018,13999,,,23194,MPV,Manual,Petrol,Red,N/A,FG68LMK,2023-09-16 18:35:43.645675,0,,0,0,2023-09-16,0
-30,BMW,https://www.cargiant.co.uk/car/BMW/X1/AP17CRJ,X1,Sold,2017,13999,,,65536,SUV,Auto,Diesel,Met Grey,N/A,AP17CRJ,2023-09-16 18:35:43.647846,0,,0,0,2023-09-16,0
-46,BMW,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/SJ68KGN,2 Series Tourer,Sold,2018,14999,,,56740,MPV,Auto,Hybrid,Met Blue,N/A,SJ68KGN,2023-09-16 18:35:43.665632,0,,0,0,2023-09-16,0
-75,BMW,https://www.cargiant.co.uk/car/BMW/318D/YB17LRN,318D,Sold,2017,16499,,,30958,Saloon,Auto,Diesel,White,N/A,YB17LRN,2023-09-16 18:35:43.702719,0,,0,0,2023-09-16,0
-92,BMW,https://www.cargiant.co.uk/car/BMW/118i/FE69XST,118i,Sold,2019,16999,,,43560,Hatch,Auto,Petrol,Blue,5,FE69XST,2023-09-16 18:35:43.726744,0,,0,0,2023-09-16,0
-96,BMW,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/KW69COJ,2 Series Tourer,Sold,2019,16999,,,30834,MPV,Manual,Petrol,Met Grey,N/A,KW69COJ,2023-09-16 18:35:43.732508,0,,0,0,2023-09-16,0
-102,BMW,https://www.cargiant.co.uk/car/BMW/X2/AX19FHN,X2,Sold,2019,17499,,,66435,SUV,Auto,Petrol,White,N/A,AX19FHN,2023-09-16 18:35:43.741980,0,,0,0,2023-09-16,0
-122,BMW,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/YK67HGG,2 Series Tourer,Sold,2018,18499,,,14053,MPV,Auto,Petrol,Mineral White,N/A,YK67HGG,2023-09-16 18:35:43.771211,0,,0,0,2023-09-16,0
-146,BMW,https://www.cargiant.co.uk/car/BMW/520D/VO69MTU,520D,Sold,2019,18999,,,77242,Estate,Auto,Diesel,Blue,N/A,VO69MTU,2023-09-16 18:35:43.807640,0,,0,0,2023-09-16,0
-142,BMW,https://www.cargiant.co.uk/car/BMW/X1/WP67ADX,X1,Sold,2017,18999,,,35585,SUV,Auto,Diesel,Black,N/A,WP67ADX,2023-09-16 18:35:43.801665,0,,0,0,2023-09-16,0
-155,BMW,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/GL68TDU,2 Series Tourer,Sold,2018,19499,,,29487,MPV,Auto,Diesel,Silver,N/A,GL68TDU,2023-09-16 18:35:43.822520,0,,0,0,2023-09-16,0
-316,Lexus,https://www.cargiant.co.uk/car/Lexus/UX/BN69UWF,UX,Sold,2019,20999,,,21973,SUV,Auto,Hybrid,Black,N/A,BN69UWF,2023-09-16 18:35:44.147454,0,,0,0,2023-09-16,0
-173,Mercedes,https://www.cargiant.co.uk/car/Mercedes/A180/WA19LLT,A180,Sold,2019,14999,,,47636,Hatch,Manual,Petrol,White,5,WA19LLT,2023-09-16 18:35:43.852500,0,,0,0,2023-09-16,0
-233,Mercedes,https://www.cargiant.co.uk/car/Mercedes/GLA/LN19KPR,GLA,Sold,2019,19999,,,32201,SUV,Auto,Petrol,Black,N/A,LN19KPR,2023-09-16 18:35:43.965857,0,,0,0,2023-09-16,0
-247,Mercedes,https://www.cargiant.co.uk/car/Mercedes/A200/RK20RDU,A200,Sold,2020,20999,,,36154,Hatch,Auto,Petrol,White,5,RK20RDU,2023-09-16 18:35:43.993977,0,,0,0,2023-09-16,0
-254,Mercedes,https://www.cargiant.co.uk/car/Mercedes/A200/KK21GKO,A200,Sold,2021,21799,,,24909,Hatch,Auto,Diesel,Silver,5,KK21GKO,2023-09-16 18:35:44.008408,0,,0,0,2023-09-16,0
-261,Mercedes,https://www.cargiant.co.uk/car/Mercedes/A250e/AK20VNO,A250e,Sold,2020,21999,,,32802,Hatch,Auto,Hybrid,White,5,AK20VNO,2023-09-16 18:35:44.023063,0,,0,0,2023-09-16,0
-271,Mercedes,https://www.cargiant.co.uk/car/Mercedes/E220/LR68JVM,E220,Sold,2018,22999,,,20313,Saloon,Auto,Diesel,Obsidian Black,N/A,LR68JVM,2023-09-16 18:35:44.044754,0,,0,0,2023-09-16,0
-288,Mercedes,https://www.cargiant.co.uk/car/Mercedes/GLC/GV19BYL,GLC,Sold,2019,26999,,,37211,SUV,Auto,Diesel,Red,N/A,GV19BYL,2023-09-16 18:35:44.082189,0,,0,0,2023-09-16,0
-294,Mercedes,https://www.cargiant.co.uk/car/Mercedes/GLC/WN69OBL,GLC,Sold,2019,29499,,,16082,SUV,Auto,Diesel,Black,N/A,WN69OBL,2023-09-16 18:35:44.095899,0,,0,0,2023-09-16,0
+8,BMW,https://www.cargiant.co.uk/car/BMW/i3/CK18VLO,i3,Sold,2018,11999,,,54593,Hatch,Auto,Electric,Met Grey,5,CK18VLO,2023-09-17 21:53:27.179604,0,,0,1,2023-09-17,3.0
+9,BMW,https://www.cargiant.co.uk/car/BMW/i3/SH67EHO,i3,Sold,2017,12299,,,34240,Hatch,Auto,Electric,Black,5,SH67EHO,2023-09-17 21:53:27.181305,0,,0,0,2023-09-17,0.0
+13,BMW,https://www.cargiant.co.uk/car/BMW/116D/SK68VLE,116D,Sold,2018,12799,,,77926,Hatch,Manual,Diesel,Black,5,SK68VLE,2023-09-17 21:53:27.201006,0,,0,0,2023-09-17,0.0
+17,BMW,https://www.cargiant.co.uk/car/BMW/2-Series/GV16WTU,2 Series,Sold,2016,13499,,,40919,Cabriolet / Convertible,Manual,Petrol,Met Grey,N/A,GV16WTU,2023-09-17 21:53:27.214291,0,,0,0,2023-09-17,3.0
+18,BMW,https://www.cargiant.co.uk/car/BMW/330e/RK18VFH,330e,Sold,2018,13499,,,55105,Saloon,Auto,Hybrid,Orange,N/A,RK18VFH,2023-09-17 21:53:27.215988,0,,0,0,2023-09-17,1.0
+23,BMW,https://www.cargiant.co.uk/car/BMW/X1/OV66JUH,X1,Sold,2016,13999,,,70388,SUV,Manual,Diesel,White,N/A,OV66JUH,2023-09-17 21:53:27.230820,0,,0,0,2023-09-17,1.0
+26,BMW,https://www.cargiant.co.uk/car/BMW/X1/LJ68RZY,X1,Sold,2018,13999,,,74640,SUV,Auto,Diesel,Silver Leaf,N/A,LJ68RZY,19/09/2023,14299,2023-09-17 21:53:27.237589,1,0,2023-09-17,3.0
+28,BMW,https://www.cargiant.co.uk/car/BMW/520D/EG16CTK,520D,Sold,2016,14299,,,51228,Saloon,Auto,Diesel,White,N/A,EG16CTK,18/09/2023,14499,2023-09-17 21:53:27.242018,1,1,2023-09-17,3.0
+36,BMW,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/KU68XDE,2 Series Tourer,Sold,2018,14799,,,49864,MPV,Auto,Hybrid,Orange,N/A,KU68XDE,2023-09-17 21:53:27.264262,0,,0,0,2023-09-17,1.0
+35,BMW,https://www.cargiant.co.uk/car/BMW/218i/SN19KLB,218i,Sold,2019,14799,,,13869,Coupe,Manual,Petrol,White,N/A,SN19KLB,2023-09-17 21:53:27.261994,0,,0,0,2023-09-17,0.0
+38,BMW,https://www.cargiant.co.uk/car/BMW/530D/YT66YDW,530D,Sold,2016,14999,,,74518,Saloon,Auto,Diesel,Met Grey,N/A,YT66YDW,2023-09-17 21:53:27.272557,0,,0,0,2023-09-17,0.0
+401,BMW,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/LE18EAC,2 Series Tourer,Sold,2018,15299,,,40574,MPV,Auto,Hybrid,Beige,N/A,LE18EAC,2023-09-18 21:39:54.534241,0,,0,0,2023-09-18,2.0
+52,BMW,https://www.cargiant.co.uk/car/BMW/118D/YL67YOR,118D,Sold,2018,15799,,,43079,Hatch,Auto,Diesel,Estoril Blue,5,YL67YOR,2023-09-17 21:53:27.312934,0,,0,0,2023-09-17,1.0
+53,BMW,https://www.cargiant.co.uk/car/BMW/330e/KL18NWE,330e,Sold,2018,15799,,,40760,Saloon,Auto,Hybrid,Black Sapphire,N/A,KL18NWE,2023-09-17 21:53:27.314814,0,,0,0,2023-09-17,1.0
+54,BMW,https://www.cargiant.co.uk/car/BMW/X2/GD19SXB,X2,Sold,2019,15799,,,82798,SUV,Auto,Petrol,Black,N/A,GD19SXB,2023-09-17 21:53:27.316980,0,,0,0,2023-09-17,0.0
+58,BMW,https://www.cargiant.co.uk/car/BMW/118i/KX19XWV,118i,Sold,2019,15999,,,36553,Hatch,Manual,Petrol,Alpine White,5,KX19XWV,2023-09-17 21:53:27.325612,0,,0,0,2023-09-17,0.0
+59,BMW,https://www.cargiant.co.uk/car/BMW/318D/YB69VNR,318D,Sold,2020,15999,,,79904,Saloon,Manual,Diesel,Silver,N/A,YB69VNR,2023-09-17 21:53:27.331485,0,,0,0,2023-09-17,3.0
+60,BMW,https://www.cargiant.co.uk/car/BMW/330D/ST67ZFF,330D,Sold,2018,15999,,,75886,Saloon,Auto,Diesel,Black,N/A,ST67ZFF,2023-09-17 21:53:27.333873,0,,0,0,2023-09-17,1.0
+57,BMW,https://www.cargiant.co.uk/car/BMW/330e/RX18OAB,330e,Sold,2018,15999,,,53500,Saloon,Auto,Hybrid,Blue,N/A,RX18OAB,2023-09-17 21:53:27.323289,0,,0,0,2023-09-17,1.0
+62,BMW,https://www.cargiant.co.uk/car/BMW/118i/RN19UMF,118i,Sold,2019,16299,,,22991,Hatch,Manual,Petrol,Estoril Blue,5,RN19UMF,2023-09-17 21:53:27.339046,0,,0,0,2023-09-17,1.0
+64,BMW,https://www.cargiant.co.uk/car/BMW/320D/YC19VKO,320D,Sold,2019,16499,,,77869,Estate,Auto,Diesel,Blue,N/A,YC19VKO,2023-09-17 21:53:27.348512,0,,0,0,2023-09-17,1.0
+86,BMW,https://www.cargiant.co.uk/car/BMW/X1/LJ17XRT,X1,Sold,2017,16999,,,52911,SUV,Auto,Diesel,Met Grey,N/A,LJ17XRT,2023-09-17 21:53:27.414714,0,,0,0,2023-09-17,0.0
+115,BMW,https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/LN19GCO,2 Series Tourer,Sold,2019,18499,,,47389,MPV,Auto,Petrol,Mineral Grey,N/A,LN19GCO,2023-09-17 21:53:27.513363,0,,0,0,2023-09-17,0.0
+144,BMW,https://www.cargiant.co.uk/car/BMW/420D/LE69LJZ,420D,Sold,2020,19799,,,24228,Coupe,Auto,Diesel,Black,N/A,LE69LJZ,2023-09-17 21:53:27.615953,0,,0,0,2023-09-17,0.0
+196,BMW,https://www.cargiant.co.uk/car/BMW/X1/DU20YLG,X1,Sold,2020,22499,,,24289,SUV,Auto,Petrol,Mediterranean Blue,N/A,DU20YLG,2023-09-17 21:53:27.883765,0,,0,0,2023-09-17,1.0
+200,BMW,https://www.cargiant.co.uk/car/BMW/730D/OO04MVM,730D,Sold,2017,22799,,,78426,Saloon,Auto,Diesel,Grey,N/A,OO04MVM,2023-09-17 21:53:27.900041,0,,0,0,2023-09-17,1.0
+208,BMW,https://www.cargiant.co.uk/car/BMW/520D/AP19NBK,520D,Sold,2019,23499,,,32956,Saloon,Auto,Diesel,Met Grey,N/A,AP19NBK,2023-09-17 21:53:27.930422,0,,0,0,2023-09-17,0.0
+232,BMW,https://www.cargiant.co.uk/car/BMW/330e/WR70WVH,330e,Sold,2020,26499,,,39069,Saloon,Auto,Hybrid,Blue,N/A,WR70WVH,2023-09-17 21:53:28.029720,0,,0,0,2023-09-17,0.0
+233,BMW,https://www.cargiant.co.uk/car/BMW/530e/YF69LHM,530e,Sold,2019,26799,,,56224,Saloon,Auto,Hybrid,Silver,N/A,YF69LHM,2023-09-17 21:53:28.033174,0,,0,0,2023-09-17,0.0
+240,BMW,https://www.cargiant.co.uk/car/BMW/X3/PX68RZO,X3,Sold,2018,29799,,,44458,SUV,Auto,Diesel,Grey,N/A,PX68RZO,2023-09-17 21:53:28.057614,0,,0,0,2023-09-17,0.0
+373,Lexus,https://www.cargiant.co.uk/car/Lexus/CT-200h/RK69YLE,CT 200h,Sold,2019,15999,,,34183,Hatch,Auto,Hybrid,Black,5,RK69YLE,2023-09-17 21:53:28.640013,0,,0,0,2023-09-17,0.0
+379,Lexus,https://www.cargiant.co.uk/car/Lexus/CT-200h/WN70ONL,CT 200h,Sold,2020,17499,,,20987,Hatch,Auto,Hybrid,Black,5,WN70ONL,2023-09-17 21:53:28.665218,0,,0,0,2023-09-17,3.0
+381,Lexus,https://www.cargiant.co.uk/car/Lexus/NX-300H/S5RTC,NX 300H,Sold,2016,17799,,,59985,SUV,Auto,Hybrid,Red,N/A,S5RTC,2023-09-17 21:53:28.675179,0,,0,0,2023-09-17,0.0
+386,Lexus,https://www.cargiant.co.uk/car/Lexus/ES-300h/YC19MPB,ES 300h,Sold,2019,19499,,,68449,Saloon,Auto,Hybrid,Met Grey,N/A,YC19MPB,2023-09-17 21:53:28.696284,0,,0,0,2023-09-17,0.0
+392,Lexus,https://www.cargiant.co.uk/car/Lexus/UX/LP21KMF,UX,Sold,2021,24999,,,10260,SUV,Auto,Electric,Black,N/A,LP21KMF,2023-09-17 21:53:28.724614,0,,0,0,2023-09-17,3.0
+396,Lexus,https://www.cargiant.co.uk/car/Lexus/RC-300h/BG20YYW,RC 300h,Sold,2020,26499,,,50998,Coupe,Auto,Hybrid,Black Sapphire,N/A,BG20YYW,2023-09-17 21:53:28.744371,0,,0,0,2023-09-17,0.0
+398,Lexus,https://www.cargiant.co.uk/car/Lexus/RX-450h/WP70HAU,RX 450h,Sold,2020,33999,,,22114,SUV,Auto,Hybrid,Met Grey,N/A,WP70HAU,2023-09-17 21:53:28.784300,0,,0,0,2023-09-17,0.0
+245,Mercedes,https://www.cargiant.co.uk/car/Mercedes/A180/LN19PSO,A180,Sold,2019,12999,,,96337,Hatch,Auto,Diesel,Cosmos Black,5,LN19PSO,2023-09-17 21:53:28.076175,0,,0,0,2023-09-17,0.0
+244,Mercedes,https://www.cargiant.co.uk/car/Mercedes/E220/AV65HBO,E220,Sold,2015,12999,,,64951,Saloon,Auto,Diesel,White,N/A,AV65HBO,2023-09-17 21:53:28.073164,0,,0,0,2023-09-17,1.0
+248,Mercedes,https://www.cargiant.co.uk/car/Mercedes/C300h/ML66YLY,C300h,Sold,2016,13499,,,102224,Saloon,Auto,Hybrid,Met Grey,N/A,ML66YLY,2023-09-17 21:53:28.086261,0,,0,1,2023-09-17,3.0
+249,Mercedes,https://www.cargiant.co.uk/car/Mercedes/GLA/WJ17BYR,GLA,Sold,2017,13799,,,62619,SUV,Manual,Diesel,Met Grey,N/A,WJ17BYR,2023-09-17 21:53:28.092527,0,,0,0,2023-09-17,0.0
+252,Mercedes,https://www.cargiant.co.uk/car/Mercedes/A200/DY66XLC,A200,Sold,2016,14999,,,55933,Hatch,Auto,Diesel,White,5,DY66XLC,2023-09-17 21:53:28.102322,0,,0,0,2023-09-17,0.0
+262,Mercedes,https://www.cargiant.co.uk/car/Mercedes/A180/LM20HZF,A180,Sold,2020,16499,,,61741,Hatch,Manual,Diesel,Black,5,LM20HZF,2023-09-17 21:53:28.142126,0,,0,0,2023-09-17,0.0
+271,Mercedes,https://www.cargiant.co.uk/car/Mercedes/C200/YB68URC,C200,Sold,2018,16999,,,53583,Saloon,Auto,Petrol,White,N/A,YB68URC,2023-09-17 21:53:28.180670,0,,0,0,2023-09-17,0.0
+270,Mercedes,https://www.cargiant.co.uk/car/Mercedes/C220/FY67LFV,C220,Sold,2017,16999,,,52047,Saloon,Auto,Diesel,Met Grey,N/A,FY67LFV,2023-09-17 21:53:28.176851,0,,0,0,2023-09-17,3.0
+276,Mercedes,https://www.cargiant.co.uk/car/Mercedes/B200/GY20ETF,B200,Sold,2020,17599,,,30370,MPV,Auto,Diesel,White,N/A,GY20ETF,2023-09-17 21:53:28.200807,0,,0,0,2023-09-17,1.0
+283,Mercedes,https://www.cargiant.co.uk/car/Mercedes/C200/RN19KFO,C200,Sold,2019,17999,,,73297,Saloon,Auto,Petrol,Met Grey,N/A,RN19KFO,2023-09-17 21:53:28.229885,0,,0,0,2023-09-17,1.0
+294,Mercedes,https://www.cargiant.co.uk/car/Mercedes/GLA/AE69KLM,GLA,Sold,2020,18799,,,38116,SUV,Auto,Petrol,Red,N/A,AE69KLM,2023-09-17 21:53:28.275010,0,,0,0,2023-09-17,0.0
+301,Mercedes,https://www.cargiant.co.uk/car/Mercedes/E220/WH16PHA,E220,Sold,2016,18999,,,27470,Saloon,Auto,Diesel,Black,N/A,WH16PHA,2023-09-17 21:53:28.302824,0,,0,0,2023-09-17,0.0
+302,Mercedes,https://www.cargiant.co.uk/car/Mercedes/GLA/LK19KGO,GLA,Sold,2019,18999,,,23215,SUV,Auto,Petrol,Red,N/A,LK19KGO,2023-09-17 21:53:28.309044,0,,0,0,2023-09-17,3.0
+303,Mercedes,https://www.cargiant.co.uk/car/Mercedes/GLA/VX19PNK,GLA,Sold,2019,19299,,,35984,SUV,Auto,Petrol,Red,N/A,VX19PNK,2023-09-17 21:53:28.313705,0,,0,0,2023-09-17,1.0
+305,Mercedes,https://www.cargiant.co.uk/car/Mercedes/C200/KW20WPK,C200,Sold,2020,19499,,,41788,Saloon,Auto,Petrol,Black,N/A,KW20WPK,2023-09-17 21:53:28.320882,0,,0,0,2023-09-17,1.0
+327,Mercedes,https://www.cargiant.co.uk/car/Mercedes/E200/BW68EBM,E200,Sold,2018,20999,,,62656,Estate,Auto,Petrol,Polar White,N/A,BW68EBM,19/09/2023,21299,2023-09-17 21:53:28.420882,1,0,2023-09-17,3.0
+342,Mercedes,https://www.cargiant.co.uk/car/Mercedes/GLA/KD19HYG,GLA,Sold,2019,22499,,,19997,SUV,Auto,Petrol,Mountain Grey,N/A,KD19HYG,2023-09-17 21:53:28.493428,0,,0,0,2023-09-17,1.0
+347,Mercedes,https://www.cargiant.co.uk/car/Mercedes/B220/MH69EOP,B220,Sold,2019,23799,,,12126,MPV,Auto,Petrol,Black,N/A,MH69EOP,2023-09-17 21:53:28.515879,0,,0,0,2023-09-17,0.0
+348,Mercedes,https://www.cargiant.co.uk/car/Mercedes/C200/GY20SWF,C200,Sold,2020,23999,,,24744,Coupe,Auto,Petrol,Obsidian Black,N/A,GY20SWF,2023-09-17 21:53:28.519299,0,,0,0,2023-09-17,0.0
+349,Mercedes,https://www.cargiant.co.uk/car/Mercedes/S350L/KP66XKM,S350L,Sold,2016,23999,,,41664,Saloon,Auto,Diesel,Black,N/A,KP66XKM,2023-09-17 21:53:28.523567,0,,0,0,2023-09-17,3.0
+368,Mercedes,https://www.cargiant.co.uk/car/Mercedes/EQA/KP71DVT,EQA,Sold,2021,31299,,,25522,SUV,Auto,Electric,Silver,N/A,KP71DVT,2023-09-17 21:53:28.617772,0,,0,0,2023-09-17,0.0

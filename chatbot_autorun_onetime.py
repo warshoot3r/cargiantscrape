@@ -6,7 +6,7 @@ import re
 import time
 
 # Init
-force_scrape = False
+force_scrape = True
 
 api_token = credentials.api_token
 chat_id = credentials.chat_id
@@ -62,6 +62,7 @@ def import_cars(CarSearch):
                     Reg=current_car["Reg"],
                     URL=current_car["URL"],
                     Model=current_car["Model"],
+                    ModelVariant=current_car["Model Variant"],
                     Mileage=current_car["Mileage"],
                     CarStatus=current_car["Car Status"]
             )

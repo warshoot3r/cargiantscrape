@@ -76,7 +76,7 @@ class SQLiteDatabase:
 
 
 
-    def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None, CarStatus=None, ValuationPercentage=None, ValuationRange=None):
+    def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, ModelVariant=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None, CarStatus=None, ValuationPercentage=None, ValuationRange=None):
         """
         Imports car properties and adds them to the database.
         
@@ -96,6 +96,7 @@ class SQLiteDatabase:
         """
         self.Manufacturer = str(Manufacturer) if Manufacturer is not None else None
         self.Model = str(Model) if Model is not None else None
+        self.ModelVariant = str(ModelVariant) if ModelVariant is not None else None
         self.Year = int(Year) if Year is not None else None
         self.Price = int(Price) if Price is not None else None
         self.Body_Type = str(Body_Type) if Body_Type is not None else None
@@ -150,6 +151,7 @@ class SQLiteDatabase:
                     "Manufacturer": "TEXT",
                     "URL": "TEXT",
                     "Model": "TEXT",
+                    "Model Variant": "TEXT",
                     "CarStatus": "TEXT",
                     "Year": "INTEGER",
                     "Price": "INTEGER",
@@ -189,6 +191,7 @@ class SQLiteDatabase:
                     "Manufacturer": "TEXT",
                     "URL": "TEXT",
                     "Model": "TEXT",
+                    "Model Variant": "TEXT",
                     "CarStatus": "TEXT",
                     "Year": "INTEGER",
                     "Price": "INTEGER",
@@ -436,6 +439,7 @@ class SQLiteDatabase:
                 {
                     "Manufacturer": self.Manufacturer,
                     "Model": self.Model,
+                    "Model Variant": self.ModelVariant,
                     "Year": self.Year,
                     "Price": self.Price,
                     "Body Type": self.Body_Type,
@@ -477,7 +481,6 @@ class SQLiteDatabase:
                     # print(f"DEBUG: {matching_car} {currentcarreg} >{self.CarStatus}< and >{Car_DB_Status}<" , flush=True)
                     self.cursor.execute("UPDATE used_cars SET DaysAdded = julianday(CURRENT_DATE) - julianday(DateCarAdded) WHERE CarStatus != 'Sold'")
                     self.conn.commit()
-
 
                     if (Car_Current_price != car_DB_PRICE) and (Car_Current_price): #  dont run because line 427 which will set car_current_price to None. DB will have price. this will cause it to replace with None
                         print(f"Car with Reg: {currentcarreg} is existing with the same price", flush=True)

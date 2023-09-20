@@ -297,6 +297,7 @@ class WebScraperCargiant:
             "Manufacturer": [],
             "Car Status": [],
             "Model": [],
+            "Model Variant": [],
             "Year": [],
             "Price": [],
             "Body Type": [],
@@ -316,6 +317,7 @@ class WebScraperCargiant:
             price_get = item.find_element(By.CSS_SELECTOR, "div.price-block__price").text
             price = re.sub("[^0-9.]", "", price_get)
             model = item.find_element(By.CSS_SELECTOR, "span.title__main.set-h3").text
+            model_variant = item.find_element(By.CSS_SELECTOR, "span.title__sub.set-h4").text.split(',')[0].strip()
             model_split = re.split(r'(^\s*[\w]+)\b', model)
             model_split = [item for item in model_split if item]
             car_manufacturer = model_split[0]
@@ -341,10 +343,10 @@ class WebScraperCargiant:
                     car_status = "Available"
                 else: 
                     car_status = car_status_get
-                print(f"VERBOSE: {model_name} {car_reg} saved as {car_status}", flush=True)
+                print(f"VERBOSE: {model_name} | {car_reg} saved as {car_status}", flush=True)
             except NoSuchElementException:
                 car_status = "Available"
-                print(f"VERBOSE: {model_name} {car_reg} status is empty. Setting status to {car_status}", flush=True)
+                print(f"VERBOSE: {model_name} | {car_reg} status is empty. Setting status to {car_status}", flush=True)
 
             DoorsAndType_split = re.split(r"\d\s(?=\s)", DoorsAndType)
 
@@ -364,6 +366,7 @@ class WebScraperCargiant:
             new_row = {
                 "Manufacturer": car_manufacturer,
                 "Model": model_name,
+                "Model Variant": model_variant,
                 "Year": year,
                 "Details": details,
                 "Price": price,
