@@ -223,7 +223,7 @@ class SQLiteDatabase:
                 print(f"Missing {missingcolumn} in DB. Database is being updated with table", flush=True)
                 db_string = '''
                 ALTER TABLE {}
-                ADD {}
+                ADD "{}"
                 '''
                 self.cursor.execute(db_string.format(table_name, missingcolumn))
                 print("DB updated", flush=True)
