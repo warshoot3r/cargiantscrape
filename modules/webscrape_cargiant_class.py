@@ -92,6 +92,70 @@ class WebScraperCargiant:
             firefox_options.add_argument("--start-minimized")
             return webdriver.Firefox(options=firefox_options)
 
+    def get_car_details(self, url, debug=False):
+        """
+        Goes to car giant URL and then scrapes for the specifiations of car data
+        ARGS: 
+            URL : https://www.cargiant.co.uk/car/Suzuki/Celerio/LM67FFV"
+
+        Returns:
+        Example
+        Model->Mercedes GLA.
+        Engine_Variant->2.2 220d Sport Executive 4Matic DCT
+        Mileage -> 80,215
+        Doors -> 5
+        Transmission -> Auto
+        Colour -> Black
+        Year -> 2017
+        Body Type -> SUV
+        Fuel Type -> Diesel
+        Combined -> 58.9
+        Urban -> 48.7
+        Extra Urban -> 65.7
+        CO2 Emissions -> 127 g/kg
+        Service History -> TBA
+        Last Service -> N/A
+        Keepers -> 2
+        Tax Band -> D - £165 PA
+        MOT -> N/A
+        Insurance Group (1-50) -> 27E
+                
+        
+        """
+        output = {}
+        web_page_data = requests.get(url)
+        
+        parsed_data = BeautifulSoup(web_page_data.content, "html.parser")
+        data = parsed_data
+
+        # Car title details
+        car_title_details = parsed_data.find("div", class_="car-details-wrap__desc__title")
+
+        # Check if the element was found before trying to extract text.
+        if car_title_details:
+            # Extract the text and strip any leading/trailing whitespace.
+            car_detail_fields = car_title_details.get_text().strip().split("\n")
+            model = car_detail_fields[0]
+            engine_variant = car_detail_fields[1]
+            output["model"] = model
+            output["engine_variant"] = engine_variant
+
+        all_table_data = parsed_data.find_all("li", class_="details-panel-item__list__item")
+        # all other data dynamiclly
+        if all_table_data:
+            for data in all_table_data:
+                field  = data.find("span")
+                if len(field) == 1:
+                        field_propety_name = field.get_text().strip().lower()
+                        field_property_data = field.find_next_sibling().get_text().strip()
+                        output[field_propety_name] = field_property_data
+
+        if debug:
+            for key, value in output.items():
+                print(f"DEBUG: {key} -> {value}", flush=True)
+
+        return output
+
     def print_number_of_cars(self):
         """
         Prints the number of cars scraped from cargiant
