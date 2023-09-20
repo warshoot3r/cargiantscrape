@@ -300,7 +300,7 @@ class car_background_information:
                     print(f"Attempt {attempts}", flush=True)
                     print(f"DEBUG: url='{autotrader}'", flush=True)
                     success = wait.until(EC.visibility_of_any_elements_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
-                    print(success, d, 
+                    print("Success!", success, d, 
                     flush=True)
                     break
 
