@@ -88,6 +88,25 @@ class car_background_information:
             firefox_options.add_argument("--ignore-certificate-errors")
             firefox_options.add_argument("--start-minimized")
             return webdriver.Firefox(options=firefox_options)
+        
+        
+    def handle_cookie_prompt(self, driver: webdriver.Remote ):
+        #handles cookie prompt
+        wait = WebDriverWait(driver=driver, timeout=10)
+        try:
+                wait.until(EC.presence_of_element_located((By.TAG_NAME, 'iframe')))
+                cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")
+                if len(cookie_prompt_iframe) == 2: 
+                            driver.switch_to.frame(cookie_prompt_iframe[1].get_attribute("id"))
+                            wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[title="Accept All"]')))
+                            cookie_button = driver.find_element(By.CSS_SELECTOR, 'button[title="Accept All"]')
+                            cookie_button.click()
+                            print("VERBOSE: Clicked cookie prompt.")    
+                            driver.switch_to.default_content()
+
+        except exceptions.NoSuchElementException as e:
+            print(f"No Element Exception while setting cookies. {e}", flush=True)
+            return
     def get_all_cars(self):
         return self.cars.items()
     
@@ -262,8 +281,9 @@ class car_background_information:
             car_model = car_model.replace(" ", "%20")
 
            
-            
-            
+            self.handle_cookie_prompt(driver=driver)
+            d = driver.get(autotrader)
+
             success = False
 
             while (attempts < attempts_max) or success:
@@ -279,10 +299,8 @@ class car_background_information:
                 try:     #Error basic handling None and not 200
                     print(f"Attempt {attempts}", flush=True)
                     print(f"DEBUG: url='{autotrader}'", flush=True)
-                    d = driver.get(autotrader)
                     success = wait.until(EC.visibility_of_any_elements_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
                     print(success, d, 
-                    
                     flush=True)
                     break
 
