@@ -105,7 +105,10 @@ class car_background_information:
                             driver.switch_to.default_content()
 
         except exceptions.NoSuchElementException as e:
-            print(f"No Element Exception while setting cookies. {e}", flush=True)
+            print(f"DEBUG: No Element Exception while setting cookies. {e}", flush=True)
+            return
+        except exceptions.TimeoutException:
+            print("DEBUG: No cookie iframe. skipping ")
             return
     def get_all_cars(self):
         return self.cars.items()
@@ -282,26 +285,25 @@ class car_background_information:
 
            
             self.handle_cookie_prompt(driver=driver)
-            d = driver.get(autotrader)
-
+            
+            
             success = False
+            if car_model_variant:
+            # Define the URL first one is as we have full details, else just try  as model
+                car_parameters = f"&make={car_make}",f"&model={car_model}",f"&aggregatedTrim={car_model_variant}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
+            else:
+                car_parameters = f"&make={car_make}",f"&model={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
 
+            temp = "".join(car_parameters)
+            autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
+            driver.get(autotrader)
+            print(f"Trying initial url {autotrader}", flush=True)
             while (attempts < attempts_max) or success:
-                if car_model_variant:
-                # Define the URL first one is as we have full details, else just try  as model
-                    car_parameters = f"&make={car_make}",f"&model={car_model}",f"&aggregatedTrim={car_model_variant}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
-                else:
-                    car_parameters = f"&make={car_make}",f"&model={car_model}",f'&minimum-mileage={minimum_mileage}',f'&maximum-mileage={maximum_mileage}', f'&year-from={from_year}', f'&year-to={to_year}'
-
-                temp = "".join(car_parameters)
-                autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
-                
                 try:     #Error basic handling None and not 200
                     print(f"Attempt {attempts}", flush=True)
                     print(f"DEBUG: url='{autotrader}'", flush=True)
-                    success = wait.until(EC.visibility_of_any_elements_located((By.CSS_SELECTOR, '[data-testid="advertCard"]')))
-                    print("Success!", success, d, 
-                    flush=True)
+                    success = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
+                    print("Success!", success, flush=True)
                     break
 
                 except exceptions.TimeoutException:
