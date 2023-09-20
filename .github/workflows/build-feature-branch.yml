@@ -151,7 +151,7 @@ jobs:
        
         - name: test price valuation
           run: |
-            docker run --platform ${{ matrix.platform }} -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} calculate_prices_on_db.py.py
+            docker run --platform ${{ matrix.platform }} -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} calculate_prices_on_db.py
 
        
         # - name: Run 11. calculate_prices_on_db.py
