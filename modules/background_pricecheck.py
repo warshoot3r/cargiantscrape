@@ -40,8 +40,6 @@ class car_background_information:
         
         elif self.driver == "chrome":
             from fake_headers import Headers
-            import logging 
-            logging.basicConfig(level=logging.DEBUG)
             header = Headers(
                 browser="chrome",  # Generate only Chrome UA
                 os="win",  # Generate only Windows platformd
