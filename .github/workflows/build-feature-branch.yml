@@ -141,14 +141,18 @@ jobs:
 
         - name: Make Credentials.py
           run: |
-              printf 'api_token = "${{ secrets.api_token}}"\nchat_id="${{secrets.DEVELOPMENT_GROUP_CHAT_ID}}"' > /home/runner/work/cargiantscrape/cargiantscrape/credentials.py
+              printf 'api_token = "${{ secrets.api_token}}"\nchat_id="${{secrets.DEVELOPMENT_GROUP_CHAT_ID}}\nmessage_id="${{secrets.TESTING_MESSAGE_ID}}\n"' > /home/runner/work/cargiantscrape/cargiantscrape/credentials.py
   
   
 
         - name: Run Tests on built docker image
           run: |
-            docker run --platform ${{ matrix.platform }} -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} scrape_only.py
+            docker run --platform ${{ matrix.platform }} -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} chatbot_autorun_onetime.py
        
+        - name: test price valuation
+          run: |
+            docker run --platform ${{ matrix.platform }} -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} calculate_prices_on_db.py.py
+
        
         # - name: Run 11. calculate_prices_on_db.py
         #   run: |

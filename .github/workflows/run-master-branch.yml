@@ -25,7 +25,7 @@ jobs:
 
       - name: Make Credentials.py
         run: |
-            printf 'api_token = "${{ secrets.api_token}}"\nchat_id="${{secrets.chat_id}}"' > /home/runner/work/cargiantscrape/cargiantscrape/credentials.py
+          printf 'api_token = "${{ secrets.api_token}}"\nchat_id="${{secrets.DEVELOPMENT_GROUP_CHAT_ID}}\nmessage_id="${{secrets.PRODUCTION_MESSAGE_ID}}\n"' > /home/runner/work/cargiantscrape/cargiantscrape/credentials.py
 
 
 

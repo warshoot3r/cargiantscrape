@@ -6,7 +6,7 @@ import re
 import time
 
 # Init
-force_scrape = True
+force_scrape = False
 
 api_token = credentials.api_token
 chat_id = credentials.chat_id
@@ -83,11 +83,11 @@ if price_changed or new_cars or status_changed:
     if price_changed: #If car prices changed, only send a list of these cars
         database_filtered = DB.filter_table(filters, database, DB.get_car_price_changed())
         database_filtered.loc[:,"PriceChange"] = database_filtered["Price"] - database_filtered["OldPrice"] # should be added to class . temporary here for now
-        bot.send_dataframe(chat_id, database_filtered[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:")
+        bot.send_dataframe(chat_id, database_filtered[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:",  MessageThreadID=credentials.message_id)
     if new_cars:
         database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
         print(database_filtered_new_cars, flush=True)
-        bot.send_dataframe(chat_id, database_filtered_new_cars[["URL","Manufacturer","Model", "Mileage", "Price"] ], "New cars were added:", True)
+        bot.send_dataframe(chat_id, database_filtered_new_cars[["URL","Manufacturer","Model", "Mileage", "Price"] ], "New cars were added:", True,  MessageThreadID=credentials.message_id) 
        #Send sold cars
   
     if status_changed:
@@ -100,17 +100,17 @@ if price_changed or new_cars or status_changed:
         table_filters = ["URL","Manufacturer","Model", "Mileage", "Price"]
         sold = database_filtered.loc[database_filtered['CarStatus'] == "Sold"]
         if sold.shape[0] > 0:
-            bot.send_dataframe(chat_id, sold[table_filters], caption="Sold Cars")
+            bot.send_dataframe(chat_id, sold[table_filters], caption="Sold Cars",  MessageThreadID=credentials.message_id)
 
         reserved = database_filtered.loc[database_filtered['CarStatus'] == "Reserved"]
         if reserved.shape[0] > 0:
-            bot.send_dataframe(chat_id, reserved[table_filters], caption="Reserved Cars")
+            bot.send_dataframe(chat_id, reserved[table_filters], caption="Reserved Cars",  MessageThreadID=credentials.message_id)
         
         available = database_filtered.loc[database_filtered['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)]
         if available.shape[0] > 0:
-            bot.send_dataframe(chat_id, available[[x for x in table_filters] + ["CarStatus"]], "Available soon:")
+            bot.send_dataframe(chat_id, available[[x for x in table_filters] + ["CarStatus"]], "Available soon:", MessageThreadID=credentials.message_id)
 
-        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", file_name="sold")
+        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", file_name="sold", MessageThreadID=credentials.message_id)
           #Send rest of cars
     csv_dataframe = DB.filter_table(filters, database) # every car
 
@@ -125,9 +125,9 @@ if price_changed or new_cars or status_changed:
     file_formats = ["csv","csv"]
     captions = ["Available Cars", "Waiting Cars"]
     file_names = ["available", "waiting"]
-    bot.send_dataframe_as_csv_files(captions=captions,chat_id=credentials.chat_id, dataframes=data_frames, file_names=file_names)
+    bot.send_dataframe_as_csv_files(captions=captions,chat_id=credentials.chat_id, dataframes=data_frames, file_names=file_names, MessageThreadID=credentials.message_id)
 
 
     DB.close_db()
 else:
-    bot.send_message_servername(chat_id, "Nothing to report")
+    bot.send_message_servername(chat_id, "Nothing to report", MessageThreadID=credentials.message_id)

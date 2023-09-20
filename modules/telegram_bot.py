@@ -9,7 +9,7 @@ class TelegramBot:
         self.api_token = api_token
         self.base_url = f"https://api.telegram.org/bot{api_token}/"
 
-    def send_dataframe(self, chat_id, dataframe, caption="", show_header=False):
+    def send_dataframe(self, chat_id, dataframe, caption="", show_header=False, MessageThreadID = None):
         # Format URLs using the provided code
         hyperlink_column = dataframe['URL'].apply(lambda url: f'<a href="{url}">{url.split("/")[-1]}</a>')
 
@@ -42,7 +42,7 @@ class TelegramBot:
         message = caption + "\n" + '\n'.join(formatted_rows)
 
         # Send the message
-        self.send_message(chat_id, message, ParserType="HTML")
+        self.send_message(chat_id, message, ParserType="HTML", MessageThreadID=MessageThreadID)
 
 
 
@@ -171,7 +171,7 @@ class TelegramBot:
         #     # Remove the temporary file
         #     import os
         #     os.remove(filename)
-    def send_dataframe_as_csv_files(self, chat_id, dataframes, captions=None, file_names=None):
+    def send_dataframe_as_csv_files(self, chat_id, dataframes, captions=None, file_names=None, MessageThreadID=None) :
         if not captions:
             captions = [""] * len(dataframes)
         if not file_names:
@@ -192,7 +192,7 @@ class TelegramBot:
             caption = captions[i]
 
             try:
-                response = requests.post(send_document_url, data={"chat_id": chat_id, "caption": caption}, files=files)
+                response = requests.post(send_document_url, data={"chat_id": chat_id, "caption": caption, "reply_to_message_id": MessageThreadID}, files=files)
                 response_json = response.json()
                 if response_json["ok"]:
                     print(f"File '{file_name}' sent successfully!", flush=True)
@@ -208,7 +208,7 @@ class TelegramBot:
         #         os.remove(file_path)
 
     
-    def send_dataframe_as_multiple_files_as_zip(self, chat_id, dataframes, file_formats=None, captions=None, file_names=None):
+    def send_dataframe_as_multiple_files_as_zip(self, chat_id, dataframes, file_formats=None, captions=None, file_names=None, MessageThreadID=None):
         """
                 # Example usage:
         # dataframes = [df1, df2]  # List of dataframes to send
@@ -255,7 +255,7 @@ class TelegramBot:
             files = {"document": (zip_filename, open(zip_file_path, "rb"))}
 
             try:
-                response = requests.post(send_document_url, data={"chat_id": chat_id}, files=files)
+                response = requests.post(send_document_url, data={"chat_id": chat_id, "reply_to_message_id": MessageThreadID}, files=files)
                 response_json = response.json()
                 if response_json["ok"]:
                     print("Files sent successfully!", flush=True)
