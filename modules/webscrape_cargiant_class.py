@@ -413,7 +413,7 @@ class WebScraperCargiant:
                 database
             
             """
-            
+            print(f"VERBOSE: Parallel Pull started. using {worker_threads} threads", flush=True)
             with concurrent.futures.ThreadPoolExecutor(worker_threads) as executor:
                 futures = []
 
