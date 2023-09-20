@@ -299,7 +299,7 @@ class car_background_information:
                 try:     #Error basic handling None and not 200
                     print(f"Attempt {attempts}", flush=True)
                     print(f"DEBUG: url='{autotrader}'", flush=True)
-                    success = wait.until(EC.visibility_of_any_elements_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
+                    success = wait.until(EC.visibility_of_any_elements_located((By.CSS_SELECTOR, '[data-testid="advertCard"]')))
                     print("Success!", success, d, 
                     flush=True)
                     break
