@@ -40,7 +40,8 @@ class car_background_information:
         
         elif self.driver == "chrome":
             from fake_headers import Headers
-
+            import logging 
+            logging.basicConfig(level=logging.DEBUG)
             header = Headers(
                 browser="chrome",  # Generate only Chrome UA
                 os="win",  # Generate only Windows platformd
@@ -280,8 +281,9 @@ class car_background_information:
                 try:     #Error basic handling None and not 200
                     print(f"Attempt {attempts}", flush=True)
                     print(f"DEBUG: url='{autotrader}'", flush=True)
-                    driver.get(autotrader)
+                    d = driver.get(autotrader)
                     success = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
+                    print(success, d)
                     break
 
                 except exceptions.TimeoutException:
