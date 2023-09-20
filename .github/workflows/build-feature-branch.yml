@@ -150,6 +150,6 @@ jobs:
             docker run --platform ${{ matrix.platform }} -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} scrape_only.py
        
        
-        - name: Run 11. calculate_prices_on_db.py
-          run: |
-            docker run --platform ${{ matrix.platform }} -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} "/home/runner/work/cargiantscrape/cargiantscrape/tools/11. calculate_prices_on_db.py"
+        # - name: Run 11. calculate_prices_on_db.py
+        #   run: |
+        #     docker run --platform ${{ matrix.platform }} -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} "/home/runner/work/cargiantscrape/cargiantscrape/tools/11. calculate_prices_on_db.py"

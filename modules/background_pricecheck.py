@@ -296,14 +296,12 @@ class car_background_information:
             temp = "".join(car_parameters)
             autotrader = f"https://www.autotrader.co.uk/car-search?postcode={self.postal_code}" + temp
           
-            print(f"Trying initial url {autotrader}", flush=True)
             while attempts < attempts_max:
                 try:     #Error basic handling None and not 200
-                    print(f"Going to Attempt {attempts}", flush=True)
-                    print(f"DEBUG: url='{autotrader}'", flush=True)
+                    print(f"DEBUG: Attempt {attempts} url='{autotrader}'", flush=True)
                     driver.get(autotrader)
-                    success = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
-                    print("Success!", success, flush=True)
+                    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-testid="advertCard"]')))
+                    print("Successfully got price data!", flush=True)
                     break
 
                 except exceptions.TimeoutException:

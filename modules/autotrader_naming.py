@@ -85,7 +85,7 @@ class autotrader_naming:
     def handle_cookie_prompt(self, driver: webdriver.Remote ):
         #handles cookie prompt
         wait = WebDriverWait(driver=driver, timeout=10)
-        try:
+        try:    
                 wait.until(EC.presence_of_element_located((By.TAG_NAME, 'iframe')))
                 cookie_prompt_iframe = driver.find_elements(By.TAG_NAME, "iframe")
                 if len(cookie_prompt_iframe) == 2: 
@@ -337,20 +337,20 @@ class autotrader_naming:
         # print(f"DEBUG using {url}", flush=True)
         driver = self.selenium_setup()
         wait = WebDriverWait(driver=driver, timeout=10)
-        driver.get(url)
-        self.handle_cookie_prompt(driver)
+        print(f"DEBUG: {url} Attempting to gather Model Variant", flush=True)
+
         attempts = 0
         while True:
             try:
                 driver.get(url)
+                self.handle_cookie_prompt(driver)
                 model_variant_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
                 model_variant_button.click()
-                print(f"DEBUG: {url} Clicked on Model Variant Pane", flush=True)
                 # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
-                wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
-                wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
+                wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-button"]')))
                 wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-section="aggregated_trim"]')))
                 model_variant_data_section =  driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]')
+                wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
                 model_variant_data = model_variant_data_section.find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
         
                 break
@@ -361,9 +361,9 @@ class autotrader_naming:
             except exceptions.StaleElementReferenceException:
                 print(f"DEBUG Stale element on model variant. Retrying", flush=True)
                 attempts +=1
-            except:
-                print(f"Error occured on clicking the Model Variants button", flush=True)
-                return None
+            except Exception as e:
+                print(f"Error occured on clicking the Model Variants button {e}", flush=True)
+                attempts +=1
             if attempts >= 5:
                 print(f"Failed to get model variants for {url}", flush=True)
                 return None
