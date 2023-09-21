@@ -90,7 +90,7 @@ jobs:
                   - name: Run Price scraping
                     if: steps.download_db_step.outcome == 'success'
                     run: |
-                      docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} /home/runner/work/cargiantscrape/cargiantscrape/calculate_prices_on_db.py
+                      docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} calculate_prices_on_db.py
           
                   - name: Save db data as an artifact
                     uses: actions/upload-artifact@v3
@@ -128,5 +128,5 @@ jobs:
         - name: Run Price scraping
           if: steps.download_db_step.outcome == 'success'
           run: |
-              docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} /home/runner/work/cargiantscrape/cargiantscrape/daily_report.py
+              docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} daily_report.py
   
