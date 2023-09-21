@@ -329,57 +329,60 @@ class WebScraperCargiant:
             car_manufacturer = model_split[0]
             model_name = model_split[1].strip()
             #PATCHING engine size
-            engine_size = None 
-            get_engine_size_regex = r"(\d\.\d)\s(.*)"
-            get_engine_size_regex_search = re.search(pattern=get_engine_size_regex, string=model_variant)    
-                # preventatibv measure incase nothing returned
+            engine_size = None # preventatibv measure incase nothing returned
+            get_engine_size_regex = r"(\d+\.\d+)(?:\s(.*))?" # r"(\d+.\d+)\s(.*)"
+            if model_variant:
+                get_engine_size_regex_search = re.search(pattern=get_engine_size_regex, string=model_variant)    
+                
+
             if get_engine_size_regex_search:
+                if get_engine_size_regex_search.group(2) == None:
+                    engine_size = get_engine_size_regex_search.group(1)
+                    model_variant = None
+                else:
                     engine_size = get_engine_size_regex_search.group(1)
                     model_variant = get_engine_size_regex_search.group(2)
 
             if car_manufacturer == "Mercedes":           
-
-                remove_d_regex = r"([dD])\s(.*)"
-                remove_d_regex_search = re.search(pattern=remove_d_regex, string=model_variant)
-                if remove_d_regex_search:
-                    model_name = model_name + remove_d_regex_search.group(1)
-                    model_variant = remove_d_regex_search.group(2)
-                cla_gla_models_regex = r"(\d{3})\s(.*)"
-                cla_gla_models_regex_search = re.search(pattern=cla_gla_models_regex, string=model_variant)
-                if cla_gla_models_regex_search:
-                    model_name = model_name + cla_gla_models_regex_search.group(1) 
-                    model_variant = cla_gla_models_regex_search.group(2)
+                if model_variant:
+                    remove_d_regex = r"([dD])\s(.*)"
+                    remove_d_regex_search = re.search(pattern=remove_d_regex, string=model_variant)
+                    if remove_d_regex_search:
+                        model_name = model_name + remove_d_regex_search.group(1)
+                        model_variant = remove_d_regex_search.group(2)
+                    cla_gla_models_regex = r"(\d{3})\s(.*)"
+                    cla_gla_models_regex_search = re.search(pattern=cla_gla_models_regex, string=model_variant)
+                    if cla_gla_models_regex_search:
+                        model_name = model_name + cla_gla_models_regex_search.group(1) 
+                        model_variant = cla_gla_models_regex_search.group(2)
 
                     #fixing mercedes diesel cars 220 becomes 220d
                  
             #PATCHING MODELS column
             elif car_manufacturer == "Lexus":# replace the UX becomes -> UX 250h to the model column
-                three_number_and_one_letter_regex = r"(\d{3}[a-z])"
-                model_part_search =  re.search(three_number_and_one_letter_regex, string=model_variant)
-                if model_part_search:
-                    if len(model_part_search.groups()) == 2:
-                        model_name = model_split[1].strip() + " " + model_part_search.group(0)
-                        model_variant_split = re.sub(three_number_and_one_letter_regex, '' , string=model_variant).split()
-                        model_variant = " ".join(model_variant_split)
-                        print(f"CARGIANT_MODULE: Replaced model: {model}->{model_name}. Model variant: {model_variant}")
-                else:
-                    engine_size = model_variant
-                    model_variant = None
+                three_number_and_one_letter_regex = r"\s(\d{3}\S)\s(.*)"
+                if model_variant:
+                    model_part_search =  re.search(three_number_and_one_letter_regex, string=model_variant)
+                    if model_part_search:
+                        model_variant = model_part_search.group(2)
+                        model_name = model_name + model_part_search.group(1)
+                    
                         
 
             elif model_name == "2 Series":# replace the 2 Series becomes -> 220d to the model column
                 three_number_and_one_letter_regex = r"(\d{3}[a-zA-z])"
-                model_part_search =  re.search(three_number_and_one_letter_regex, string=model_variant)
-                if model_part_search:
-                    model_name = model_part_search.group(0)
-                    model_variant_split = re.sub(three_number_and_one_letter_regex, '' , string=model_variant).split()
-                    model_variant = " ".join(model_variant_split)
-                    print(f"CARGIANT_MODULE: Replaced model: {model}->{model_name}. Model variant: {model_variant}")
-                else:
-                    model_name = model_split[1].strip()
-            # print(f"DEBUG: {model} -> {model_variant} -> {engine_size}  ")
+                if model_variant:
+                    model_part_search =  re.search(three_number_and_one_letter_regex, string=model_variant)
+                    if model_part_search:
+                        model_name = model_part_search.group(0)
+                        model_variant_split = re.sub(three_number_and_one_letter_regex, '' , string=model_variant).split()
+                        model_variant = " ".join(model_variant_split)
+                        print(f"CARGIANT_MODULE: Replaced model: {model}->{model_name}. Model variant: {model_variant}")
+                    else:
+                        model_name = model_split[1].strip()
+                # print(f"DEBUG: {model} -> {model_variant} -> {engine_size}  ")
 
-            # finish patching models
+                # finish patching models
 
             year_get = item.find_element(By.CSS_SELECTOR, "span.title__sub__plate").text.replace(",", "")
             year = re.sub(r"(\d{4}).*", r"\1" , year_get)

@@ -43,8 +43,8 @@ def scrape_cars():
         return(False)
     print("Starting", flush=True)
     CarSearch = WebScraperCargiant(driver="chrome", keepalive=True)
-    # CarSearch.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="BMW",numberofpages=0)
-    # CarSearch.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="Mercedes",numberofpages=0)
+    CarSearch.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="BMW",numberofpages=0)
+    CarSearch.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="Mercedes",numberofpages=0)
     CarSearch.search_for_manufacturer("Lexus")
     CarSearch.print_number_of_cars()
     return CarSearch
@@ -82,7 +82,7 @@ def import_cars(CarSearch):
 
 scraped_cars = scrape_cars()
 import_cars(scraped_cars)
-
+# print(DB.return_as_panda_dataframe()[[ "Model Variant"]])
 print(DB.return_as_panda_dataframe()[["Engine Size","Model", "Model Variant"]])
 # price_changed = DB.car_price_changed()
 # new_cars = DB.car_new_changed()
