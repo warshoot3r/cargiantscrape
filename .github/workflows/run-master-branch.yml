@@ -116,12 +116,14 @@ jobs:
           run: |
             printf 'api_token = "${{ secrets.api_token}}"\nchat_id="${{secrets.DEVELOPMENT_GROUP_CHAT_ID}}"\nmessage_id="${{secrets.DAILY_REPORT_MESSAGE_ID}}"\n' > /home/runner/work/cargiantscrape/cargiantscrape/credentials.py
 
-        - name: Download Artifacts
-          uses: actions/download-artifact@v2
+        - name: Download artifact This musn't be used as it will cause the db to be reverted
+          uses: dawidd6/action-download-artifact@v2
           id: download_db_step
+          continue-on-error: True
           with:
-              name: cargiantdbfile
-              path: /home/runner/work/cargiantscrape/cargiantscrape
+            name: cargiantdbfile
+            repo: ${{ github.repository }}
+            path: /home/runner/work/cargiantscrape/cargiantscrape/
 
         - name: Run Price scraping
           if: steps.download_db_step.outcome == 'success'
