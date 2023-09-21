@@ -112,22 +112,22 @@ if price_changed or new_cars or status_changed:
         if available.shape[0] > 0:
             bot.send_dataframe(chat_id, available[[x for x in table_filters] + ["CarStatus"]], "Available soon:", MessageThreadID=credentials.message_id)
 
-        bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", file_name="sold", MessageThreadID=credentials.message_id)
+        # bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", file_name="sold", MessageThreadID=credentials.message_id)
           #Send rest of cars
     csv_dataframe = DB.filter_table(filters, database) # every car
 
     # csv_dataframe['CarStatus'].fillna('NA', inplace=True) # fix for NA otherwise we can not use str.contains below
 
-    not_available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'].str.contains(r'AVAILABLE|Reserved', case=True, regex=True)] # The available cars
-    available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'] == "Available"] # The available cars
+    # not_available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'].str.contains(r'AVAILABLE|Reserved', case=True, regex=True)] # The available cars
+    # available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'] == "Available"] # The available cars
     # bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", data frame=available_csv, caption="Available Cars", file_name="available")
     # bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=not_available_csv, caption="Waiting Cars", file_name="waiting")
     #New way send multiple in one go.
-    data_frames = [available_csv, not_available_csv]
-    file_formats = ["csv","csv"]
-    captions = ["Available Cars", "Waiting Cars"]
-    file_names = ["available", "waiting"]
-    bot.send_dataframe_as_csv_files(captions=captions,chat_id=credentials.chat_id, dataframes=data_frames, file_names=file_names, MessageThreadID=credentials.message_id)
+    # data_frames = [available_csv, not_available_csv]
+    # file_formats = ["csv","csv"]
+    # captions = ["Available Cars", "Waiting Cars"]
+    # file_names = ["available", "waiting"]
+    # bot.send_dataframe_as_csv_files(captions=captions,chat_id=credentials.chat_id, dataframes=data_frames, file_names=file_names, MessageThreadID=credentials.message_id)
 
 
     DB.close_db()
