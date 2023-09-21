@@ -360,7 +360,7 @@ class WebScraperCargiant:
                  
             #PATCHING MODELS column
             elif car_manufacturer == "Lexus":# replace the UX becomes -> UX 250h to the model column
-                three_number_and_one_letter_regex = r"\s(\d{3}\S)\s(.*)"
+                three_number_and_one_letter_regex = r"(\d{3}\S)\s(.*)"
                 if model_variant:
                     model_part_search =  re.search(three_number_and_one_letter_regex, string=model_variant)
                     if model_part_search:
