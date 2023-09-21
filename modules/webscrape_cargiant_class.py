@@ -124,6 +124,9 @@ class WebScraperCargiant:
         """
         output = {}
         web_page_data = requests.get(url)
+        if not web_page_data.content:
+            print(f"DEBUG: Couldn't get {url}", flush=True)
+            return
         
         parsed_data = BeautifulSoup(web_page_data.content, "html.parser")
         data = parsed_data
@@ -151,9 +154,10 @@ class WebScraperCargiant:
                         output[field_propety_name] = field_property_data
 
         if debug:
+            print(f"Got {output['model']}", flush=True)
             for key, value in output.items():
-                print(f"DEBUG: {key} -> {value}", flush=True)
-
+                print(f"CARGIANT_MODULE: {key} -> {value}", flush=True)
+            print('\n', flush=True)
         return output
 
     def print_number_of_cars(self):

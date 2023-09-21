@@ -13,14 +13,31 @@ import bs4
 from selenium.webdriver.common.by import By
 import re
 from modules.webscrape_cargiant_class import WebScraperCargiant
+from modules.sqlite_db import SQLiteDatabase 
 #get autotrader variables for naming
-
 
 
 cargiant = WebScraperCargiant(driver="chrome", keepalive=False)
 
-url = "https://www.cargiant.co.uk/car/Suzuki/Celerio/LM67FFV"
-car_data = cargiant.get_car_details(url, debug=True)
+db = SQLiteDatabase(db_path='used_cars.db')
+
+
+filters = {
+
+    "Manufacturer": lambda x: x == "BMW"
+}
+db_data = db.return_as_panda_dataframe()
+data = db.filter_table(db=db_data, filters=filters)
+
+print(data)
+
+
+
+list_of_url_regs = data["URL"]
+
+for url in list_of_url_regs:
+    # url = "https://www.cargiant.co.uk/car/Suzuki/Celerio/LM67FFV"
+    car_data = cargiant.get_car_details(url, debug=True)
 
 
 
