@@ -300,6 +300,7 @@ class WebScraperCargiant:
         table_template = {
             "Manufacturer": [],
             "Car Status": [],
+            "Engine Size": [],
             "Model": [],
             "Model Variant": [],
             "Year": [],
@@ -328,6 +329,14 @@ class WebScraperCargiant:
             car_manufacturer = model_split[0]
 
             model_name = model_split[1].strip()
+            #PATCHING engine size
+            engine_size_regex = r"(\d[.]\d)"
+            engine_size_get = re.search(engine_size_regex, string=model_variant)
+            if engine_size_get:
+                engine_size = engine_size_get.group(0)
+                model_variant_without_engine_size = re.sub(pattern=engine_size_regex, repl='', string=model_variant).split()
+                model_variant = " ".join(model_variant_without_engine_size) #2.2 d AMG Line   beomce d AMG Line 
+
 
             #PATCHING MODELS column
             if car_manufacturer == "Lexus":# replace the UX becomes -> UX 250h to the model column
@@ -389,6 +398,7 @@ class WebScraperCargiant:
                 "Model": model_name,
                 "Model Variant": model_variant,
                 "Year": year,
+                "Engine Size": engine_size,
                 "Details": details,
                 "Price": price,
                 "Body Type": body_type,

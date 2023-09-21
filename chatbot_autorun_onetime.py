@@ -59,6 +59,7 @@ def import_cars(CarSearch):
                     Price=current_car["Price"],
                     Transmission=current_car["Transmission"],
                     Fuel=current_car["Fuel"],
+                    Engine_size=current_car["Engine Size"],
                     Reg=current_car["Reg"],
                     URL=current_car["URL"],
                     Model=current_car["Model"],

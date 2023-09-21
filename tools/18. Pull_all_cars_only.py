@@ -64,6 +64,7 @@ def import_cars(CarSearch):
                     Manufacturer=current_car["Manufacturer"],
                     Year=current_car["Year"],
                     Price=current_car["Price"],
+                    Engine_size=current_car["Engine Size"],
                     Transmission=current_car["Transmission"],
                     Fuel=current_car["Fuel"],
                     Reg=current_car["Reg"],
@@ -82,6 +83,8 @@ def import_cars(CarSearch):
 
 scraped_cars = scrape_cars()
 import_cars(scraped_cars)
+
+print(DB.return_as_panda_dataframe()[["Engine Size","Model", "Model Variant"]])
 # price_changed = DB.car_price_changed()
 # new_cars = DB.car_new_changed()
 # status_changed = DB.car_status_changed()

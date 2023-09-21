@@ -76,7 +76,7 @@ class SQLiteDatabase:
 
 
 
-    def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, ModelVariant=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None, CarStatus=None, ValuationPercentage=None, ValuationRange=None):
+    def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Engine_size=None ,ModelVariant=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None, CarStatus=None, ValuationPercentage=None, ValuationRange=None):
         """
         Imports car properties and adds them to the database.
         
@@ -100,6 +100,7 @@ class SQLiteDatabase:
         self.Year = int(Year) if Year is not None else None
         self.Price = int(Price) if Price is not None else None
         self.Body_Type = str(Body_Type) if Body_Type is not None else None
+        self.Engine_size = str(Engine_size) if Engine_size is not None else None
         self.Transmission = str(Transmission) if Transmission is not None else None
         self.Fuel = str(Fuel) if Fuel is not None else None
         self.Color = str(Color) if Color is not None else None
@@ -155,6 +156,7 @@ class SQLiteDatabase:
                     "CarStatus": "TEXT",
                     "Year": "INTEGER",
                     "Price": "INTEGER",
+                    "Engine Size": "FLOAT",
                     "ValuationPercentage": "INTEGER",
                     "ValuationRange": "TEXT",
                     "Mileage": "INTEGER",
@@ -195,6 +197,7 @@ class SQLiteDatabase:
                     "CarStatus": "TEXT",
                     "Year": "INTEGER",
                     "Price": "INTEGER",
+                    "Engine Size": "FLOAT",
                     "ValuationPercentage": "INTEGER",
                     "ValuationRange": "TEXT",
                     "Mileage": "INTEGER",
@@ -443,6 +446,7 @@ class SQLiteDatabase:
                     "Year": self.Year,
                     "Price": self.Price,
                     "Body Type": self.Body_Type,
+                    "Engine Size": self.Engine_size,
                     "Transmission": self.Transmission,
                     "Fuel": self.Fuel,
                     "Color": self.Color,
