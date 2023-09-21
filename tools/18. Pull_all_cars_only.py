@@ -29,9 +29,8 @@ filters = {
     'Mileage': lambda x: x <=80000,
     'Year': lambda x: x >= 2015,
     "CarStatus": lambda x: x != "Sold",
-    "Manufacturer": lambda x: x == "lexus",
-     # No BMW 1 Series
-     # No BMW i3's
+    # "Manufacturer": lambda x: x == "lexus",
+     # No BMW 1 Series 
     #  'Body Type': lambda bodytype: bodytype not in ("Estate", "SUV"), 
     # 'Model': lambda model: (not re.match(r"[A|1]\d+", model)) & (not model.startswith('i3')) &(not model.startswith('2 Series')) &(not model.startswith("B")) #
 }
@@ -45,8 +44,8 @@ def scrape_cars():
     print("Starting", flush=True)
     CarSearch = WebScraperCargiant(driver="chrome", keepalive=True)
     # CarSearch.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="BMW",numberofpages=0)
-    # CarSearch.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="Mercedes",numberofpages=0)
-    CarSearch.search_for_manufacturer("Lexus")
+    CarSearch.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="Mercedes",numberofpages=0)
+    # CarSearch.search_for_manufacturer("Lexus")
     CarSearch.print_number_of_cars()
     return CarSearch
 

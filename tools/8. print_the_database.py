@@ -17,4 +17,4 @@ data = db.return_as_panda_dataframe()
 db.print_as_panda_dataframe(data)
 
 
-# print(data["Model Variant"])
+print(data[["Engine Size","Model", "Model Variant", "URL"]])
