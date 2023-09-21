@@ -357,13 +357,15 @@ class WebScraperCargiant:
                 three_number_and_one_letter_regex = r"(\d{3}[a-z])"
                 model_part_search =  re.search(three_number_and_one_letter_regex, string=model_variant)
                 if model_part_search:
-                    model_name = model_split[1].strip() + " " + model_part_search.group(0)
-                    model_variant_split = re.sub(three_number_and_one_letter_regex, '' , string=model_variant).split()
-                    model_variant = " ".join(model_variant_split)
-                    print(f"CARGIANT_MODULE: Replaced model: {model}->{model_name}. Model variant: {model_variant}")
+                    if len(model_part_search.groups()) == 2:
+                        model_name = model_split[1].strip() + " " + model_part_search.group(0)
+                        model_variant_split = re.sub(three_number_and_one_letter_regex, '' , string=model_variant).split()
+                        model_variant = " ".join(model_variant_split)
+                        print(f"CARGIANT_MODULE: Replaced model: {model}->{model_name}. Model variant: {model_variant}")
                 else:
-                    model_name = model_split[1].strip()
-
+                    engine_size = model_variant
+                    model_variant = None
+                        
 
             elif model_name == "2 Series":# replace the 2 Series becomes -> 220d to the model column
                 three_number_and_one_letter_regex = r"(\d{3}[a-zA-z])"
