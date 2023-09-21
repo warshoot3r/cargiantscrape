@@ -126,7 +126,8 @@ class TelegramBot:
                     data = {
                         "chat_id": chat_id,
                         "text": chunk,
-                        "parse_mode": ParserType
+                        "parse_mode": ParserType,
+                        "reply_to_message_id": MessageThreadID,
                     }
                     response = requests.post(send_message_url, data=data)
                     response_json = response.json()
