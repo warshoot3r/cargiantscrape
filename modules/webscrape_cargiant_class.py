@@ -314,6 +314,7 @@ class WebScraperCargiant:
         
         for item in scraped_data:
             # Extracting car details
+            
             price_get = item.find_element(By.CSS_SELECTOR, "div.price-block__price").text
             price = re.sub("[^0-9.]", "", price_get)
             model = item.find_element(By.CSS_SELECTOR, "span.title__main.set-h3").text
@@ -321,7 +322,23 @@ class WebScraperCargiant:
             model_split = re.split(r'(^\s*[\w]+)\b', model)
             model_split = [item for item in model_split if item]
             car_manufacturer = model_split[0]
+
             model_name = model_split[1].strip()
+
+            #PATCHING MODELS column
+            if car_manufacturer == "Lexus":# replace the UX becomes -> UX 250h to the model column
+                three_number_and_one_letter_regex = r"(\d{3}[a-z])"
+                model_part_search =  re.search(three_number_and_one_letter_regex, string=model_variant)
+                if model_part_search:
+                    model_name = model_split[1].strip() + " " + model_part_search.group(0)
+                    model_variant_split = re.sub(three_number_and_one_letter_regex, '' , string=model_variant).split()
+                    model_variant = " ".join(model_variant_split)
+                    print(f"CARGIANT_MODULE: Replaced model: {model}->{model_name}. Model variant: {model_variant}")
+                else:
+                    model_name = model_split[1].strip()
+            else:
+                    model_name = model_split[1].strip()
+                
 
             year_get = item.find_element(By.CSS_SELECTOR, "span.title__sub__plate").text.replace(",", "")
             year = re.sub(r"(\d{4}).*", r"\1" , year_get)
@@ -428,8 +445,7 @@ class WebScraperCargiant:
                 # If you want to access the results from the futures, you can iterate through futures and retrieve results
                 for future in futures:
                     result = future.result()
-                    print(f"Finished a {result} scrape", flush=True)
-                    print(result, flush=True)
+                    print(f"Finished a pulling a parallel scrape", flush=True)
                     # Process the result as needed
         
     def stopwebdriver(self, driver):
