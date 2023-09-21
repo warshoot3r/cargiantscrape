@@ -2,7 +2,7 @@ import datetime
 import sys
 
 
-scheduled_time = datetime.time(20)# 8 PM
+scheduled_time = datetime.time(23)# 8 PM
 print(f"Scheduled time at {scheduled_time}")
 print(f"Machine time at {datetime.datetime.now()}")
 while True:
@@ -14,7 +14,7 @@ while True:
         gmt_time = current_time - time_difference
 
         converted_current_time = gmt_time.time()
-        if converted_current_time < scheduled_time:
+        if converted_current_time > scheduled_time:
             print(f"Not time yet {converted_current_time}")
             sys.exit()
 
