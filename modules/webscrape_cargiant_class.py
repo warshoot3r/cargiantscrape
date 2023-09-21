@@ -334,35 +334,39 @@ class WebScraperCargiant:
             engine_size_get = re.search(engine_size_regex, string=model_variant)
             engine_size = None # preventatibv measure incase nothing returned
             #Patching mercedes engine size, model variant and models fields 
-            if engine_size_get: #fixing mercedes diesel cars 220 becomes 220d
-                if car_manufacturer == "Mercedes":
-                    engine_size_regex = r"(\d[.]\d).([dD])(.*)"
-                    new_engine_size_get = re.findall(pattern=engine_size_regex, string=model_variant)
-                    if new_engine_size_get:
-                        if len(new_engine_size_get[0]) == 3:
-                            new_engine_size = new_engine_size_get[0]
-                            engine_size = new_engine_size[0]
-                            model_name = model_name + new_engine_size[1]
-                            model_variant = new_engine_size[2]                  
-                    else:
-                        
-                        regex = r"(\d[.]\d)\s(.*)"
-                        model_variant_without_engine_size = re.findall(pattern=regex, string=model_variant)
-                        for values in model_variant_without_engine_size:
-                            engine_size = values[0]
-                            model_variant = values[1] #2.2 d AMG Line   beomce d AMG Line
-
-            #         model_name = model_name.join(engine_size_get)
-            #         engine_size = engine_size_get
-            #         model_variant = engine_size_get.group(0)
+          
+            if car_manufacturer == "Mercedes" and engine_size_get:
+                    #fixing mercedes diesel cars 220 becomes 220d
+                        engine_size_regex = r"(\d[.]\d).([dD])(.*)"
+                        new_engine_size_get = re.findall(pattern=engine_size_regex, string=model_variant)
+                        if new_engine_size_get:
+                            if len(new_engine_size_get[0]) == 3:
+                                new_engine_size = new_engine_size_get[0]
+                                engine_size = new_engine_size[0]
+                                model_name = model_name + new_engine_size[1]
+                                model_variant = new_engine_size[2]  
+                                # print("1", model_variant, engine_size)
                 
-                else:
-                    engine_size = engine_size_get.group(1)
-                    model_variant_without_engine_size = re.sub(pattern=engine_size_regex, repl='', string=model_variant).split()
-                    model_variant = " ".join(model_variant_without_engine_size) #2.2 d AMG Line   beomce d AMG Line
- 
+                            else:
+                                
+                                regex = r"(\d[.]\d)\s(.*)"
+                                model_variant_without_engine_size = re.findall(pattern=regex, string=model_variant)
+                                print(model_variant, model_variant_without_engine_size)
+                                for values in model_variant_without_engine_size:
+                                    engine_size = values[0]
+                                    model_variant = values[1] #2.2 d AMG Line   beomce d AMG Line
+                                    # print("3", model_variant, engine_size)
+                        else:
+                                        regex = r"(\d[.]\d)\s(.*)"
+                                        model_variant_without_engine_size = re.findall(pattern=regex, string=model_variant)
+
+                                        # print(model_variant, model_variant_without_engine_size)
+                                        for values in model_variant_without_engine_size:
+                                            engine_size = values[0]
+                                            model_variant = values[1]
+                                            # print("2", model_variant, engine_size)
             #PATCHING MODELS column
-            if car_manufacturer == "Lexus":# replace the UX becomes -> UX 250h to the model column
+            elif car_manufacturer == "Lexus":# replace the UX becomes -> UX 250h to the model column
                 three_number_and_one_letter_regex = r"(\d{3}[a-z])"
                 model_part_search =  re.search(three_number_and_one_letter_regex, string=model_variant)
                 if model_part_search:
@@ -386,11 +390,13 @@ class WebScraperCargiant:
                     model_name = model_split[1].strip()
 
             else:
-                        regex = r"(\d[.]\d)\s(.*)"
-                        model_variant_without_engine_size = re.findall(pattern=regex, string=model_variant)
-                        for values in model_variant_without_engine_size:
-                            engine_size = values[0]
-                            model_variant = values[1] #2.2 
+                regex = r"(\d[.]\d)\s(.*)"
+                model_variant_without_engine_size = re.findall(pattern=regex, string=model_variant)
+                print(model_variant, model_variant_without_engine_size)
+                for values in model_variant_without_engine_size:
+                    engine_size = values[0]
+                    model_variant = values[1] #2.2 
+                    # print("2", model_variant, engine_size)
             # finish patching models
 
             year_get = item.find_element(By.CSS_SELECTOR, "span.title__sub__plate").text.replace(",", "")
