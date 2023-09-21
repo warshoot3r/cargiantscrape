@@ -20,7 +20,7 @@ autotrader_price_db = car_background_information(driver="chrome",postal_code="TR
 car_filters = {
     "ValuationRange" : lambda x: x is None,
     "CarStatus": lambda x: x != "Sold", # otherwise it will try to scrape  urls which are down
-     "Manufacturer": lambda x: x == 'Lexus'
+    #  "Manufacturer": lambda x: x == 'Lexus'
     # "Reg": lambda x : x == "CF17FSL"
    # "ValuationPercentage": lambda x: x is None,
    
