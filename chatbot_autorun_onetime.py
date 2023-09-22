@@ -19,7 +19,7 @@ DB.update_table()
 filters = {
    'Price': lambda x: x >= 10000,   
     'Price': lambda x: x <=30000,
-    'Mileage': lambda x: x <=80000,
+    'Mileage': lambda x: x <=60000,
     'Year': lambda x: x >= 2015,
     "CarStatus": lambda x: x != "Sold",
      # No Mercedes A Classes 
