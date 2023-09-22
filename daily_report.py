@@ -21,7 +21,7 @@ while True:
         gmt_time = current_time - time_difference
 
         converted_current_time = gmt_time.time()
-        if converted_current_time > scheduled_time:
+        if converted_current_time < scheduled_time:
             print(f"Not time yet {converted_current_time}")
             sys.exit()
 

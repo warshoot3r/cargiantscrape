@@ -366,8 +366,13 @@ class WebScraperCargiant:
                     if model_part_search:
                         model_variant = model_part_search.group(2)
                         model_name = model_name + model_part_search.group(1)
-                    
-                        
+                else:
+                    three_number_and_one_letter_regex_only =  r"\d{3}\S"
+                    lexus_generic_nodel_search = re.search(pattern=three_number_and_one_letter_regex_only, string=model_variant)
+                    if(lexus_generic_nodel_search):
+                                model_name = model_variant
+                                model_variant = None
+                                                
 
             elif model_name == "2 Series":# replace the 2 Series becomes -> 220d to the model column
                 three_number_and_one_letter_regex = r"(\d{3}[a-zA-z])"
