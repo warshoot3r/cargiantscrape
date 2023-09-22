@@ -360,19 +360,23 @@ class WebScraperCargiant:
                  
             #PATCHING MODELS column
             elif car_manufacturer == "Lexus":# replace the UX becomes -> UX 250h to the model column
-                three_number_and_one_letter_regex = r"(\d{3}\S)\s(.*)"
+                three_number_and_one_letter_regex = r"(\d{3}\S)\s(.*)|(\d{3}\S)"
                 if model_variant:
                     model_part_search =  re.search(three_number_and_one_letter_regex, string=model_variant)
                     if model_part_search:
-                        model_variant = model_part_search.group(2)
-                        model_name = model_name + model_part_search.group(1)
-                else:
-                    three_number_and_one_letter_regex_only =  r"\d{3}\S"
-                    lexus_generic_nodel_search = re.search(pattern=three_number_and_one_letter_regex_only, string=model_variant)
-                    if(lexus_generic_nodel_search):
-                                model_name = model_variant
-                                model_variant = None
-                                                
+                        print(model_part_search.groups())
+                        if model_part_search.group(1) is None and model_part_search.group(2) is None and model_part_search.group(3) is not None:
+                            model_name = model_name + model_part_search.group(3)
+                            model_variant = None
+                            print(f"DEBUG: 1. Match {model_name} ->> {model_variant}", flush=True)
+                        elif model_part_search.group(1) is not None and model_part_search.group(2) is not None and model_part_search.group(3) is None:
+                            model_variant = model_part_search.group(2)
+                            model_name = model_name + model_part_search.group(1)
+                            print(f"DEBUG: 2. Match {model_name} ->> {model_variant}", flush=True)
+
+                        else:
+                            print("DEBUG: Regex for Lexus not matched", flush=True)
+                        
 
             elif model_name == "2 Series":# replace the 2 Series becomes -> 220d to the model column
                 three_number_and_one_letter_regex = r"(\d{3}[a-zA-z])"
@@ -382,10 +386,10 @@ class WebScraperCargiant:
                         model_name = model_part_search.group(0)
                         model_variant_split = re.sub(three_number_and_one_letter_regex, '' , string=model_variant).split()
                         model_variant = " ".join(model_variant_split)
-                        print(f"CARGIANT_MODULE: Replaced model: {model}->{model_name}. Model variant: {model_variant}")
+                        print(f"CARGIANT_MODULE: Replaced model: {model}->{model_name}. Model variant: {model_variant}",flush=True)
                     else:
                         model_name = model_split[1].strip()
-                # print(f"DEBUG: {model} -> {model_variant} -> {engine_size}  ")
+            print(f"DEBUG: {model} -> {model_variant} -> {engine_size}  ")
 
                 # finish patching models
 
