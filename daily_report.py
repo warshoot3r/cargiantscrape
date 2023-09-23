@@ -45,6 +45,7 @@ filters = {
     'Mileage': lambda x: x <= 60000,
     'Year': lambda x: x >= 2015,
     "CarStatus": lambda x: x != "Sold",
+    "Engine Size": lambda x: x > "1.5",
     # No Mercedes A Classes
     # No BMW 1 Series
     # No BMW i3's
