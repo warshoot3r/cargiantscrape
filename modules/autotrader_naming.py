@@ -352,7 +352,15 @@ class autotrader_naming:
                 model_variant_data_section =  driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]')
                 wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
                 model_variant_data = model_variant_data_section.find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
-        
+                models = []
+                for model_variant in model_variant_data:
+                    try :
+                        models.append(model_variant.text)
+                    except exceptions.StaleElementReferenceException:
+                        print(f"DEBUG: Stale elemt retrieving model name")
+                    except Exception as e:
+                        print(f"DEBUG: Error occured extracting model name: {e}")
+
                 break
             except exceptions.TimeoutException:
                 print(f"DEBUG: {car_model} is not visible yet", flush=True)
@@ -372,11 +380,7 @@ class autotrader_naming:
 
        
 
-        models = []
-        for model_variant in model_variant_data:
-            models.append(model_variant.text)
-        
-        return models
+
     
 # naming = autotrader_naming(driver="chrome")
 # # print(naming.get_model_variant_from_model(make="BMW",car_model="1 Series"), flush=True)
