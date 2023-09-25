@@ -9,8 +9,8 @@ import datetime
 import sys
 
 
-scheduled_time_start_hour = 20
-scheduled_time_end_hour = 21
+scheduled_time_start_hour = 18
+scheduled_time_end_hour = 19
 
 print(f"Scheduled time is {scheduled_time_start_hour}:00 to {scheduled_time_end_hour}:00. Machine time -> {datetime.datetime.now().strftime('%H:%M')}")
 while True:
@@ -63,7 +63,7 @@ not_available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'].str.contains(
     r'AVAILABLE|Reserved', case=True, regex=True)]  # The available cars
 # The available cars
 available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'] == "Available"]
-sold_csv = csv_dataframe.loc[csv_dataframe["CarStatus"] == "Sold"]
+sold_csv = database.loc[csv_dataframe["CarStatus"] == "Sold"]
 
 
 data_frames = [not_available_csv, available_csv, sold_csv]
