@@ -14,7 +14,7 @@ print("Successful teleegram bot init", flush=True)
 data = DB.return_as_panda_dataframe()
 
 #Create selenium
-cars = WebScraperCargiant(driver="chromium", keepalive=True)
+cars = WebScraperCargiant(driver="chrome", keepalive=True)
 print("Successful selenium init", flush=True)
 # test 1
 cars.get_car_makes()
