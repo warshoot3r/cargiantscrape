@@ -20,7 +20,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && apt-get install -y --no-install-recommends \
     chromium \
     chromium-driver \
-    libatlas3-base libgfortran5 
+    libatlas3-base libgfortran5 \
+    python3-pil \
+    python3-pil.imagetk
 
 #Set env
 ENV PATH="/usr/lib/chromium/:${PATH}"
