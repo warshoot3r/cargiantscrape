@@ -40,13 +40,12 @@ class WebScraperCargiant:
         else: 
             self.url = "https://www.cargiant.co.uk/search/all"
 
-    def initialize_driver(self):
+    def initialize_driver(self) -> webdriver.Remote:
         """
         Initializes the Selenium driver based on the specified driver type.
         """
         if self.driver == "safari":
             safari_options = SafariOptions()
-            safari_options.headless = True  # Safari doesn't support the "--headless" argument, so we use the headless property
             return webdriver.Safari(options=safari_options)
         
         elif self.driver == "chrome":
@@ -91,7 +90,12 @@ class WebScraperCargiant:
             firefox_options.add_argument("--ignore-certificate-errors")
             firefox_options.add_argument("--start-minimized")
             return webdriver.Firefox(options=firefox_options)
-
+    def get_car_url_snapshot(self, url):
+        driver = self.initialize_driver()
+        driver.get(url=url)
+        return driver.get_screenshot_as_base64()
+        
+        
     def get_car_details(self, url, debug=False):
         """
         Goes to car giant URL and then scrapes for the specifiations of car data

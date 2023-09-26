@@ -4,10 +4,49 @@ import re
 import zipfile
 import tempfile
 import os
+from PIL import Image
+import io
+import base64
+
 class TelegramBot:
     def __init__(self, api_token):
         self.api_token = api_token
         self.base_url = f"https://api.telegram.org/bot{api_token}/"
+    
+    def send_base64picture(self, chat_id, base64_data):
+
+        image = base64.b64decode(base64_data)
+        #compress image
+      
+        compressed_image  = Image.open(io.BytesIO(image)).convert("RGB")
+
+        
+        output_stream = io.BytesIO()
+        compressed_image.save(output_stream, format="JPEG", optimize=True)
+        compressed_image_data = output_stream.getvalue()
+        
+        # base64_compress_image = base64.b64encode(compressed_image_data)
+        # print(base64_compress_image)
+        #send the image
+        data = {
+            "chat_id" : chat_id,
+        }
+        
+        files = {
+            "photo": ("photo.jpg", io.BytesIO(compressed_image_data), "image/jpeg" )
+        }
+        
+        url = self.base_url+"sendPhoto"
+        print(f"Sent via {url} {data.keys()}")
+        response = requests.post(url, data=data, files=files)
+        response_parsed = response.json()
+        
+        if response_parsed["ok"]:
+            print("Sent successfully")
+        else:
+            print(response_parsed["description"])
+        
+        
 
     def send_dataframe(self, chat_id, dataframe, caption="", show_header=False, MessageThreadID = None):
         # Format URLs using the provided code

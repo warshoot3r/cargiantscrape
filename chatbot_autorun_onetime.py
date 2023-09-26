@@ -6,7 +6,7 @@ import re
 import time
 
 # Init
-force_scrape = True
+force_scrape = False
 
 api_token = credentials.api_token
 chat_id = credentials.chat_id
