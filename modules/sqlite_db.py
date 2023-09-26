@@ -74,8 +74,16 @@ class SQLiteDatabase:
             # If last_db_write_time is None, the database has never been written before.
             return False
 
+    def get_car_page_screenshot(self, reg):
+        DB_string = '''
+                    SELECT URL FROM used_cars where reg = ?
+        '''
 
-
+        self.cursor.execute(DB_string, (reg,))
+        data = self.cursor.fetchone()[0]
+        return data
+        
+        
     def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Engine_size=None ,ModelVariant=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None, CarStatus=None, ValuationPercentage=None, ValuationRange=None):
         """
         Imports car properties and adds them to the database.
@@ -333,7 +341,7 @@ class SQLiteDatabase:
             None
         """
         self.cursor.execute("SELECT URL from used_cars ORDER BY DateUpdated ASC")
-        return self.cursor.fetchall()
+        return [row[0] for row in self.cursor.fetchall()]
   
     def retrieve_db(self, column, input_data):
         """

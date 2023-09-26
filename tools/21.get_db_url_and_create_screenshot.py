@@ -23,14 +23,6 @@ bot = TelegramBot(api_token)
 DB = SQLiteDatabase()
 cg = WebScraperCargiant(driver="chrome", keepalive=False)
 
-urls = DB.get_all_url()
 
-# picture = cg.get_car_url_snapshot(url="https://www.cargiant.co.uk/car/BMW/330e/RO18UTU")
-# bot.send_base64picture(chat_id=credentials.chat_id, message_id=credentials.cargiant_testing_message_id, base64_data=picture) 
+data = DB.return_as_panda_dataframe()
 
-
-
-url = urls[:5]
-print(url)
-picture = cg.get_car_url_snapshot(url=url)
-bot.send_base64pictures(chat_id=credentials.chat_id, message_id=credentials.cargiant_testing_message_id, base64_data=picture) 

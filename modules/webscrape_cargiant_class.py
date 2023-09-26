@@ -90,10 +90,34 @@ class WebScraperCargiant:
             firefox_options.add_argument("--ignore-certificate-errors")
             firefox_options.add_argument("--start-minimized")
             return webdriver.Firefox(options=firefox_options)
+
     def get_car_url_snapshot(self, url):
+        '''
+        Returns a screenshot in base64. 
+        If INPUT array, return an array
+        If single input ,return single base64 string
+        
+        INPUT 
+            URL eg. https://www.cargiant.co.uk/car/BMW/330e/RO18UTU
+            
+            Returns Base64 encoded string
+        '''
         driver = self.initialize_driver()
-        driver.get(url=url)
-        return driver.get_screenshot_as_base64()
+
+        if(isinstance(url, str)):
+                driver.get(url=url)
+                return driver.get_screenshot_as_base64()
+        elif(isinstance(url, list)):
+                data = list()
+                for car in url:
+                    driver.get(url=car)
+                    screenshot = driver.get_screenshot_as_base64()
+                    data.append(screenshot)
+                return data
+        else:
+            raise TypeError("Input must be either string or list")
+        
+        
         
         
     def get_car_details(self, url, debug=False):
@@ -513,6 +537,7 @@ class WebScraperCargiant:
         driver.close()
         driver.quit()
         #Force killing the processes
+        
     def check_reg_url_alive(self, Registration):
         """
         Returns true if reg url is alive. Used with DB to move to sold database
