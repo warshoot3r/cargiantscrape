@@ -4,10 +4,73 @@ import re
 import zipfile
 import tempfile
 import os
+import io
+
 class TelegramBot:
     def __init__(self, api_token):
         self.api_token = api_token
         self.base_url = f"https://api.telegram.org/bot{api_token}/"
+        
+        
+    # def __convert_picture(self, image): base64 way
+    #       #compress image
+    #     decoded = base64.b64decode(image)
+    #     compressed_image  = Image.open(io.BytesIO(decoded)).convert("RGB")
+
+        
+    #     output_stream = io.BytesIO()
+    #     compressed_image.save(output_stream, format="JPEG", optimize=True)
+    #     compressed_image_data = output_stream.getvalue()
+
+    #     return compressed_image_data
+
+
+    #     return compressed_image_data
+    def __send_telegrampicture(self, chat_id, message_id, image_data, caption=None):
+        data = {
+            "chat_id" : chat_id,
+            "reply_to_message_id": message_id,
+            "caption": caption,
+        }
+        
+        files = {
+            "photo": ("photo.jpg", io.BytesIO(image_data), "image/jpeg" )
+        }
+        
+        url = self.base_url+"sendPhoto"
+        print(f"Sent via {url} {data.keys()}")
+        response = requests.post(url, data=data, files=files)
+        response_parsed = response.json()
+        
+        if response_parsed["ok"]:
+            print("Sent successfully")
+        else:
+            print(response_parsed["description"])
+        
+    def send_base64pictures(self, chat_id, message_id, base64_data, caption=None):
+        """
+        Sends an array of pictures of single picture
+
+        Args:
+            chat_id (string): chat id of chat in telegram
+            message_id (string): message id for the chat in telegram
+            base64_data (string or array): picture data in base64 encoded string
+        """
+        if isinstance(base64_data, list):
+            for car in base64_data:
+                # compressed_image = self.__convert_picture(image=car)
+                self.__send_telegrampicture(chat_id=chat_id, image_data=car, message_id=message_id)
+        elif isinstance(base64_data, str):
+                # compressed_image = self.__convert_picture(image=base64_data)
+                self.__send_telegrampicture(chat_id=chat_id, image_data=base64_data, message_id=message_id, caption=caption )
+     
+      
+        # base64_compress_image = base64.b64encode(compressed_image_data)
+        # print(base64_compress_image)
+        #send the image
+
+        
+        
 
     def send_dataframe(self, chat_id, dataframe, caption="", show_header=False, MessageThreadID = None):
         # Format URLs using the provided code

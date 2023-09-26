@@ -14,6 +14,9 @@ chat_id = credentials.chat_id
 bot = TelegramBot(api_token)
 DB = SQLiteDatabase()
 
+CarSearch = WebScraperCargiant(driver="chrome", keepalive=True)
+
+
 DB.update_table()
 # Filters
 filters = {
@@ -21,12 +24,28 @@ filters = {
     'Price': lambda x: x <=30000,
     'Mileage': lambda x: x <=60000,
     'Year': lambda x: x >= 2015,
-    "Engine Size": lambda x: x > "1.5",
+    "Engine Size": lambda x: x >= "1.5",
     "CarStatus": lambda x: x != "Sold",
      # No Mercedes A Classes 
      # No BMW 1 Series
      # No BMW i3's
      'Body Type': lambda bodytype: bodytype not in ("Estate", "SUV"), 
+    'Model': lambda model: (not re.match(r"[A|1]\d+", model)) & (not model.startswith('i3')) &(not model.startswith('2 Series')) &(not model.startswith("B")) #
+}
+
+
+very_ideal_filters = {
+   'Price': lambda x: x >= 9000,   
+    'Price': lambda x: x <=14000,
+    'Mileage': lambda x: x <=60000,
+    'Year': lambda x: x >= 2017,
+    "Engine Size": lambda x: x >= "2.0",
+    "CarStatus": lambda x: x != "Sold",
+    "Transmission": lambda x: x == "Auto",
+     # No Mercedes A Classes 
+     # No BMW 1 Series
+     # No BMW i3's
+    'Body Type': lambda bodytype: bodytype not in ("Estate", "SUV"), 
     'Model': lambda model: (not re.match(r"[A|1]\d+", model)) & (not model.startswith('i3')) &(not model.startswith('2 Series')) &(not model.startswith("B")) #
 }
 
@@ -37,7 +56,6 @@ def scrape_cars():
         time.sleep(2)
         return(False)
     print("Starting", flush=True)
-    CarSearch = WebScraperCargiant(driver="chrome", keepalive=True)
     CarSearch.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="BMW",numberofpages=0)
     CarSearch.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="Mercedes",numberofpages=0)
     CarSearch.search_for_manufacturer("Lexus")
@@ -104,18 +122,37 @@ if price_changed or new_cars or status_changed:
         sold = database_filtered.loc[database_filtered['CarStatus'] == "Sold"]
         if sold.shape[0] > 0:
             bot.send_dataframe(chat_id, sold[table_filters], caption="Sold Cars",  MessageThreadID=credentials.message_id)
-
+    
         reserved = database_filtered.loc[database_filtered['CarStatus'] == "Reserved"]
         if reserved.shape[0] > 0:
             bot.send_dataframe(chat_id, reserved[table_filters], caption="Reserved Cars",  MessageThreadID=credentials.message_id)
-        
+            # urls = reserved["URL"].to_list()
+            # print(urls)
+            # picture_data = CarSearch.get_car_url_snapshot(url=urls)
+            # bot.send_base64pictures(chat_id=credentials.chat_id, base64_data=picture_data, caption="Sold cars", message_id=credentials.message_id)
+
         available = database_filtered.loc[database_filtered['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)]
         if available.shape[0] > 0:
             bot.send_dataframe(chat_id, available[[x for x in table_filters] + ["CarStatus"]], "Available soon:", MessageThreadID=credentials.message_id)
+            # urls = available["URL"].to_list()
+            # picture_data = CarSearch.get_car_url_snapshot(url=urls)
+            # bot.send_base64pictures(chat_id=credentials.chat_id, base64_data=picture_data, caption="Sold cars", message_id=credentials.message_id)
+        ideal_cars_from_status_changed = DB.filter_table(db=database_filtered, filters=very_ideal_filters)
+        
+        
+        # Ideal cars from stricter filter
+        if ideal_cars_from_status_changed.shape[0] > 0:
+            print(f"Got cars for ideal filter", flush=True)
+            bot.send_message(chat_id=chat_id, message="Got Strict filter cars: ")
+            urls = ideal_cars_from_status_changed["URL"].to_list()
+            picture_data = CarSearch.get_car_url_snapshot(url=urls)
+            # bot.send_dataframe(chat_id, ideal_cars_from_status_changed, caption="Ideal Cars",  MessageThreadID=credentials.message_id)
+            bot.send_base64pictures(chat_id=credentials.chat_id, base64_data=picture_data, caption="Sold cars", message_id=credentials.message_id)
 
+            
         # bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", file_name="sold", MessageThreadID=credentials.message_id)
           #Send rest of cars
-    csv_dataframe = DB.filter_table(filters, database) # every car
+    # csv_dataframe = DB.filter_table(filters, database) # every car
 
     # csv_dataframe['CarStatus'].fillna('NA', inplace=True) # fix for NA otherwise we can not use str.contains below
 
