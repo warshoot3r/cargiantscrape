@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -70,19 +70,7 @@ class WebScraperCargiant:
             chrome_options.add_argument("--enable-automation")
             chrome_options.add_argument("--disable-background-networking")
             return webdriver.Chrome(options=chrome_options)
-        elif self.driver == "chromium":
-            chromium_options = ChromiumOptions()
-            chromium_options.add_argument("--no-sandbox")
-            chromium_options.add_argument("headless")
-            chromium_options.add_argument("--crash-dumps-dir=/tmp")
-            chromium_options.add_argument("--disable-gpu")
-            chromium_options.add_argument("--disable-dev-shm-usage")
-            chromium_options.add_argument("--window-size=800,600")
-            chromium_options.add_argument("--ignore-certificate-errors")
-            chromium_options.add_argument("--disable-extensions")
-            chromium_options.add_argument("--start-minimized")
-            return webdriver.Chrome(options=chromium_options)
-       
+        
         elif self.driver == "firefox":
             firefox_options = FirefoxOptions()
             firefox_options.headless = True
@@ -90,6 +78,8 @@ class WebScraperCargiant:
             firefox_options.add_argument("--ignore-certificate-errors")
             firefox_options.add_argument("--start-minimized")
             return webdriver.Firefox(options=firefox_options)
+        
+        raise ValueError("ERROR Invalid Driver specified")
 
     def get_car_url_snapshot(self, url):
         '''
@@ -111,7 +101,7 @@ class WebScraperCargiant:
                 data = list()
                 for car in url:
                     driver.get(url=car)
-                    screenshot = driver.get_screenshot_as_base64()
+                    screenshot = driver.get_screenshot_as_png()
                     data.append(screenshot)
                 return data
         else:

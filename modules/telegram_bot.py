@@ -4,9 +4,7 @@ import re
 import zipfile
 import tempfile
 import os
-from PIL import Image
 import io
-import base64
 
 class TelegramBot:
     def __init__(self, api_token):
@@ -14,18 +12,20 @@ class TelegramBot:
         self.base_url = f"https://api.telegram.org/bot{api_token}/"
         
         
-    def __convert_picture(self, image):
-          #compress image
-        decoded = base64.b64decode(image)
-        compressed_image  = Image.open(io.BytesIO(decoded)).convert("RGB")
+    # def __convert_picture(self, image): base64 way
+    #       #compress image
+    #     decoded = base64.b64decode(image)
+    #     compressed_image  = Image.open(io.BytesIO(decoded)).convert("RGB")
 
         
-        output_stream = io.BytesIO()
-        compressed_image.save(output_stream, format="JPEG", optimize=True)
-        compressed_image_data = output_stream.getvalue()
+    #     output_stream = io.BytesIO()
+    #     compressed_image.save(output_stream, format="JPEG", optimize=True)
+    #     compressed_image_data = output_stream.getvalue()
 
-        return compressed_image_data
-        
+    #     return compressed_image_data
+
+
+    #     return compressed_image_data
     def __send_telegrampicture(self, chat_id, message_id, image_data, caption=None):
         data = {
             "chat_id" : chat_id,
@@ -58,10 +58,10 @@ class TelegramBot:
         """
         if isinstance(base64_data, list):
             for car in base64_data:
-                compressed_image = self.__convert_picture(image=car)
-                self.__send_telegrampicture(chat_id=chat_id, image_data=compressed_image, message_id=message_id)
+                # compressed_image = self.__convert_picture(image=car)
+                self.__send_telegrampicture(chat_id=chat_id, image_data=car, message_id=message_id)
         elif isinstance(base64_data, str):
-                compressed_image = self.__convert_picture(image=base64_data)
+                # compressed_image = self.__convert_picture(image=base64_data)
                 self.__send_telegrampicture(chat_id=chat_id, image_data=base64_data, message_id=message_id, caption=caption )
      
       
