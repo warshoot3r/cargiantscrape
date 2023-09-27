@@ -331,7 +331,8 @@ class autotrader_naming:
     def get_model_variant_from_model(self, make, car_model):
         #may fix the nosuchelementexcepton
         make = make.replace(" ","%20")
-        car_model = car_model.replace(" ", "%20")
+        if(car_model is not None):
+            car_model = car_model.replace(" ", "%20")
         url = f"https://www.autotrader.co.uk/car-search?make={make}&model={car_model}&postcode=TR17%200BJ"
         # print(f"DEBUG using {url}", flush=True)
         driver = self.selenium_setup()
