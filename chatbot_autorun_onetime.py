@@ -36,8 +36,8 @@ filters = {
 
 very_ideal_filters = {
    'Price': lambda x: x >= 9000,   
-    'Price': lambda x: x <=14000,
-    'Mileage': lambda x: x <=60000,
+    'Price': lambda x: x <=16000,
+    'Mileage': lambda x: x <=80000,
     'Year': lambda x: x >= 2017,
     "Engine Size": lambda x: x >= "2.0",
     "CarStatus": lambda x: x != "Sold",
