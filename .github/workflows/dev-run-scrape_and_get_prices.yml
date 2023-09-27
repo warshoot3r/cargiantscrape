@@ -11,15 +11,15 @@ jobs:
             matrix:
               # Select the images from DockerHub here to test
               image_variant:
-                - jammyboi/cgwebscrape:v2_with_price_valuation_nohistory
+                - jammyboi/cgwebscrape
             fail-fast: false
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v3
 
-        - name: Docker pull image
+        - name: Docker pull image from docker based on github ref name
           run: |
-              docker pull "${{ matrix.image_variant }}"
+              docker pull "${{ matrix.image_variant }}":"${{ github.ref_name }}"
 
         - name: Make Credentials.py
           run: |
