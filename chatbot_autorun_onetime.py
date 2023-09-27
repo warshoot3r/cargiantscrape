@@ -143,7 +143,7 @@ if price_changed or new_cars or status_changed:
         # Ideal cars from stricter filter
         if ideal_cars_from_status_changed.shape[0] > 0:
             print(f"Got cars for ideal filter", flush=True)
-            bot.send_message(chat_id=chat_id, message="Got Strict filter cars: ")
+            bot.send_message(chat_id=chat_id, message="Got Strict filter cars!",MessageThreadID=credentials.message_id)
             urls = ideal_cars_from_status_changed["URL"].to_list()
             picture_data = CarSearch.get_car_url_snapshot(url=urls)
             # bot.send_dataframe(chat_id, ideal_cars_from_status_changed, caption="Ideal Cars",  MessageThreadID=credentials.message_id)

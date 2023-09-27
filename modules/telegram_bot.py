@@ -14,7 +14,7 @@ class TelegramBot:
         
     # def __convert_picture(self, image): base64 way
     #       #compress image
-    #     decoded = base64.b64decode(image)
+    #     decoded = base64.b64decode(image)send_message
     #     compressed_image  = Image.open(io.BytesIO(decoded)).convert("RGB")
 
         
