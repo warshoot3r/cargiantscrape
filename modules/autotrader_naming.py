@@ -220,7 +220,6 @@ class autotrader_naming:
             model_variants_from_model = custom_data
         else:
             model_variants_from_model = self.get_model_variant_from_model(car_model=car_model,make=car_make)
-
         best_match = None
         best_score = 0
 
@@ -338,39 +337,44 @@ class autotrader_naming:
         driver = self.selenium_setup()
         wait = WebDriverWait(driver=driver, timeout=10)
         print(f"DEBUG: {url} Attempting to gather Model Variant", flush=True)
-
+        driver.get(url)
         attempts = 0
         while True:
+            models = []
             try:
-                driver.get(url)
                 model_variant_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
                 self.handle_cookie_prompt(driver)
-                model_variant_button.click()
                 # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
                 wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-button"]')))
+                model_variant_button.click()
+                print("Clicked on variant pane", flush=True)
                 wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-section="aggregated_trim"]')))
                 model_variant_data_section =  driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]')
                 wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
                 model_variant_data = model_variant_data_section.find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
-                models = []
+
                 for model_variant in model_variant_data:
                     try :
                         models.append(model_variant.text)
                     except exceptions.StaleElementReferenceException:
-                        print(f"DEBUG: Stale elemt retrieving model name")
+                        print(f"DEBUG: Stale elementt retrieving model name")
                     except Exception as e:
                         print(f"DEBUG: Error occured extracting model name: {e}")
-
-                break
+                        break
+                print((models))
+                return models
             except exceptions.TimeoutException:
                 print(f"DEBUG: {car_model} is not visible yet", flush=True)
+                driver.get(url)
                 time.sleep(1)
                 attempts += 1
             except exceptions.StaleElementReferenceException:
                 print(f"DEBUG Stale element on model variant. Retrying", flush=True)
+                driver.get(url)
                 attempts +=1
             except Exception as e:
                 print(f"Error occured on clicking the Model Variants button {e}", flush=True)
+                driver.get(url)
                 attempts +=1
             if attempts >= 5:
                 print(f"Failed to get model variants for {url}", flush=True)
