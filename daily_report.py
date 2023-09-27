@@ -10,7 +10,7 @@ import sys
 
 
 scheduled_time_start_hour = 18
-scheduled_time_end_hour = 19
+scheduled_time_end_hour = 23
 
 print(f"Scheduled time is {scheduled_time_start_hour}:00 to {scheduled_time_end_hour}:00. Machine time -> {datetime.datetime.now().strftime('%H:%M')}")
 while True:
@@ -59,12 +59,20 @@ filters = {
 database = DB.return_as_panda_dataframe()
 csv_dataframe = DB.filter_table(filters, database)  # every car filtered
 
+
 not_available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'].str.contains(
     r'AVAILABLE|Reserved', case=True, regex=True)]  # The available cars
 # The available cars
 available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'] == "Available"]
-sold_csv = database.loc[csv_dataframe["CarStatus"] == "Sold"]
 
+
+
+if (csv_dataframe["CarStatus"] == "Sold").any():
+    sold_csv = database.loc[csv_dataframe["CarStatus"] == "Sold"]
+    # Now you can work with the 'sold_csv' DataFrame
+else:
+    # Handle the case when there are no "Sold" entries in the DataFrame
+    sold_csv = database  # You can set 'sold_csv' to None or perform any other desired action
 
 data_frames = [not_available_csv, available_csv, sold_csv]
 file_formats = ["csv", "csv", "csv"]
