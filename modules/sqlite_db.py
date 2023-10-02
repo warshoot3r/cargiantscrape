@@ -19,6 +19,7 @@ class SQLiteDatabase:
             self.db_path = "used_cars.db"
         else:
             self.db_path = db_path
+        pd.set_option('display.max_rows', None)
         self.open_db()
         self.create_table()
         self.number_of_car_prices_changed = 0

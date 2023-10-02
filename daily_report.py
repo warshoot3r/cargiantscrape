@@ -9,7 +9,7 @@ import datetime
 import sys
 
 
-scheduled_time_start_hour = 18
+scheduled_time_start_hour = 5
 scheduled_time_end_hour = 23
 
 print(f"Scheduled time is {scheduled_time_start_hour}:00 to {scheduled_time_end_hour}:00. Machine time -> {datetime.datetime.now().strftime('%H:%M')}")
@@ -66,13 +66,9 @@ not_available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'].str.contains(
 available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'] == "Available"]
 
 
+sold_csv = csv_dataframe.loc[csv_dataframe['CarStatus'] == "Sold"]
 
-if (csv_dataframe["CarStatus"] == "Sold").any():
-    sold_csv = database.loc[csv_dataframe["CarStatus"] == "Sold"]
-    # Now you can work with the 'sold_csv' DataFrame
-else:
-    # Handle the case when there are no "Sold" entries in the DataFrame
-    sold_csv = database  # You can set 'sold_csv' to None or perform any other desired action
+print(csv_dataframe, flush=True)
 
 data_frames = [not_available_csv, available_csv, sold_csv]
 file_formats = ["csv", "csv", "csv"]
@@ -94,12 +90,12 @@ for items in range(3):
 
 
 
-# bot.send_dataframe_as_multiple_files_as_zip(
-#     file_formats=file_formats,
-#     captions=captions,
-#     chat_id=credentials.chat_id,
-#     dataframes=data_frames,
-#     file_names=file_names,
-#     MessageThreadID=message_id
+bot.send_dataframe_as_multiple_files_as_zip(
+    file_formats=file_formats,
+    captions=captions,
+    chat_id=credentials.chat_id,
+    dataframes=data_frames,
+    file_names=file_names,
+    MessageThreadID=message_id
 
-# )
+)

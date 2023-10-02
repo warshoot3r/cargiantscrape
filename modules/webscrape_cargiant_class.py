@@ -32,6 +32,7 @@ class WebScraperCargiant:
         self.keepalive = bool(keepalive)
         self.data = pd.DataFrame()
         pd.set_option("display.max_colwidth", 100)
+        pd.set_option('display.max_rows', None)
         self.length = self.data.shape[0]
         if manufacturer_search is not None:
             self.manufacturer_search = manufacturer_search
