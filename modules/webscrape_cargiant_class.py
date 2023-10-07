@@ -142,7 +142,7 @@ class WebScraperCargiant:
         
         """
         output = {}
-        web_page_data = requests.get(url)
+        web_page_data = requests.get(url, redirects=False)
         if not web_page_data.content:
             print(f"DEBUG: Couldn't get {url}", flush=True)
             return
@@ -537,9 +537,9 @@ class WebScraperCargiant:
         """
 
         # check if car giant is alive 
-        main_website = requests.get("https://www.cargiant.co.uk")
+        main_website = requests.get("https://www.cargiant.co.uk", allow_redirects=False)
         if main_website.ok:
-            get_reg_url = requests.get(Registration)
+            get_reg_url = requests.get(Registration, redirects=False)
             if get_reg_url.url == "https://www.cargiant.co.uk/":
                 print(f"Link return {get_reg_url.url}. {Registration} likely sold.", flush=True)
                 return True
