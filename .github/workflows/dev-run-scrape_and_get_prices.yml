@@ -54,7 +54,7 @@ jobs:
           matrix:
             # Select the images from DockerHub here to test
             image_variant:
-              - jammyboi/cgwebscrape:v2_with_price_valuation_nohistory
+              - jammyboi/cgwebscrape
           fail-fast: false
         steps:
             - name: Checkout Repository
@@ -62,7 +62,7 @@ jobs:
 
             - name: Docker pull image
               run: |
-                  docker pull "${{ matrix.image_variant }}"
+                  docker pull "${{ matrix.image_variant }}":"${{ github.ref_name }}" 
             - name: Download artifact
               uses: dawidd6/action-download-artifact@v2
               id: download_db_step
