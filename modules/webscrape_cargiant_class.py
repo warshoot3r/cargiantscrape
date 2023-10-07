@@ -12,6 +12,8 @@ import pandas as pd
 import re
 import requests
 import concurrent.futures
+
+
 class WebScraperCargiant:
     """
     A web scraper for collecting used car information from the Cargiant website.
@@ -34,12 +36,7 @@ class WebScraperCargiant:
         pd.set_option("display.max_colwidth", 100)
         pd.set_option('display.max_rows', None)
         self.length = self.data.shape[0]
-        if manufacturer_search is not None:
-            self.manufacturer_search = manufacturer_search
-            self.url = "https://www.cargiant.co.uk/search/" + manufacturer_search + "/all"
-            print("Setting the search to", self.url, flush=True)
-        else: 
-            self.url = "https://www.cargiant.co.uk/search/all"
+
 
     def initialize_driver(self) -> webdriver.Remote:
         """
@@ -141,7 +138,7 @@ class WebScraperCargiant:
                 
         
         """
-        if self.check_reg_url_alive(FullRegistrationURL=url) is True:
+        if self.check_reg_url_alive(FullRegistrationURL=url) is False:
             print(f"CG: {url} is dead. No details can be grabbed.", flush=True)
             return False 
         
@@ -185,12 +182,6 @@ class WebScraperCargiant:
             print('\n', flush=True)
         return output
 
-    def print_number_of_cars(self):
-        """
-        Prints the number of cars scraped from cargiant
-        """
-        print(f"\n\nNumber of cars scraped from cargiant -> {self.length}\n\n", flush=True)
-
     def search_for_manufacturer(self, manufacturer, numberofpages=15):
         """
         Sets the search to a specific manufacturer. This does not save the generic model eg, 3 series
@@ -227,15 +218,8 @@ class WebScraperCargiant:
         
         self.parallel_pull_new_data(manufacturer=manufacturer, series_to_process=series, number_of_pages=numberofpages, worker_threads=worker_threads)
         return self.data
-    def import_sqldb_data(self, data_frame):
-        """
-        Imports past data from a DataFrame.
-
-        Args:
-            data_frame (pd.DataFrame): The DataFrame containing past data to be imported.
-        """
-        print("Importing past data", flush=True)
-        self.data = data_frame
+    
+    
 
     def get_car_makes(self):
         """
@@ -250,31 +234,6 @@ class WebScraperCargiant:
             print(item.text, flush=True)
 
 
-    def search_data_for_car(self, search_col, term):
-        """
-        Searches the data for a specific car based on the specified column and term.
-
-        Args:
-            search_col (str): The column name to search for.
-            term (str): The term to be searched in the specified column.
-
-        Returns:
-            WebScraperCargiant: A new WebScraperCargiant object containing the search results.
-        """
-        if search_col not in self.data.columns.values:
-            print(f"{search_col} must be one of:", flush=True)
-            print(self.data.columns.values, flush=True)
-            return
-
-        pattern = re.escape(term)
-        mask = self.data[search_col].apply(lambda x: bool(re.search(pattern, x)))
-        model_retrieved = self.data[mask]
-        
-        print(f"\n\nReturning a search with: {search_col} -> {term}", flush=True)
-        print(model_retrieved, flush=True)
-        
-        self.data = model_retrieved
-        return self
 
     def pull_new_data(self, url, numberofpages=10):
     
@@ -494,6 +453,8 @@ class WebScraperCargiant:
         #     driver.quit()
         
         print(f"Data successfully pulled {tf.shape[0] } cars", flush=True)
+        
+        
     def parallel_pull_new_data(self, series_to_process, manufacturer=None, number_of_pages=10, worker_threads=4):
             """
             concurrently pull cargiant cars with multiple urls. 

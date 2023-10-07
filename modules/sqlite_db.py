@@ -242,38 +242,6 @@ class SQLiteDatabase:
         else:
             print("No changes needed", flush=True)
         
-
-    def delete_car_from_table(self, REG, table=None):
-        """
-        Deletes a specific car's data from the database.
-        
-        Args:
-            REG (str): The registration number of the car to be deleted.
-            table (str, optional): The table name. Defaults to None.
-        """
-        table = "used_cars"
-
-        print(f"deleting {REG} from {table}", flush=True)
-
-        sql_string = f"DELETE FROM {table} where Reg = '{REG}' "
-        self.cursor.execute(sql_string)
-        self.conn.commit()
-
-    def delete_manufacturer_from_table(self, manufacturer, table=None):
-        """
-        Deletes all cars of a specific manufacturer from the database.
-        
-        Args:
-            manufacturer (str): The manufacturer to be deleted.
-            table (str, optional): The table name. Defaults to None.
-        """
-        table = "used_cars"
-
-        print(f"deleting {manufacturer} from {table}", flush=True)
-
-        sql_string = f"DELETE FROM {table} where Manufacturer = '{manufacturer}' "
-        self.cursor.execute(sql_string)
-        self.conn.commit()
     
     def return_as_panda_dataframe(self):
         """
@@ -325,15 +293,7 @@ class SQLiteDatabase:
         else:
             print(sorted_table, flush=True)
 
-    def print_raw_data_from_sqlite_db(self):
-        """
-        Prints all the data in the 'used_cars' table.
-        """
-        print("Printing table information:", flush=True)
-        self.cursor.execute("SELECT * from used_cars")
-        self.conn.commit()
-        for item in self.cursor.fetchall():
-            print(item, flush=True)
+
     def get_all_url(self):
         """
         Get all car urls. Returns all as list
@@ -343,33 +303,7 @@ class SQLiteDatabase:
         """
         self.cursor.execute("SELECT URL from used_cars ORDER BY DateUpdated ASC")
         return [row[0] for row in self.cursor.fetchall()]
-  
-    def retrieve_db(self, column, input_data):
-        """
-        Retrieves car data from the database based on the specified column and input data.
-        
-        Args:
-            column (str): The column name to search for data.
-            input_data (str/int): The input data to be searched.
-        """
-        if column == "price":  # For integer col
-            command = f"SELECT * from used_cars where {column} <= {input_data} "
-        elif column == "mileage":  # For integer col
-            command = f"SELECT * from used_cars where {column} <= {input_data} "
-        elif column == "year":  # For integer col
-            command = f"SELECT * from used_cars where {column} <= {input_data} "
-        elif column == "doors":  # For integer col
-            command = f"SELECT * from used_cars where {column} = {input_data} "
-        else:  # For strings
-            command = f"SELECT * from used_cars where {column} LIKE '{input_data}' ORDER BY DateUpdated ASC"
-        # print(command, flush=True)
-        self.cursor.execute(command)
-        data = self.cursor.fetchall()
 
-        # print(f"\nPrinting data from query: {column} -> {input_data}", flush=True)
-        # for item in data:
-        #     print(item, flush=True)
-        return data
 
     def close_db(self):
         """
@@ -605,20 +539,3 @@ class SQLiteDatabase:
                         db_string_update = f"UPDATE {table} SET DateCarAdded = ?, DaysAdded = 0 WHERE REG = ?"
                         self.cursor.execute(db_string_update, (datetime.datetime.now().strftime("%Y-%m-%d"), data['Reg']))
                         self.conn.commit()
-
-    def move_sold_cars_to_db(self, URL):
-        """
-        Moves the "Sold" cars to a different table and deletes it from database
-
-        Args:
-            URL(str) eg. https://www.cargiant.co.uk/car/BMW/2-Series-Tourer/YH16JUK
-
-        """
-        sqlstring = """
-            update used_cars SET CarStatus = 'Sold' WHERE URL = ?
-            """
-        print(f"Setting {URL} to sold ", flush=True)
-        self.cursor.execute(sqlstring, [URL])
-        self.conn.commit()
-
-
