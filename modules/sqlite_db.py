@@ -562,3 +562,31 @@ class SQLiteDatabase:
                         db_string_update = f"UPDATE {table} SET DateCarAdded = ?, DaysAdded = 0 WHERE REG = ?"
                         self.cursor.execute(db_string_update, (datetime.datetime.now().strftime("%Y-%m-%d"), data['Reg']))
                         self.conn.commit()
+                        
+                        
+    def retrieve_db(self, column, input_data):
+        """
+        Retrieves car data from the database based on the specified column and input data.
+        
+        Args:
+            column (str): The column name to search for data.
+            input_data (str/int): The input data to be searched.
+        """
+        if column == "price":  # For integer col
+            command = f"SELECT * from used_cars where {column} <= {input_data} "
+        elif column == "mileage":  # For integer col
+            command = f"SELECT * from used_cars where {column} <= {input_data} "
+        elif column == "year":  # For integer col
+            command = f"SELECT * from used_cars where {column} <= {input_data} "
+        elif column == "doors":  # For integer col
+            command = f"SELECT * from used_cars where {column} = {input_data} "
+        else:  # For strings
+            command = f"SELECT * from used_cars where {column} LIKE '{input_data}' ORDER BY DateUpdated ASC"
+        # print(command, flush=True)
+        self.cursor.execute(command)
+        data = self.cursor.fetchall()
+
+        # print(f"\nPrinting data from query: {column} -> {input_data}", flush=True)
+        # for item in data:
+        #     print(item, flush=True)
+        return data
