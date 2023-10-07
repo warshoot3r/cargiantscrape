@@ -88,45 +88,39 @@ import_cars(scraped_cars)
 price_changed = DB.get_car_price_changed(filters)
 new_cars = DB.get_car_new_changed(filters)
 status_changed = DB.get_car_status_changed(filters)
-if not(price_changed.empty or new_cars.empty or status_changed.empty):
-    DB.open_db()
-    database = DB.return_as_panda_dataframe()
-    if not(price_changed.empty): #If car prices changed, only send a list of these cars
-        # database_filtered.loc[:,"PriceChange"] = database_filtered["Price"] - database_filtered["OldPrice"] # should be added to class . temporary here for now
-        bot.send_dataframe(chat_id, price_changed[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:",  MessageThreadID=credentials.message_id)
-    if not(new_cars.empty):
-        print(new_cars, flush=True)
-        bot.send_dataframe(chat_id, new_cars[["URL","Manufacturer","Model", "Mileage", "Price"] ], "New cars were added:", True,  MessageThreadID=credentials.message_id) 
-  
-    if not(status_changed.empty):
-        print(status_changed, flush=True)
-        table_filters = ["URL","Manufacturer","Model", "Mileage", "Price"]
-        sold = status_changed.loc[status_changed['CarStatus'] == "Sold"]
-        if sold.shape[0] > 0:
-            bot.send_dataframe(chat_id, sold[table_filters], caption="Sold Cars",  MessageThreadID=credentials.message_id)
+DB.open_db()
+if not(price_changed.empty): #If car prices changed, only send a list of these cars
+    # database_filtered.loc[:,"PriceChange"] = database_filtered["Price"] - database_filtered["OldPrice"] # should be added to class . temporary here for now
+    bot.send_dataframe(chat_id, price_changed[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:",  MessageThreadID=credentials.message_id)
+if not(new_cars.empty):
+    print(new_cars, flush=True)
+    bot.send_dataframe(chat_id, new_cars[["URL","Manufacturer","Model", "Mileage", "Price"] ], "New cars were added:", True,  MessageThreadID=credentials.message_id) 
+
+if not(status_changed.empty):
+    print(status_changed, flush=True)
+    table_filters = ["URL","Manufacturer","Model", "Mileage", "Price"]
+    sold = status_changed.loc[status_changed['CarStatus'] == "Sold"]
+    if sold.shape[0] > 0:
+        bot.send_dataframe(chat_id, sold[table_filters], caption="Sold Cars",  MessageThreadID=credentials.message_id)
+
+    reserved = status_changed.loc[status_changed['CarStatus'] == "Reserved"]
+    if reserved.shape[0] > 0:
+        bot.send_dataframe(chat_id, reserved[table_filters], caption="Reserved Cars",  MessageThreadID=credentials.message_id)
+
+    available = status_changed.loc[status_changed['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)]
+    if available.shape[0] > 0:
+        bot.send_dataframe(chat_id, available[[x for x in table_filters] + ["CarStatus"]], "Available soon:", MessageThreadID=credentials.message_id)
+    ideal_cars_from_status_changed = DB.filter_table(db=status_changed, filters=very_ideal_filters)
     
-        reserved = status_changed.loc[status_changed['CarStatus'] == "Reserved"]
-        if reserved.shape[0] > 0:
-            bot.send_dataframe(chat_id, reserved[table_filters], caption="Reserved Cars",  MessageThreadID=credentials.message_id)
-
-        available = status_changed.loc[status_changed['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)]
-        if available.shape[0] > 0:
-            bot.send_dataframe(chat_id, available[[x for x in table_filters] + ["CarStatus"]], "Available soon:", MessageThreadID=credentials.message_id)
-            # urls = available["URL"].to_list()
-            # picture_data = CarSearch.get_car_url_snapshot(url=urls)
-            # bot.send_base64pictures(chat_id=credentials.chat_id, base64_data=picture_data, caption="Sold cars", message_id=credentials.message_id)
-        ideal_cars_from_status_changed = DB.filter_table(db=status_changed, filters=very_ideal_filters)
-        
-        
-        # Ideal cars from stricter filter
-        if ideal_cars_from_status_changed.shape[0] > 0:
-            print(f"Got cars for ideal filter", flush=True)
-            bot.send_message(chat_id=credentials.chat_id, message="Got Strict filter cars",MessageThreadID=credentials.message_id)
-            urls = ideal_cars_from_status_changed["URL"].to_list()
-            picture_data = CarSearch.get_car_url_snapshot(url=urls)
-            # bot.send_dataframe(chat_id, ideal_cars_from_status_changed, caption="Ideal Cars",  MessageThreadID=credentials.message_id)
-            bot.send_base64pictures(chat_id=credentials.chat_id, base64_data=picture_data, caption="Strict Filter Cars", message_id=credentials.message_id)
-            bot.send_dataframe(chat_id=chat_id,dataframe=ideal_cars_from_status_changed, caption="Strict Filter specs:", show_header=False, MessageThreadID=credentials.message_id )
+    
+    # Ideal cars from stricter filter
+    if ideal_cars_from_status_changed.shape[0] > 0:
+        print(f"Got cars for ideal filter", flush=True)
+        bot.send_message(chat_id=credentials.chat_id, message="Got Strict filter cars",MessageThreadID=credentials.message_id)
+        urls = ideal_cars_from_status_changed["URL"].to_list()
+        picture_data = CarSearch.get_car_url_snapshot(url=urls)
+        bot.send_base64pictures(chat_id=credentials.chat_id, base64_data=picture_data, caption="Strict Filter Cars", message_id=credentials.message_id)
+        bot.send_dataframe(chat_id=chat_id,dataframe=ideal_cars_from_status_changed, caption="Strict Filter specs:", show_header=False, MessageThreadID=credentials.message_id )
 
 
-    DB.close_db()
+DB.close_db()

@@ -336,16 +336,14 @@ class SQLiteDatabase:
         
         """
         self.open_db()
-        if self.number_of_car_new_changed == 0 :
+        if self.number_of_car_status_changed == 0 :
             print("DEBUG: No car status changed.", flush=True)
             return pd.DataFrame()# empty dataframe is returned
-        print(f"DEBUG: {self.number_of_car_new_changed} car status changed. Resetting status list.")
+        print(f"DEBUG: {self.number_of_car_status_changed} car status changed. Resetting status list.")
         data = self.number_of_car_status_changed_list
-        self.number_of_car_new_changed = 0
+        self.number_of_car_status_changed = 0
         self.number_of_car_status_changed_list = []
-        self.filter_table(db=self.return_as_panda_dataframe(),filters=car_filters, ListOfCarRegistrations=data)
-        return data
-    
+        return self.filter_table(db=self.return_as_panda_dataframe(),filters=car_filters, ListOfCarRegistrations=data)
 
         
     def get_car_price_changed(self, car_filters=None):
@@ -393,7 +391,7 @@ class SQLiteDatabase:
         if self.number_of_car_new_changed == 0:
             print("DEBUG: No car added.", flush=True)
             return pd.DataFrame()# empty dataframe is returned
-        print(f"DEBUG: {self.number_of_car_prices_changed} car added. Resetting cars added list.")
+        print(f"DEBUG: {self.number_of_car_new_changed} car added. Resetting cars added list.")
         self.number_of_car_new_changed = 0
         data = self.number_of_car_new_changed_list
         self.number_of_car_new_changed_list = []
