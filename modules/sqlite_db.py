@@ -320,61 +320,86 @@ class SQLiteDatabase:
         return data.sort_values(by=["Manufacturer", "Price", "Model"])
 
 
-    def car_status_changed(self):
+    def get_car_status_changed(self, car_filters=None):
         """
-        Return number of cars status changed
-        """
-        if(self.number_of_car_status_changed == 0):
-            return False
-        else: 
-            print("Car Status Changed", flush=True)
-            value = self.number_of_car_status_changed
-            self.number_of_car_status_changed = 0
-            return value
-    def get_car_status_changed(self):
-        """
-        Return status of cars changed
-        """
-        data = self.number_of_car_status_changed_list
-        self.number_of_car_status_changed_list = []
-        return data
-    def car_price_changed(self):
-        """
-         Return the number of cars
-        """
-        if(self.number_of_car_prices_changed == 0):
-            return False
-        else:
-            print("Car Prices Changed", flush=True)
-            value = self.number_of_car_prices_changed
-            self.number_of_car_prices_changed = 0
-            return value
-    def car_new_changed(self):
-        """
-        Return the number of cars
-        """
-        if(self.number_of_car_new_changed == 0):
-            return False
-        else: 
-            print("New cars were added") 
-            value = self.number_of_car_new_changed
-            self.number_of_car_new_changed = 0
-            return value
+        ARGS: 
+            car_filters: lambda filters stored in a dict eg.
+                        filters = {
+                'Price': lambda x: x >= 10000,   
+                'Price': lambda x: x <=30000,
+                'Mileage': lambda x: x <=60000
+                }
+        Returns:
+        If no status changed. return 0.
+        otherwise: 
+        Return a list of cars status changed and Sets number_of_car_status_changed to 0.
         
-    def get_car_price_changed(self):
         """
-        Return list of price changed cars.
+        self.open_db()
+        if self.number_of_car_new_changed == 0 :
+            print("DEBUG: No car status changed.", flush=True)
+            return pd.DataFrame()# empty dataframe is returned
+        print(f"DEBUG: {self.number_of_car_new_changed} car status changed. Resetting status list.")
+        data = self.number_of_car_status_changed_list
+        self.number_of_car_new_changed = 0
+        self.number_of_car_status_changed_list = []
+        self.filter_table(db=self.return_as_panda_dataframe(),filters=car_filters, ListOfCarRegistrations=data)
+        return data
+    
+
+        
+    def get_car_price_changed(self, car_filters=None):
         """
+        ARGS: 
+            car_filters: lambda filters stored in a dict eg.
+                        filters = {
+                'Price': lambda x: x >= 10000,   
+                'Price': lambda x: x <=30000,
+                'Mileage': lambda x: x <=60000
+                }
+        Returns:
+        If no car price changed. return 0.
+        otherwise: 
+        Return a list of cars prices changed and Sets number_of_car_prices_changed_list to 0.
+        
+        """
+        self.open_db()
+        if self.number_of_car_prices_changed == 0: 
+            print("DEBUG: No car prices changed.", flush=True)
+            return pd.DataFrame()# empty dataframe is returned
+        print(f"DEBUG: {self.number_of_car_prices_changed} car prices changed. Resetting price list.")
         data = self.number_of_car_prices_changed_list
         self.number_of_car_prices_changed_list = []
-        return data
-    def get_car_new_changed(self):
+        self.number_of_car_prices_changed = 0
+        return self.filter_table(db=self.return_as_panda_dataframe(),filters=car_filters, ListOfCarRegistrations=data)
+
+    
+    def get_car_new_changed(self, car_filters):
         """
-        Return list of new cars added.
+        ARGS: 
+            car_filters: lambda filters stored in a dict eg.
+                        filters = {
+                'Price': lambda x: x >= 10000,   
+                'Price': lambda x: x <=30000,
+                'Mileage': lambda x: x <=60000
+                }
+        Returns:
+        If no new cars added. return 0.
+        otherwise: 
+        Return a list of cars added  and Sets number_of_car_new_changed_list to 0.
+        
         """
+        self.open_db()
+        if self.number_of_car_new_changed == 0:
+            print("DEBUG: No car added.", flush=True)
+            return pd.DataFrame()# empty dataframe is returned
+        print(f"DEBUG: {self.number_of_car_prices_changed} car added. Resetting cars added list.")
+        self.number_of_car_new_changed = 0
         data = self.number_of_car_new_changed_list
         self.number_of_car_new_changed_list = []
-        return data
+        return self.filter_table(db=self.return_as_panda_dataframe(),filters=car_filters, ListOfCarRegistrations=data)
+
+    
     def import_data(self):
             """
             Imports the car properties from the instance variables and adds them to the database.

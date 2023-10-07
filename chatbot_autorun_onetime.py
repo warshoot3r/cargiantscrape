@@ -85,43 +85,37 @@ def import_cars(CarSearch):
 
 scraped_cars = scrape_cars()
 import_cars(scraped_cars)
-price_changed = DB.car_price_changed()
-new_cars = DB.car_new_changed()
-status_changed = DB.car_status_changed()
-if price_changed or new_cars or status_changed:
+price_changed = DB.get_car_price_changed(filters)
+new_cars = DB.get_car_new_changed(filters)
+status_changed = DB.get_car_status_changed(filters)
+if not(price_changed.empty or new_cars.empty or status_changed.empty):
     DB.open_db()
     database = DB.return_as_panda_dataframe()
-    if price_changed: #If car prices changed, only send a list of these cars
-        database_filtered = DB.filter_table(filters, database, DB.get_car_price_changed())
-        database_filtered.loc[:,"PriceChange"] = database_filtered["Price"] - database_filtered["OldPrice"] # should be added to class . temporary here for now
-        bot.send_dataframe(chat_id, database_filtered[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:",  MessageThreadID=credentials.message_id)
-    if new_cars:
-        database_filtered_new_cars = DB.filter_table(filters, database, DB.get_car_new_changed())
-        print(database_filtered_new_cars, flush=True)
-        bot.send_dataframe(chat_id, database_filtered_new_cars[["URL","Manufacturer","Model", "Mileage", "Price"] ], "New cars were added:", True,  MessageThreadID=credentials.message_id) 
-       #Send sold cars
+    if not(price_changed.empty): #If car prices changed, only send a list of these cars
+        # database_filtered.loc[:,"PriceChange"] = database_filtered["Price"] - database_filtered["OldPrice"] # should be added to class . temporary here for now
+        bot.send_dataframe(chat_id, price_changed[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:",  MessageThreadID=credentials.message_id)
+    if not(new_cars.empty):
+        print(new_cars, flush=True)
+        bot.send_dataframe(chat_id, new_cars[["URL","Manufacturer","Model", "Mileage", "Price"] ], "New cars were added:", True,  MessageThreadID=credentials.message_id) 
   
-    if status_changed:
-        reg = DB.get_car_status_changed()
-        database_filtered = DB.filter_table(filters, database, reg)
-        print(database_filtered, flush=True)
-
+    if not(status_changed.empty):
+        print(status_changed, flush=True)
         table_filters = ["URL","Manufacturer","Model", "Mileage", "Price"]
-        sold = database_filtered.loc[database_filtered['CarStatus'] == "Sold"]
+        sold = status_changed.loc[status_changed['CarStatus'] == "Sold"]
         if sold.shape[0] > 0:
             bot.send_dataframe(chat_id, sold[table_filters], caption="Sold Cars",  MessageThreadID=credentials.message_id)
     
-        reserved = database_filtered.loc[database_filtered['CarStatus'] == "Reserved"]
+        reserved = status_changed.loc[status_changed['CarStatus'] == "Reserved"]
         if reserved.shape[0] > 0:
             bot.send_dataframe(chat_id, reserved[table_filters], caption="Reserved Cars",  MessageThreadID=credentials.message_id)
 
-        available = database_filtered.loc[database_filtered['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)]
+        available = status_changed.loc[status_changed['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)]
         if available.shape[0] > 0:
             bot.send_dataframe(chat_id, available[[x for x in table_filters] + ["CarStatus"]], "Available soon:", MessageThreadID=credentials.message_id)
             # urls = available["URL"].to_list()
             # picture_data = CarSearch.get_car_url_snapshot(url=urls)
             # bot.send_base64pictures(chat_id=credentials.chat_id, base64_data=picture_data, caption="Sold cars", message_id=credentials.message_id)
-        ideal_cars_from_status_changed = DB.filter_table(db=database_filtered, filters=very_ideal_filters)
+        ideal_cars_from_status_changed = DB.filter_table(db=status_changed, filters=very_ideal_filters)
         
         
         # Ideal cars from stricter filter
