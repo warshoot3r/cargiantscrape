@@ -56,8 +56,8 @@ def scrape_cars():
         time.sleep(2)
         return(False)
     print("Starting", flush=True)
-    CarSearch.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="BMW",numberofpages=0)
-    CarSearch.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="Mercedes",numberofpages=0)
+    CarSearch.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="BMW",numberofpages=0, worker_threads=2)
+    CarSearch.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="Mercedes",numberofpages=0, worker_threads=2)
     CarSearch.search_for_manufacturer("Lexus")
     CarSearch.print_number_of_cars()
     return CarSearch
@@ -169,5 +169,5 @@ if price_changed or new_cars or status_changed:
 
 
     DB.close_db()
-else:
-    bot.send_message_servername(chat_id, "Nothing to report", MessageThreadID=credentials.message_id)
+# else:
+#     bot.send_message_servername(chat_id, "Nothing to report", MessageThreadID=credentials.message_id)

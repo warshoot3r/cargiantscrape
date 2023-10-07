@@ -201,7 +201,7 @@ class WebScraperCargiant:
         print("Setting the search to", url, flush=True)
         self.pull_new_data(numberofpages=numberofpages, url=url)
 
-    def search_for_manufacturer_with_bmw_or_mercedes(self, manufacturer, numberofpages=10 ):
+    def search_for_manufacturer_with_bmw_or_mercedes(self, manufacturer, numberofpages=10, worker_threads=4 ):
         """
         Parallel pull. Sets the search to a specific manufacturer. This will save the generic model as "https://www.cargiant.co.uk/search/" + manufacturer "HERE" the  eg, 3 series
         Args:
@@ -219,7 +219,7 @@ class WebScraperCargiant:
         elif manufacturer == "Mercedes":
             series = ["all-a-class", "all-b-class", "all-c-class", "all-e-class", "all-s-class"]
         
-        self.parallel_pull_new_data(manufacturer=manufacturer, series_to_process=series, number_of_pages=numberofpages)
+        self.parallel_pull_new_data(manufacturer=manufacturer, series_to_process=series, number_of_pages=numberofpages, worker_threads=worker_threads)
         return self.data
     def import_sqldb_data(self, data_frame):
         """
