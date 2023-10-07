@@ -148,7 +148,7 @@ if price_changed or new_cars or status_changed:
             picture_data = CarSearch.get_car_url_snapshot(url=urls)
             # bot.send_dataframe(chat_id, ideal_cars_from_status_changed, caption="Ideal Cars",  MessageThreadID=credentials.message_id)
             bot.send_base64pictures(chat_id=credentials.chat_id, base64_data=picture_data, caption="Strict Filter Cars", message_id=credentials.message_id)
-            bot.send_dataframe(chat_id=chat_id,dataframe=ideal_cars_from_status_changed, caption="Strict Filter specs:" show_header=False, MessageThreadID=credentials.message_id )
+            bot.send_dataframe(chat_id=chat_id,dataframe=ideal_cars_from_status_changed, caption="Strict Filter specs:", show_header=False, MessageThreadID=credentials.message_id )
 
             
         # bot.send_dataframe_as_file(chat_id=chat_id, file_format="csv", dataframe=(DB.get_car_sold_as_pd()), caption="Sold Cars", file_name="sold", MessageThreadID=credentials.message_id)

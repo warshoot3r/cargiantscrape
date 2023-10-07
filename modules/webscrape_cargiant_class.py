@@ -141,8 +141,14 @@ class WebScraperCargiant:
                 
         
         """
+        if self.check_reg_url_alive(FullRegistrationURL=url) is True:
+            print(f"CG: {url} is dead. No details can be grabbed.", flush=True)
+            return False 
+        
         output = {}
-        web_page_data = requests.get(url, redirects=False)
+        
+
+        web_page_data = requests.get(url, allow_redirects=False)
         if not web_page_data.content:
             print(f"DEBUG: Couldn't get {url}", flush=True)
             return
@@ -529,7 +535,7 @@ class WebScraperCargiant:
         driver.quit()
         #Force killing the processes
         
-    def check_reg_url_alive(self, Registration):
+    def check_reg_url_alive(self, FullRegistrationURL):
         """
         Returns true if reg url is alive. Used with DB to move to sold database
         Args:
@@ -537,14 +543,14 @@ class WebScraperCargiant:
         """
 
         # check if car giant is alive 
-        main_website = requests.get("https://www.cargiant.co.uk", allow_redirects=False)
+        main_website = requests.get("https://www.cargiant.co.uk", allow_redirects=True)
         if main_website.ok:
-            get_reg_url = requests.get(Registration, redirects=False)
+            get_reg_url = requests.get(FullRegistrationURL, allow_redirects=True)
             if get_reg_url.url == "https://www.cargiant.co.uk/":
-                print(f"Link return {get_reg_url.url}. {Registration} likely sold.", flush=True)
+                print(f"Link return {get_reg_url.url}. {FullRegistrationURL} likely sold.", flush=True)
                 return True
             else:
-                print(f"{Registration} is not sold . Nothing to do", flush=True)
+                print(f"{FullRegistrationURL} is not sold . Nothing to do", flush=True)
                 return False
             
         else:
