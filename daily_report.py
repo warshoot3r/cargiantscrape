@@ -10,7 +10,7 @@ import sys
 
 
 scheduled_time_start_hour = 19
-scheduled_time_end_hour = 20
+scheduled_time_end_hour = 23
 
 print(f"Scheduled time is {scheduled_time_start_hour}:00 to {scheduled_time_end_hour}:00. Machine time -> {datetime.datetime.now().strftime('%H:%M')}")
 while True:
@@ -66,7 +66,7 @@ not_available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'].str.contains(
 available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'] == "Available"]
 
 
-sold_csv = database.loc[csv_dataframe['CarStatus'] == "Sold"]
+sold_csv = database.loc[database['CarStatus'] == "Sold"]
 
 print(csv_dataframe, flush=True)
 
