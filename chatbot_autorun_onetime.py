@@ -90,7 +90,7 @@ new_cars = DB.get_car_new_changed(filters)
 status_changed = DB.get_car_status_changed(filters)
 DB.open_db()
 if not(price_changed.empty): #If car prices changed, only send a list of these cars
-    # database_filtered.loc[:,"PriceChange"] = database_filtered["Price"] - database_filtered["OldPrice"] # should be added to class . temporary here for now
+    database_filtered.loc[:,"PriceChange"] = database_filtered["Price"] - database_filtered["OldPrice"] # should be added to class . temporary here for now
     bot.send_dataframe(chat_id, price_changed[["URL", "Manufacturer","Model", "Price", "PriceChange", "Mileage" ]], "New car prices were updated:",  MessageThreadID=credentials.message_id)
 if not(new_cars.empty):
     print(new_cars, flush=True)
