@@ -66,7 +66,7 @@ not_available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'].str.contains(
 available_csv = csv_dataframe.loc[csv_dataframe['CarStatus'] == "Available"]
 
 
-sold_csv = database.loc[csv_dataframe['CarStatus'] == "Sold"]
+sold_csv = database.loc[database['CarStatus'] == "Sold"]
 
 print(csv_dataframe, flush=True)
 
