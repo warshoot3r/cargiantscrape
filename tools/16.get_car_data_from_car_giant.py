@@ -38,8 +38,9 @@ list_of_url_regs = data["URL"]
 for url in list_of_url_regs:
     # url = "https://www.cargiant.co.uk/car/Suzuki/Celerio/LM67FFV"
     car_data = cargiant.get_car_details(url, debug=True)
-
-
+    if car_data: 
+        for key, value in car_data.items():
+            print(f"{key}: {value}")
 
 
 
