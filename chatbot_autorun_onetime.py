@@ -138,7 +138,7 @@ if price_changed or new_cars or status_changed:
             # picture_data = CarSearch.get_car_url_snapshot(url=urls)
             # bot.send_base64pictures(chat_id=credentials.chat_id, base64_data=picture_data, caption="Sold cars", message_id=credentials.message_id)
 
-            ideal_cars_from_status_changed = DB.filter_table(db=database_filtered, filters=very_ideal_filters, ListOfCarRegistrations=reg)
+            ideal_cars_from_status_changed = DB.filter_table(db=database_filtered, filters=very_ideal_filters)
 
 
             # Ideal cars from stricter filter
