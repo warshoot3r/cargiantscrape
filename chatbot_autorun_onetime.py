@@ -138,31 +138,31 @@ if price_changed or new_cars or status_changed:
             # picture_data = CarSearch.get_car_url_snapshot(url=urls)
             # bot.send_base64pictures(chat_id=credentials.chat_id, base64_data=picture_data, caption="Sold cars", message_id=credentials.message_id)
 
-        ideal_cars_from_status_changed = DB.filter_table(db=database_filtered, filters=very_ideal_filters)
+            ideal_cars_from_status_changed = DB.filter_table(db=database_filtered, filters=very_ideal_filters, ListOfCarRegistrations=reg)
 
 
-        # Ideal cars from stricter filter
-        if ideal_cars_from_status_changed.shape[0] > 0:
-            print(f"Got cars for ideal filter", flush=True)
-            bot.send_message(chat_id=credentials.chat_id, message="Got Strict filter cars",MessageThreadID=credentials.message_id)
-            urls = ideal_cars_from_status_changed["URL"].to_list()
-            picture_data = CarSearch.get_car_url_snapshot(url=urls)
-            # bot.send_dataframe(chat_id, ideal_cars_from_status_changed, caption="Ideal Cars",  MessageThreadID=credentials.message_id)
-            bot.send_base64pictures(chat_id=credentials.chat_id, base64_data=picture_data, caption="Strict Filter Cars", message_id=credentials.message_id)
-            bot.send_dataframe(chat_id=chat_id,dataframe=ideal_cars_from_status_changed, caption="Strict Filter specs:", show_header=False, MessageThreadID=credentials.message_id )
-            print(ideal_cars_from_status_changed)
-            for index, row in ideal_cars_from_status_changed.iterrows():
+            # Ideal cars from stricter filter
+            if ideal_cars_from_status_changed.shape[0] > 0:
+                print(f"Got cars for ideal filter", flush=True)
+                bot.send_message(chat_id=credentials.chat_id, message="Got Strict filter cars",MessageThreadID=credentials.message_id)
+                urls = ideal_cars_from_status_changed["URL"].to_list()
+                picture_data = CarSearch.get_car_url_snapshot(url=urls)
+                # bot.send_dataframe(chat_id, ideal_cars_from_status_changed, caption="Ideal Cars",  MessageThreadID=credentials.message_id)
+                bot.send_base64pictures(chat_id=credentials.chat_id, base64_data=picture_data, caption="Strict Filter Cars", message_id=credentials.message_id)
+                bot.send_dataframe(chat_id=chat_id,dataframe=ideal_cars_from_status_changed, caption="Strict Filter specs:", show_header=False, MessageThreadID=credentials.message_id )
+                print(ideal_cars_from_status_changed)
+                for index, row in ideal_cars_from_status_changed.iterrows():
 
-                extra_details = CarSearch.get_car_details(url=row["URL"])
-                if extra_details:
-                    extra_details_tosend = ""
-                    for key,value in extra_details.items():
-                        extra_details_tosend += f"{key}: {value} \n"
-                    extra_details_tosend_telegram = extra_details_tosend.replace(".","\.").replace("_","\_").replace("-","\-").replace("(","\(").replace(")","\)").replace("*","")
-                    print(extra_details_tosend_telegram)
-                    bot.send_message(chat_id=credentials.chat_id, message=extra_details_tosend_telegram,MessageThreadID=credentials.message_id)
+                    extra_details = CarSearch.get_car_details(url=row["URL"])
+                    if extra_details:
+                        extra_details_tosend = ""
+                        for key,value in extra_details.items():
+                            extra_details_tosend += f"{key}: {value} \n"
+                        extra_details_tosend_telegram = extra_details_tosend.replace(".","\.").replace("_","\_").replace("-","\-").replace("(","\(").replace(")","\)").replace("*","")
+                        print(extra_details_tosend_telegram)
+                        bot.send_message(chat_id=credentials.chat_id, message=extra_details_tosend_telegram,MessageThreadID=credentials.message_id)
 
-                            
+                                
                         
 
             
