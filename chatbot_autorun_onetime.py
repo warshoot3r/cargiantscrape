@@ -131,7 +131,7 @@ if price_changed or new_cars or status_changed:
             # picture_data = CarSearch.get_car_url_snapshot(url=urls)
             # bot.send_base64pictures(chat_id=credentials.chat_id, base64_data=picture_data, caption="Sold cars", message_id=credentials.message_id)
 
-        available = database_filtered.loc[database_filtered['CarStatus'].str.contains(r'AVAILABLE', case=True, regex=True)]
+        available = database_filtered.loc[database_filtered['CarStatus'].str.contains(r'AVAILABLE IN 1 DAYS', case=True, regex=True)]
         if available.shape[0] > 0:
             bot.send_dataframe(chat_id, available[[x for x in table_filters] + ["CarStatus"]], "Available soon:", MessageThreadID=credentials.message_id)
             # urls = available["URL"].to_list()
