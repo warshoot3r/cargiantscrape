@@ -80,9 +80,9 @@ bot.send_message_servername(
 
 
 cars_of_the_day_filters = {
-    'Price': lambda x : 9500 <= x <= 15000,
-    'Year': lambda x: x >= 2018,
-    'DaysAdded': lambda x: x <= 10,
+    'Price': lambda x : 9500 <= x <= 1600,
+    'Year': lambda x: x >= 2017,
+    # 'DaysAdded': lambda x: x <= 10,
     'Transmission': lambda x: x == 'Auto',
     'Engine Size': lambda x: x >= '1.5',
     'Body Type': lambda bodytype: bodytype not in ("Estate", "SUV"),
