@@ -26,14 +26,13 @@ DB = SQLiteDatabase()
 # # DB.clear_car_valuation_ranges(days=1)
 DB.fix_datetime()
 
-
 data = DB.return_as_panda_dataframe()
-
 # # 
-data_cars = DB.get_cars_with_date_updated(3)
+data_cars = DB.get_cars_with_date_updated(60)
 
-
-# # data = DB.return_as_panda_dataframe()
+for car_ob in data_cars:
+    print(car_ob)
+# data = DB.return_as_panda_dataframe()
 
 # # print(data[["Manufacturer","Price", "ValuationRange", "DateUpdated"]])
 

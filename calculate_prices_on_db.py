@@ -10,7 +10,7 @@ from modules.sqlite_db import SQLiteDatabase
 
 from modules.background_pricecheck import car, car_background_information
 
-clear_car_valuation_days = 1
+clear_car_valuation_days = 5 # up to the last 30 days
 
 #set up db
 Car_database = SQLiteDatabase(db_path="used_cars.db")
@@ -31,7 +31,7 @@ car_filters = {
 
 
 db = Car_database.return_as_panda_dataframe()
-
+Car_database.fix_datetime()
 Car_database.clear_old_valuations(days=clear_car_valuation_days)
 
 
@@ -43,7 +43,8 @@ print(internal_db[['Model','Model Variant']], flush=True)
 Car_database.close_db() # close db now incase another app needs to import
 
 cars_to_get_extra_information = []
-print(f"Number of cars {internal_db.count()['id']}", flush=True)
+
+print(f"Number of cars {internal_db.count()['id']}/", flush=True)
 for index, row in internal_db.iterrows(): #print and then create a master car object
     car_reg = row["Reg"]
     car_model = row["Model"]

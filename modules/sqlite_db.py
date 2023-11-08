@@ -151,13 +151,18 @@ class SQLiteDatabase:
     def get_cars_with_date_updated(self, days):
         SQL_string = f"""
         SELECT DateUpdated FROM used_cars 
-        WHERE DateUpdated < date('now', '{days} days') AND CarStatus != "Sold"
+        WHERE datetime(DateUpdated) > datetime('now', '-{days} days') AND CarStatus != "Sold" 
+        AND datetime(DateUpdated) < datetime('now', '-1 days');
         """
-        
+        print(SQL_string)
         self.cursor.execute(SQL_string)
         data = self.cursor.fetchall()
         count = len(data)
-        print(f"DB: {count} cars valuations are older than {days}")
+
+        self.cursor.execute("SELECT COUNT(*) FROM used_cars")
+        # Fetch the count
+        total_cars = self.cursor.fetchone()[0]
+        print(f"DB: {count}/{total_cars} cars valuations are older than {days} days")
         return data
         
     def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Engine_size=None ,ModelVariant=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None, CarStatus=None, ValuationPercentage=None, ValuationRange=None):
