@@ -93,17 +93,60 @@ class SQLiteDatabase:
         print("DATABASE: Clearing Car Valuation Database")
         self.cursor.execute(SQL_string)
         self.conn.commit() 
+        
     def clear_old_valuations(self, days):
         """Clear the old valuation with in days from database and update the dateupdated.
 
         Args:
             days (int): specify days old to clear valuations
         """        
-        print(f"Clearing Old valuations in {days} days")
-        self.get_cars_with_date_updated(days=days)
-        self.clear_car_valuation_ranges(days=days)
         
         
+        check_old_cars = self.get_cars_with_date_updated(days=days)
+        if check_old_cars:
+            print(f"Going to clear Old valuations in {days} days")
+            self.clear_car_valuation_ranges(days=days)
+            return check_old_cars
+        else: 
+            return None
+        
+    def fix_datetime(self):
+        # conversion of date fixer
+        self.cursor.execute("PRAGMA table_info(used_cars)")
+        column_info = self.cursor.fetchall()
+        DateUpdatedColumn = next((info[2] for info in column_info if info[1] == "DateUpdated"))
+        if DateUpdatedColumn == "DATETIME":
+            print("DATABASE PATCH: Not updating as DateUpdated is DateTime", flush=True)
+            return 
+        try:
+            # Add a new DATETIME column to the table
+            self.cursor.execute("ALTER TABLE used_cars ADD COLUMN DateTimeUpdated DATETIME")
+
+            # Update the new column with properly formatted DATETIME values
+            self.cursor.execute("""
+                UPDATE used_cars
+                SET DateTimeUpdated = strftime('%Y-%m-%d %H:%M:%S', 
+                                            substr(DateUpdated, 13, 4) || '-' ||
+                                            substr(DateUpdated, 10, 2) || '-' || 
+                                            substr(DateUpdated, 7, 2) || ' ' ||  
+                                            substr(DateUpdated, 1, 5));           
+                            """)
+
+            # Commit the changes
+            
+
+            # If you want to drop the old column (optional), you can do it here
+            self.cursor.execute("ALTER TABLE used_cars DROP COLUMN DateUpdated")
+            self.cursor.execute("ALTER TABLE used_cars RENAME COLUMN DateTimeUpdated TO DateUpdated")
+            self.conn.commit()
+
+        except sqlite3.Error as e:
+            # Handle any exceptions that may occur
+            self.conn.rollback()
+        finally:
+            table_date = self.return_as_panda_dataframe()
+            print(table_date[["DateUpdated", "CarStatus"]])
+   
 
     def get_cars_with_date_updated(self, days):
         SQL_string = f"""
@@ -207,7 +250,7 @@ class SQLiteDatabase:
                     "Color": "TEXT",
                     "Doors": "INTEGER",
                     "Reg": "TEXT",
-                    "DateUpdated": "DATE",
+                    "DateUpdated": "TEXT",
                     "OldPrice": "INTEGER",
                     "OldDate": "TEXT",
                     "NumberOfPriceReductions": "INTEGER",
@@ -260,8 +303,9 @@ class SQLiteDatabase:
         table_name = "used_cars"
         self.cursor.execute("PRAGMA table_info({});".format(table_name) )
         columns = self.cursor.fetchall()
-
-        for missingcolumn in schema:
+        for column_information in columns:
+            print(column_information ,flush=True)
+        for missingcolumn, expected_type in schema.items():
             column_to_update = any(column[1] == missingcolumn for column in columns  )
             if not column_to_update:
                 print(f"Missing {missingcolumn} in DB. Database is being updated with table", flush=True)
@@ -271,8 +315,25 @@ class SQLiteDatabase:
                 '''
                 self.cursor.execute(db_string.format(table_name, missingcolumn))
                 print("DB updated", flush=True)
-        else:
-            print("No changes needed", flush=True)
+            else:
+            # Disabled until database data types are migrated   
+            # column_name, current_type = [(column[1], column[2]) for column in columns if column[1] == missingcolumn ][0]
+                
+            #     if current_type != expected_type:
+                    
+            #         print(f"Updating Table column {column_name} from {current_type} to {expected_type} ")
+            #         db_string = f"ALTER TABLE {table_name} RENAME to {table_name}_old"
+            #         self.cursor.execute(db_string)
+            #         db_string = f"CREATE TABLE {table_name} as SELECT * FROM {table_name}_old"
+            #         self.cursor.execute(db_string)
+            #         db_string = f"INSERT INTO {table_name} SELECT * from {table_name}_old"
+            #         self.cursor.execute(db_string)
+            #         db_string = f"DROP TABLE {table_name}_old"
+            #         self.cursor.execute(db_string)
+            # self.conn.commit()
+            # print("Database Updated", flush=True)
+            
+                print("No changes needed", flush=True)
         
 
     def delete_car_from_table(self, REG, table=None):
@@ -473,6 +534,8 @@ class SQLiteDatabase:
         data = self.number_of_car_new_changed_list
         self.number_of_car_new_changed_list = []
         return data
+    
+
     def import_data(self):
             """
             Imports the car properties from the instance variables and adds them to the database.
