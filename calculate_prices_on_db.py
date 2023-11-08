@@ -10,6 +10,8 @@ from modules.sqlite_db import SQLiteDatabase
 
 from modules.background_pricecheck import car, car_background_information
 
+clear_car_valuation_days = 1
+
 #set up db
 Car_database = SQLiteDatabase(db_path="used_cars.db")
 Car_database.update_table()
@@ -26,6 +28,14 @@ car_filters = {
    
     # "Price": lambda x: x < 10000
 }
+
+
+db = Car_database.return_as_panda_dataframe()
+
+Car_database.get_cars_with_date_updated(days=clear_car_valuation_days)
+Car_database.clear_car_valuation_ranges(days=clear_car_valuation_days)
+
+
 db = Car_database.return_as_panda_dataframe()
 sort_database = Car_database.filter_table(db=db, filters=car_filters)
 internal_db = sort_database

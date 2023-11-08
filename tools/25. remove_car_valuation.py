@@ -23,23 +23,19 @@ chat_id = credentials.chat_id
 bot = TelegramBot(api_token)
 DB = SQLiteDatabase()
 
-autotrader = car_background_information(driver="chrome",postal_code="TR17%200BJ")
-
-example_car = car(car_make="BMW",
-                  car_model="320D",
-                  mileage="55500",
-                  year="2018",
-                  reg="22"
-                  )
-
-autotrader.add_car(example_car)
 
 
+for car_data in (DB.get_cars_with_date_updated(days=5)):
+    print(car_data)
 
-price = autotrader.series_scrape_autotrader_price()
-
-car_range = autotrader.get_car_range_price(reg="22")
 
 data = DB.return_as_panda_dataframe()
+
+DB.clear_car_valuation_ranges(days=2)
+
+data = DB.return_as_panda_dataframe()
+
+print(data[["Manufacturer","Price", "ValuationRange", "DateUpdated"]])
+
 
 

@@ -84,6 +84,25 @@ class SQLiteDatabase:
         data = self.cursor.fetchone()[0]
         return data
         
+    def clear_car_valuation_ranges(self, days):
+        SQL_string= f"""
+        UPDATE used_cars
+        SET ValuationRange = NULL
+        WHERE DateUpdated > date('now', '{days} day') 
+        """
+        print("DATABASE: Clearing Car Valuation Database")
+        self.cursor.execute(SQL_string)
+        self.conn.commit() 
+
+    def get_cars_with_date_updated(self, days):
+        SQL_string = f"""
+        SELECT * FROM used_cars 
+        WHERE DateUpdated > date('now', '{days} day') 
+        """
+        self.cursor.execute(SQL_string)
+        count = len(self.cursor.fetchall())
+        print(f"DB: {count} cars valuations are older than {days}")
+        return self.cursor.fetchall()
         
     def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Engine_size=None ,ModelVariant=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None, CarStatus=None, ValuationPercentage=None, ValuationRange=None):
         """
