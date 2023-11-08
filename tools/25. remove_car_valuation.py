@@ -23,19 +23,18 @@ chat_id = credentials.chat_id
 bot = TelegramBot(api_token)
 DB = SQLiteDatabase()
 
-
-
-for car_data in (DB.get_cars_with_date_updated(days=5)):
-    print(car_data)
+# # DB.clear_car_valuation_ranges(days=1)
+# for car_data in (DB.get_cars_with_date_updated(days=16)):
+#     print(car_data)
 
 
 data = DB.return_as_panda_dataframe()
+print(data["DateUpdated"])
+# 
 
-DB.clear_car_valuation_ranges(days=2)
+# data = DB.return_as_panda_dataframe()
 
-data = DB.return_as_panda_dataframe()
-
-print(data[["Manufacturer","Price", "ValuationRange", "DateUpdated"]])
+# print(data[["Manufacturer","Price", "ValuationRange", "DateUpdated"]])
 
 
 

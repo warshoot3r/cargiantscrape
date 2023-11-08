@@ -87,22 +87,35 @@ class SQLiteDatabase:
     def clear_car_valuation_ranges(self, days):
         SQL_string= f"""
         UPDATE used_cars
-        SET ValuationRange = NULL
-        WHERE DateUpdated > date('now', '{days} day') 
+        SET ValuationRange = NULL, DateUpdated = date('now')
+        WHERE DateUpdated < date('now', '{days} days') AND CarStatus != "Sold"
         """
         print("DATABASE: Clearing Car Valuation Database")
         self.cursor.execute(SQL_string)
         self.conn.commit() 
+    def clear_old_valuations(self, days):
+        """Clear the old valuation with in days from database and update the dateupdated.
+
+        Args:
+            days (int): specify days old to clear valuations
+        """        
+        print(f"Clearing Old valuations in {days} days")
+        self.get_cars_with_date_updated(days=days)
+        self.clear_car_valuation_ranges(days=days)
+        
+        
 
     def get_cars_with_date_updated(self, days):
         SQL_string = f"""
-        SELECT * FROM used_cars 
-        WHERE DateUpdated > date('now', '{days} day') 
+        SELECT DateUpdated FROM used_cars 
+        WHERE DateUpdated < date('now', '{days} days') AND CarStatus != "Sold"
         """
+        
         self.cursor.execute(SQL_string)
-        count = len(self.cursor.fetchall())
+        data = self.cursor.fetchall()
+        count = len(data)
         print(f"DB: {count} cars valuations are older than {days}")
-        return self.cursor.fetchall()
+        return data
         
     def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Engine_size=None ,ModelVariant=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None, CarStatus=None, ValuationPercentage=None, ValuationRange=None):
         """
@@ -140,7 +153,7 @@ class SQLiteDatabase:
             self.Doors = "N/A"
         self.Reg = str(Reg)
         self.URL = str(URL) if URL is not None else None
-        self.DateUpdated = datetime.datetime.now().strftime(("%H:%M %d/%m/%Y"))
+        self.DateUpdated = datetime.datetime.now().strftime(("%Y-%m-%d %H:%M:%S"))
         self.CarStatus = str(CarStatus) if CarStatus is not None else None
         self.ValuationPercentage = int(ValuationPercentage) if ValuationPercentage is not None else None
         self.ValuationRange = str(ValuationRange) if ValuationRange is not None else None
@@ -516,7 +529,7 @@ class SQLiteDatabase:
 
                     if (Car_Current_price != car_DB_PRICE) and (Car_Current_price): #  dont run because line 427 which will set car_current_price to None. DB will have price. this will cause it to replace with None
                         print(f"Car with Reg: {currentcarreg} is existing with the same price", flush=True)
-                        self.DateUpdated = datetime.datetime.now().strftime("%H:%M %d/%m/%Y")
+                        self.DateUpdated = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                         string_updated = f"Car Price Changed, updating DB. DatabasePrice={ car_DB_PRICE} CurrentPrice= {Car_Current_price}"
                         self.number_of_car_prices_changed += 1
                         self.number_of_car_prices_changed_list.append(currentcarreg) # Store the REG of price changed car in a list
@@ -622,7 +635,7 @@ class SQLiteDatabase:
                         #     "DaysAdded": 0
                         # }
                         db_string_update = f"UPDATE {table} SET DateCarAdded = ?, DaysAdded = 0 WHERE REG = ?"
-                        self.cursor.execute(db_string_update, (datetime.datetime.now().strftime("%Y-%m-%d"), data['Reg']))
+                        self.cursor.execute(db_string_update, (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), data['Reg']))
                         self.conn.commit()
 
     def move_sold_cars_to_db(self, URL):
