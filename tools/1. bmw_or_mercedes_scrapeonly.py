@@ -26,8 +26,8 @@ DB = SQLiteDatabase()
 car_extra_information = car_background_information(driver="chrome",postal_code="TR17%200BJ")
 car_giant = WebScraperCargiant(driver="chrome",keepalive=False)
 
-car_giant.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="BMW",numberofpages=0)
-car_giant.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="Mercedes",numberofpages=0)
+car_giant.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="BMW",numberofpages=1)
+# car_giant.search_for_manufacturer_with_bmw_or_mercedes(manufacturer="Mercedes",numberofpages=0)
 #import car to DB
 
 for i in range(car_giant.length):

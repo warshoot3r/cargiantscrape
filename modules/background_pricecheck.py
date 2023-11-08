@@ -12,6 +12,7 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 import concurrent.futures
 import time
 from .autotrader_naming import autotrader_naming
+from .car_maths import filter_within_mad_range_and_remove_2digits
 class car:
     def __init__(self, reg: str, car_make: str, car_model: str, mileage: int, year: int):
         self.reg = reg
@@ -170,9 +171,11 @@ class car_background_information:
         if (prices is None) or (len(prices) == 0):
             return None
         prices_as_int = [int(value.replace(',', '' )) for value in prices]
-    
-        max_price = max(prices_as_int)
-        min_price = min(prices_as_int)
+        
+        prices_as_int_filtered = filter_within_mad_range_and_remove_2digits(prices_as_int)
+
+        max_price = max(prices_as_int_filtered)
+        min_price = min(prices_as_int_filtered)
         return "£" + str(min_price)  + (" - ") + "£" +  str(max_price)
      
     def series_scrape_autotrader_price(self, worker_threads=2, timeout_time=30):
@@ -272,10 +275,10 @@ class car_background_information:
             # Navigate to the URL
             driver = self.selenium_setup()
             wait = WebDriverWait(driver, timeout=15)
-            minimum_mileage = mileage - 5000 if mileage - 3000 >=100 else 100
-            maximum_mileage = mileage + 5000
-            from_year = year - 1 
-            to_year = year
+            minimum_mileage = int(mileage) - 5000 if int(mileage)  - 3000 >=100 else 100
+            maximum_mileage = int(mileage)  + 5000
+            from_year = int(year) - 1 
+            to_year = int(year) 
             #try twice by changing the models:
             attempts_max = 3
             attempts = 0

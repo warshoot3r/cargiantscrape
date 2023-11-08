@@ -84,6 +84,86 @@ class SQLiteDatabase:
         data = self.cursor.fetchone()[0]
         return data
         
+    def clear_car_valuation_ranges(self, days):
+        SQL_string= f"""
+        UPDATE used_cars
+        SET ValuationRange = NULL, DateUpdated = date('now')
+        WHERE DateUpdated < date('now', '{days} days') AND CarStatus != "Sold"
+        """
+        print("DATABASE: Clearing Car Valuation Database")
+        self.cursor.execute(SQL_string)
+        self.conn.commit() 
+        
+    def clear_old_valuations(self, days):
+        """Clear the old valuation with in days from database and update the dateupdated.
+
+        Args:
+            days (int): specify days old to clear valuations
+        """        
+        
+        
+        check_old_cars = self.get_cars_with_date_updated(days=days)
+        if check_old_cars:
+            print(f"Going to clear Old valuations in {days} days")
+            self.clear_car_valuation_ranges(days=days)
+            return check_old_cars
+        else: 
+            return None
+        
+    def fix_datetime(self):
+        # conversion of date fixer
+        self.cursor.execute("PRAGMA table_info(used_cars)")
+        column_info = self.cursor.fetchall()
+        DateUpdatedColumn = next((info[2] for info in column_info if info[1] == "DateUpdated"))
+        if DateUpdatedColumn == "DATETIME":
+            print("DATABASE PATCH: Not updating as DateUpdated is DateTime", flush=True)
+            return 
+        try:
+            # Add a new DATETIME column to the table
+            self.cursor.execute("ALTER TABLE used_cars ADD COLUMN DateTimeUpdated DATETIME")
+
+            # Update the new column with properly formatted DATETIME values
+            self.cursor.execute("""
+                UPDATE used_cars
+                SET DateTimeUpdated = strftime('%Y-%m-%d %H:%M:%S', 
+                                            substr(DateUpdated, 13, 4) || '-' ||
+                                            substr(DateUpdated, 10, 2) || '-' || 
+                                            substr(DateUpdated, 7, 2) || ' ' ||  
+                                            substr(DateUpdated, 1, 5));           
+                            """)
+
+            # Commit the changes
+            
+
+            # If you want to drop the old column (optional), you can do it here
+            self.cursor.execute("ALTER TABLE used_cars DROP COLUMN DateUpdated")
+            self.cursor.execute("ALTER TABLE used_cars RENAME COLUMN DateTimeUpdated TO DateUpdated")
+            self.conn.commit()
+
+        except sqlite3.Error as e:
+            # Handle any exceptions that may occur
+            self.conn.rollback()
+        finally:
+            table_date = self.return_as_panda_dataframe()
+            print(table_date[["DateUpdated", "CarStatus"]])
+   
+
+    def get_cars_with_date_updated(self, days):
+        SQL_string = f"""
+        SELECT DateUpdated FROM used_cars 
+        WHERE datetime(DateUpdated) > datetime('now', '-{days} days') AND CarStatus != "Sold" 
+        AND datetime(DateUpdated) < datetime('now', '-1 days');
+        """
+        print(SQL_string)
+        self.cursor.execute(SQL_string)
+        data = self.cursor.fetchall()
+        count = len(data)
+
+        self.cursor.execute("SELECT COUNT(*) FROM used_cars")
+        # Fetch the count
+        total_cars = self.cursor.fetchone()[0]
+        print(f"DB: {count}/{total_cars} cars valuations are older than {days} days")
+        return data
         
     def import_car_properties(self, Manufacturer=None, Doors=None, Model=None, Engine_size=None ,ModelVariant=None, Year=None, Price=None, Body_Type=None, Transmission=None, Fuel=None, Color=None, Mileage=None, Reg=None, URL=None, CarStatus=None, ValuationPercentage=None, ValuationRange=None):
         """
@@ -121,7 +201,7 @@ class SQLiteDatabase:
             self.Doors = "N/A"
         self.Reg = str(Reg)
         self.URL = str(URL) if URL is not None else None
-        self.DateUpdated = datetime.datetime.now().strftime(("%H:%M %d/%m/%Y"))
+        self.DateUpdated = datetime.datetime.now().strftime(("%Y-%m-%d %H:%M:%S"))
         self.CarStatus = str(CarStatus) if CarStatus is not None else None
         self.ValuationPercentage = int(ValuationPercentage) if ValuationPercentage is not None else None
         self.ValuationRange = str(ValuationRange) if ValuationRange is not None else None
@@ -175,7 +255,7 @@ class SQLiteDatabase:
                     "Color": "TEXT",
                     "Doors": "INTEGER",
                     "Reg": "TEXT",
-                    "DateUpdated": "DATE",
+                    "DateUpdated": "TEXT",
                     "OldPrice": "INTEGER",
                     "OldDate": "TEXT",
                     "NumberOfPriceReductions": "INTEGER",
@@ -228,8 +308,9 @@ class SQLiteDatabase:
         table_name = "used_cars"
         self.cursor.execute("PRAGMA table_info({});".format(table_name) )
         columns = self.cursor.fetchall()
-
-        for missingcolumn in schema:
+        for column_information in columns:
+            print(column_information ,flush=True)
+        for missingcolumn, expected_type in schema.items():
             column_to_update = any(column[1] == missingcolumn for column in columns  )
             if not column_to_update:
                 print(f"Missing {missingcolumn} in DB. Database is being updated with table", flush=True)
@@ -239,8 +320,25 @@ class SQLiteDatabase:
                 '''
                 self.cursor.execute(db_string.format(table_name, missingcolumn))
                 print("DB updated", flush=True)
-        else:
-            print("No changes needed", flush=True)
+            else:
+            # Disabled until database data types are migrated   
+            # column_name, current_type = [(column[1], column[2]) for column in columns if column[1] == missingcolumn ][0]
+                
+            #     if current_type != expected_type:
+                    
+            #         print(f"Updating Table column {column_name} from {current_type} to {expected_type} ")
+            #         db_string = f"ALTER TABLE {table_name} RENAME to {table_name}_old"
+            #         self.cursor.execute(db_string)
+            #         db_string = f"CREATE TABLE {table_name} as SELECT * FROM {table_name}_old"
+            #         self.cursor.execute(db_string)
+            #         db_string = f"INSERT INTO {table_name} SELECT * from {table_name}_old"
+            #         self.cursor.execute(db_string)
+            #         db_string = f"DROP TABLE {table_name}_old"
+            #         self.cursor.execute(db_string)
+            # self.conn.commit()
+            # print("Database Updated", flush=True)
+            
+                print("No changes needed", flush=True)
         
 
     def delete_car_from_table(self, REG, table=None):
@@ -441,6 +539,8 @@ class SQLiteDatabase:
         data = self.number_of_car_new_changed_list
         self.number_of_car_new_changed_list = []
         return data
+    
+
     def import_data(self):
             """
             Imports the car properties from the instance variables and adds them to the database.
@@ -497,7 +597,7 @@ class SQLiteDatabase:
 
                     if (Car_Current_price != car_DB_PRICE) and (Car_Current_price): #  dont run because line 427 which will set car_current_price to None. DB will have price. this will cause it to replace with None
                         print(f"Car with Reg: {currentcarreg} is existing with the same price", flush=True)
-                        self.DateUpdated = datetime.datetime.now().strftime("%H:%M %d/%m/%Y")
+                        self.DateUpdated = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                         string_updated = f"Car Price Changed, updating DB. DatabasePrice={ car_DB_PRICE} CurrentPrice= {Car_Current_price}"
                         self.number_of_car_prices_changed += 1
                         self.number_of_car_prices_changed_list.append(currentcarreg) # Store the REG of price changed car in a list
@@ -603,7 +703,7 @@ class SQLiteDatabase:
                         #     "DaysAdded": 0
                         # }
                         db_string_update = f"UPDATE {table} SET DateCarAdded = ?, DaysAdded = 0 WHERE REG = ?"
-                        self.cursor.execute(db_string_update, (datetime.datetime.now().strftime("%Y-%m-%d"), data['Reg']))
+                        self.cursor.execute(db_string_update, (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), data['Reg']))
                         self.conn.commit()
 
     def move_sold_cars_to_db(self, URL):

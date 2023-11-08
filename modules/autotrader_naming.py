@@ -338,11 +338,12 @@ class autotrader_naming:
         driver = self.selenium_setup()
         wait = WebDriverWait(driver=driver, timeout=10)
         print(f"DEBUG: {url} Attempting to gather Model Variant", flush=True)
-        driver.get(url)
+        
         attempts = 0
         while True:
             models = []
             try:
+                driver.get(url)
                 model_variant_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
                 self.handle_cookie_prompt(driver)
                 # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
