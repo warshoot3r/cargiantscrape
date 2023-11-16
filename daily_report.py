@@ -10,7 +10,7 @@ import sys
 
 
 scheduled_time_start_hour = 20
-scheduled_time_end_hour = 21
+scheduled_time_end_hour = 26
 
 print(f"Scheduled time is {scheduled_time_start_hour}:00 to {scheduled_time_end_hour}:00. Machine time -> {datetime.datetime.now().strftime('%H:%M')}")
 while True:
@@ -45,7 +45,7 @@ filters = {
     'Mileage': lambda x: x <= 60000,
     'Year': lambda x: x >= 2015,
     "CarStatus": lambda x: x != "Sold",
-    "Engine Size": lambda x: x > "1.5",
+    'Engine Size': lambda x: x >= '1.5' if x is not None else False,
     # No Mercedes A Classes
     # No BMW 1 Series
     # No BMW i3's
@@ -84,7 +84,7 @@ cars_of_the_day_filters = {
     'Year': lambda x: x >= 2017,
     # 'DaysAdded': lambda x: x <= 10,
     'Transmission': lambda x: x == 'Auto',
-    'Engine Size': lambda x: x >= '1.5',
+    'Engine Size': lambda x: x >= '1.5' if x is not None else False,
     'Body Type': lambda bodytype: bodytype not in ("Estate", "SUV"),
     "CarStatus": lambda x: x == "Available",
     'Mileage': lambda x: x <= 60000,

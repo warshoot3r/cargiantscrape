@@ -592,7 +592,7 @@ class SQLiteDatabase:
                     Car_DB_Status = self.cursor.fetchone()[0]
                     #update the days car has been added
                     # print(f"DEBUG: {matching_car} {currentcarreg} >{self.CarStatus}< and >{Car_DB_Status}<" , flush=True)
-                    self.cursor.execute("UPDATE used_cars SET DaysAdded = julianday(CURRENT_DATE) - julianday(DateCarAdded) WHERE CarStatus != 'Sold'")
+                    self.cursor.execute("UPDATE used_cars SET DaysAdded = CAST(julianday(CURRENT_DATE) - julianday(DateCarAdded) as INTEGER) WHERE CarStatus != 'Sold'")
                     self.conn.commit()
 
                     if (Car_Current_price != car_DB_PRICE) and (Car_Current_price): #  dont run because line 427 which will set car_current_price to None. DB will have price. this will cause it to replace with None
