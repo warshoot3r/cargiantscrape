@@ -245,6 +245,7 @@ class SQLiteDatabase:
                     "CarStatus": "TEXT",
                     "Year": "INTEGER",
                     "Price": "INTEGER",
+                    "PriceChange": "INTEGER",
                     "Engine Size": "FLOAT",
                     "ValuationPercentage": "INTEGER",
                     "ValuationRange": "TEXT",
@@ -286,6 +287,7 @@ class SQLiteDatabase:
                     "CarStatus": "TEXT",
                     "Year": "INTEGER",
                     "Price": "INTEGER",
+                    "PriceChange": "INTEGER",
                     "Engine Size": "FLOAT",
                     "ValuationPercentage": "INTEGER",
                     "ValuationRange": "TEXT",
@@ -613,6 +615,15 @@ class SQLiteDatabase:
                         '''
                         print(self.DateUpdated, flush=True)
                         self.cursor.execute(db_string, (car_DB_PRICE, Car_Current_price, self.DateUpdated, currentcarreg))
+                        
+                        check_if_has_oldPrice = f"SELECT OldPrice FROM {table} WHERE Reg = ?"
+                        self.cursor.execute(check_if_has_oldPrice,(currentcarreg,))
+                        oldPrice = self.cursor.fetchone()
+                        if oldPrice is not None:
+                            db_string = f'''
+                            UPDATE {table} SET PriceChange = Price - ? where Reg = ?;
+                            '''
+                            self.cursor.execute(db_string, (oldPrice[0], currentcarreg))
                         self.conn.commit()
                         print("Imported updated entry", flush=True)
                     # if self.CarStatus == "" and Car_DB_Status == "": # required fix for empty Availablity
