@@ -10,7 +10,7 @@ import sys
 
 
 scheduled_time_start_hour = 20
-scheduled_time_end_hour = 26
+scheduled_time_end_hour = 21
 
 print(f"Scheduled time is {scheduled_time_start_hour}:00 to {scheduled_time_end_hour}:00. Machine time -> {datetime.datetime.now().strftime('%H:%M')}")
 while True:
