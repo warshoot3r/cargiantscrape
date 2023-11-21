@@ -46,10 +46,11 @@ filters = {
     'Year': lambda x: x >= 2015,
     "CarStatus": lambda x: x != "Sold",
     'Engine Size': lambda x: x >= '1.5' if x is not None else False,
+    'ValuationPercentage': lambda x: x < 40,
     # No Mercedes A Classes
     # No BMW 1 Series
     # No BMW i3's
-    'Body Type': lambda bodytype: bodytype not in ("Estate", "SUV"),
+    'Body Type': lambda bodytype: bodytype not in ("Estate", "SUV", "MPV", "Cabriolet / Convertible"),
     'Model': lambda model: (not re.match(r"[A|1]\d+", model)) & (not model.startswith('i3')) & (not model.startswith('2 Series')) & (not model.startswith("B"))
 }
 
