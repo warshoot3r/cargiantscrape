@@ -38,7 +38,7 @@ bot = TelegramBot(api_token)
 DB = SQLiteDatabase()
 
 DB.update_table()
-# Filters
+# Filters for normal database
 filters = {
     'Price': lambda x: x >= 10000,
     'Price': lambda x: x <= 30000,
@@ -46,12 +46,10 @@ filters = {
     'Year': lambda x: x >= 2015,
     "CarStatus": lambda x: x != "Sold",
     'Engine Size': lambda x: x >= '1.5' if x is not None else False,
-    'ValuationPercentage': lambda x: x < 40,
     # No Mercedes A Classes
     # No BMW 1 Series
     # No BMW i3's
     'Body Type': lambda bodytype: bodytype not in ("Estate", "SUV", "MPV", "Cabriolet / Convertible"),
-    'Model': lambda model: (not re.match(r"[A|1]\d+", model)) & (not model.startswith('i3')) & (not model.startswith('2 Series')) & (not model.startswith("B"))
 }
 
 
@@ -83,13 +81,14 @@ bot.send_message_servername(
 cars_of_the_day_filters = {
     'Price': lambda x : 9500 <= x <= 16000,
     'Year': lambda x: x >= 2017,
+    'ValuationPercentage': lambda x: x < 40,
     # 'DaysAdded': lambda x: x <= 10,
     'Transmission': lambda x: x == 'Auto',
     'Engine Size': lambda x: x >= '1.5' if x is not None else False,
-    'Body Type': lambda bodytype: bodytype not in ("Estate", "SUV"),
+    'Body Type': lambda bodytype: bodytype not in ("Estate", "SUV", "MPV", "Cabriolet / Convertible"),
     "CarStatus": lambda x: x == "Available",
     'Mileage': lambda x: x <= 60000,
-    'Model': lambda model: (not model.startswith("B"))
+    'Model': lambda model: (not re.match(r"[A|1]\d+", model)) & (not model.startswith('i3')) & (not model.startswith('2 Series')) & (not model.startswith("B"))
 
 
 }
