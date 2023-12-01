@@ -24,7 +24,7 @@ filters = {
     'Price': lambda x: x <=30000,
     'Mileage': lambda x: x <=60000,
     'Year': lambda x: x >= 2015,
-    "Engine Size": lambda x: x >= "1.5",
+    "Engine Size": lambda x: x >= "1.5" if x is not None else False,
     "CarStatus": lambda x: x != "Sold",
      # No Mercedes A Classes 
      # No BMW 1 Series
@@ -39,7 +39,7 @@ very_ideal_filters = {
     'Price': lambda x: x <=16000,
     'Mileage': lambda x: x <=80000,
     'Year': lambda x: x >= 2017,
-    "Engine Size": lambda x: x >= "2.0",
+    "Engine Size": lambda x: x >= "2.0" if x is not None else False,
     "CarStatus": lambda x: x != "Sold",
     "Transmission": lambda x: x == "Auto",
      # No Mercedes A Classes 
