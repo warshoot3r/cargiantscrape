@@ -171,8 +171,8 @@ class car_background_information:
         if (prices is None) or (len(prices) == 0):
             return None
         print(f"Calculate prices on values: {prices}", flush=True)
-        prices_as_int = [int(value.replace(',', '' )) for value in prices]
-        
+        prices_as_int = [int(float(value.replace(',', '' ))) for (value) in prices]
+    
         prices_as_int_filtered = filter_within_mad_range_and_remove_2digits(prices_as_int)
 
         max_price = max(prices_as_int_filtered)
