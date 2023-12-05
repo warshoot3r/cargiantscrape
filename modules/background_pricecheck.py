@@ -149,10 +149,11 @@ class car_background_information:
         prices = self.cars.get(reg, None).autotrader_price_valuation
         if prices is None or (len(prices) < 2) :
             return None
-        prices_as_int = [int(value.replace(',', '' )) for value in prices]
-
-        upper_bound  = max(prices_as_int)
-        lower_bound = min(prices_as_int)
+        prices_as_int = [int(float(value.replace(',', '' ))) for (value) in prices]
+        prices_as_int_filtered = filter_within_mad_range_and_remove_2digits(prices_as_int)
+        
+        upper_bound  = max(prices_as_int_filtered)
+        lower_bound = min(prices_as_int_filtered)
         if upper_bound == lower_bound:
             return None
         percentage_range =  100 - ((int(price_to_check) - lower_bound)/ (upper_bound - lower_bound ) * 100)
