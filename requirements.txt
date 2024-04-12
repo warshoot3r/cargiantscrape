@@ -30,7 +30,7 @@ h11==0.14.0
     # via wsproto
 html5lib==1.1
     # via fake-headers
-idna==3.4
+idna==3.7
     # via
     #   requests
     #   trio
