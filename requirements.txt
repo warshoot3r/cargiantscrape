@@ -54,7 +54,7 @@ pytz==2023.3
     # via pandas
 rapidfuzz==3.3.0
     # via levenshtein
-requests==2.31.0
+requests==2.32.0
     # via -r package.txt
 selenium==4.10.0
     # via -r package.txt
