@@ -14,7 +14,7 @@ beautifulsoup4==4.12.2
     #   bs4
 bs4==0.0.1
     # via fake-headers
-certifi==2023.7.22
+certifi==2024.7.4
     # via
     #   requests
     #   selenium
