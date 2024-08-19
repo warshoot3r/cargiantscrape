@@ -48,26 +48,27 @@ class car_background_information:
             )
             customUserAgent = header.generate()['User-Agent']
             chrome_options = ChromeOptions()
-            chrome_options.add_argument(f"user-agent={customUserAgent}")
-            chrome_options.add_argument("--headless=new")
-            chrome_options.add_argument("--no-sandbox")
-            chrome_options.add_argument("--disable-gpu")
-            chrome_options.add_argument("--disable-dev-shm-usage")
-            chrome_options.add_argument("--window-size=1920,1200")
-            chrome_options.add_argument("--ignore-certificate-errors")
-            chrome_options.add_argument("--disable-extensions")
-            chrome_options.add_argument("--start-maximized")
-            chrome_options.add_argument("--disable-default-apps")
-            chrome_options.add_argument("--disable-features=Translate")
-            chrome_options.add_argument("--disable-client-side-phishing-detection")
-            chrome_options.add_argument("--no-first-run")
-            chrome_options.add_argument("--incognito")
-            chrome_options.add_argument("--disable-component-extensions-with-background-pages")
-            chrome_options.add_argument("--disable-ipc-flooding-protection")
-            chrome_options.add_argument("--disable-hang-monitor")
-            chrome_options.add_argument("--disable-popup-blocking")
-            chrome_options.add_argument("--enable-automation")
-            chrome_options.add_argument("--disable-background-networking")
+            chrome_options.headless = False
+            # chrome_options.add_argument(f"user-agent={customUserAgent}")
+            # chrome_options.add_argument("--headless=new")
+            # chrome_options.add_argument("--no-sandbox")
+            # chrome_options.add_argument("--disable-gpu")
+            # chrome_options.add_argument("--disable-dev-shm-usage")
+            # chrome_options.add_argument("--window-size=1920,1200")
+            # chrome_options.add_argument("--ignore-certificate-errors")
+            # chrome_options.add_argument("--disable-extensions")
+            # chrome_options.add_argument("--start-maximized")
+            # chrome_options.add_argument("--disable-default-apps")
+            # chrome_options.add_argument("--disable-features=Translate")
+            # chrome_options.add_argument("--disable-client-side-phishing-detection")
+            # chrome_options.add_argument("--no-first-run")
+            # chrome_options.add_argument("--incognito")
+            # chrome_options.add_argument("--disable-component-extensions-with-background-pages")
+            # chrome_options.add_argument("--disable-ipc-flooding-protection")
+            # chrome_options.add_argument("--disable-hang-monitor")
+            # chrome_options.add_argument("--disable-popup-blocking")
+            # chrome_options.add_argument("--enable-automation")
+            # chrome_options.add_argument("--disable-background-networking")
             return webdriver.Chrome(options=chrome_options)
         elif self.driver == "chromium":
             chromium_options = ChromiumOptions()
@@ -336,6 +337,7 @@ class car_background_information:
             table_data = bs.find('ul', {'data-testid': 'desktop-search'})
 
             # Find all individual car listings
+            number_of_cars = None
             try:
                 number_of_cars = table_data.find_all('li')
             except:
@@ -347,6 +349,10 @@ class car_background_information:
             # Extract and print prices from car listings
 
             cars_list = []
+            # cancel if no data
+            if number_of_cars is None:
+                print("MODULE: No data in cars", flush=True)
+                return
             for car in number_of_cars:
                 text = car.text.strip()  # Get the text content of the car listing with proper stripping
                 matches = pattern.findall(text)
@@ -355,7 +361,7 @@ class car_background_information:
                     price = ''.join(match)
                     if price:
                         cars_list.append(price)
-                        
+              
             print(f"MODULE: Successfully got prices for {reg} {cars_list} \n", flush=True)
             self.cars[reg].autotrader_price_valuation = cars_list
             driver.close()
@@ -467,12 +473,15 @@ class car_background_information:
             # Extract and print prices from car listings
 
             cars_list = []
+            if number_of_cars is None:
+                print("MODULE: No data in cars", flush=True)
+                return
             for car in number_of_cars:
                 text = car.text.strip()  # Get the text content of the car listing with proper stripping
                 matches = pattern.findall(text)
                 # Print the matching prices
                 for match in matches: # ignoring last two as they are adverts
-                    
+ 
                     price = ''.join(match)
                     if price:
                         cars_list.append(price)
