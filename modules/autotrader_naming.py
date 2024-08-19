@@ -346,16 +346,23 @@ class autotrader_naming:
             models = []
             try:
                 driver.get(url)
-                model_variant_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-model-variant"]')))
+                select_makeandmodel = wait.until(EC.presence_of_element_located((By.XPATH, '//p[text()="Make and model"]')))
+                select_makeandmodel.click()
                 self.handle_cookie_prompt(driver)
-                # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
-                wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-button"]')))
-                model_variant_button.click()
-                print("Clicked on variant pane", flush=True)
-                wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-section="aggregated_trim"]')))
-                model_variant_data_section =  driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]')
-                wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
-                model_variant_data = model_variant_data_section.find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
+                
+                model_variant_data = driver.find_elements(By.ID, 'aggregated_trim')
+                
+
+                #   model_variant_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="make-and-model-filter"]')))
+
+                # # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="model-variant-facet-panel"]')))
+                # wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-testid="toggle-facet-button"]')))
+                # model_variant_button.click()
+                # print("Clicked on variant pane", flush=True)
+                # wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, '[data-section="aggregated_trim"]')))
+                # model_variant_data_section =  driver.find_element(By.CSS_SELECTOR, '[data-section="aggregated_trim"]')
+                # wait.until(EC.visibility_of_all_elements_located(( By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')))
+                # model_variant_data = model_variant_data_section.find_elements(By.CSS_SELECTOR, '[data-gui="filters-list-filter-name"]')
 
                 for model_variant in model_variant_data:
                     try :
