@@ -15,7 +15,7 @@ jobs:
             fail-fast: false
       steps:
         - name: Checkout Repository
-          uses: actions/checkout@v3
+          uses: actions/checkout@v4
 
         - name: Docker pull image from docker based on github ref name
           run: |
