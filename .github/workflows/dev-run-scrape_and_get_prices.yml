@@ -64,7 +64,7 @@ jobs:
               run: |
                   docker pull "${{ matrix.image_variant }}":"${{ github.ref_name }}" 
             - name: Download artifact
-              uses: dawidd6/action-download-artifact@v2
+              uses: dawidd6/action-download-artifact@v4
               id: download_db_step
               continue-on-error: True
               with:
@@ -81,7 +81,7 @@ jobs:
                 docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  "${{ matrix.image_variant }}":"${{ github.ref_name }}"  calculate_prices_on_db.py
     
             - name: Save db data as an artifact
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                   name: testcargiantdbfile
                   path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
