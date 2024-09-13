@@ -30,7 +30,7 @@ jobs:
 
 
       - name: Download artifact
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v4
         continue-on-error: True
         id: download_db_step
         with:
@@ -48,7 +48,7 @@ jobs:
           docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} chatbot_autorun_onetime.py
 
       - name: Save db data as an artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
             name: cargiantdbfile
             path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
@@ -83,7 +83,7 @@ jobs:
                   #   run: |
                   #     touch /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
                   - name: Download Artifacts
-                    uses: actions/download-artifact@v2
+                    uses: actions/download-artifact@v4
                     id: download_db_step
                     with:
                       name: cargiantdbfile
@@ -95,7 +95,7 @@ jobs:
                       docker run --rm -v /home/runner/work/cargiantscrape/cargiantscrape/credentials.py:/app/credentials.py -v /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db:/app/used_cars.db  ${{ matrix.image_variant }} calculate_prices_on_db.py
           
                   - name: Save db data as an artifact
-                    uses: actions/upload-artifact@v3
+                    uses: actions/upload-artifact@v4
                     with:
                         name: cargiantdbfile
                         path: /home/runner/work/cargiantscrape/cargiantscrape/used_cars.db
@@ -121,7 +121,7 @@ jobs:
             printf 'api_token = "${{ secrets.api_token}}"\nchat_id="${{secrets.DEVELOPMENT_GROUP_CHAT_ID}}"\nmessage_id="${{secrets.DAILY_REPORT_MESSAGE_ID}}"\n' > /home/runner/work/cargiantscrape/cargiantscrape/credentials.py
 
         - name: Download artifact This musn't be used as it will cause the db to be reverted
-          uses: dawidd6/action-download-artifact@v2
+          uses: dawidd6/action-download-artifact@v4
           id: download_db_step
           continue-on-error: True
           with:
