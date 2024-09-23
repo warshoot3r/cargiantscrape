@@ -97,7 +97,8 @@ jobs:
                   - name: Save db data as an artifact
                     uses: actions/upload-artifact@v4
                     with:
-                        name: cargiantdbfile1
+                        pattern: cargiantdb*
+                        merge-multiple: true
                         path: /home/runner/work/cargiantscrape/cargiantscrape
   scheduled_daily_report:
       runs-on: ubuntu-latest
