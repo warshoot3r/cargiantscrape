@@ -81,7 +81,7 @@ bot.send_message_servername(
 cars_of_the_day_filters = {
     'Price': lambda x : 9500 <= x <= 16000,
     'Year': lambda x: x >= 2017,
-    'ValuationPercentage': lambda x: x < 40,
+    'ValuationPercentage': lambda x: x < 40 if x is not None else False,
     # 'DaysAdded': lambda x: x <= 10,
     'Transmission': lambda x: x == 'Auto',
     'Engine Size': lambda x: x >= '1.5' if x is not None else False,

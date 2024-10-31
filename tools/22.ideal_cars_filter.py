@@ -42,4 +42,4 @@ very_ideal_filters = {
 }
 
 data = DB.return_as_panda_dataframe()
-print(DB.filter_table(db=data, filters=very_ideal_filters))
+print(DB.filter_table(db=data, filters=very_ideal_filters)["ValuationPercentage"])
