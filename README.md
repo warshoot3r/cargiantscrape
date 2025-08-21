@@ -1,5 +1,5 @@
  # cargiantscrape .
-pythonised scraping car giant for models and prices. Sends a report via telegram.
+pythonised scraping car giant for models and prices. Sends a report via telegram.1
  
 
 Production branch: [![Automatic - Build and push as branch name and Test](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-test-master.yml/badge.svg?branch=master)](https://github.com/warshoot3r/cargiantscrape/actions/workflows/build-test-master.yml)  
