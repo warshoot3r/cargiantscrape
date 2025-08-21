@@ -56,7 +56,6 @@ jobs:
       - name: Set up Docker BuildKit
         run: echo 'DOCKER_BUILDKIT=1' >> $GITHUB_ENV  
 
-      
       - name: Build and push by digest
         id: build
         uses: docker/build-push-action@v4
@@ -77,12 +76,12 @@ jobs:
           touch "/tmp/digests/${digest#sha256:}"
       
       - name: Upload digest
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: digests
           path: /tmp/digests/*
           if-no-files-found: error
-          retention-days: 1
+          retention-period: 1
   
   merge:
     runs-on: ubuntu-latest
@@ -120,29 +119,26 @@ jobs:
         run: |
           docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
 
-
-  test: # Test containers that were pushed
-          runs-on: ubuntu-latest
-          needs:
-            - merge
-          strategy:
-            fail-fast: false
-            matrix:
-              platform:
-                - linux/arm/v8
-                - linux/arm/v7
-                - linux/arm64
-                - linux/amd64
-          steps:
-    
-            - name: Checkout
-              uses: actions/checkout@v3
-            
-            - name: Set up QEMU
-              if: startsWith(matrix.platform, 'linux/arm')
-              uses: docker/setup-qemu-action@v2
-            
-            - name: Run Tests on built docker image
-              run: |
-                docker run --platform ${{ matrix.platform }} --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} test.py
-    
+  test:
+    runs-on: ubuntu-latest
+    needs:
+      - merge
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/arm/v8
+          - linux/arm/v7
+          - linux/arm64
+          - linux/amd64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Set up QEMU
+        if: startsWith(matrix.platform, 'linux/arm')
+        uses: docker/setup-qemu-action@v2
+      
+      - name: Run Tests on built docker image
+        run: |
+          docker run --platform ${{ matrix.platform }} --rm ${{ env.REGISTRY_IMAGE }}:${{ github.ref_name }} test.py
